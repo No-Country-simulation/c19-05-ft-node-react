@@ -3,6 +3,9 @@ import { Strategy as JwtStrategy, ExtractJwt, StrategyOptions, VerifiedCallback 
 import dotenv from 'dotenv';
 import { Request } from 'express';
 import { envs } from '../../envs/env.config';
+import { UserRepository } from '../../../repositories/User.repository';
+
+const userRepo = new UserRepository()
 
 interface JwtPayload {
     user: {
@@ -34,7 +37,7 @@ const options: StrategyOptions = {
 export const strategyJWT = new JwtStrategy(options, async (payload: JwtPayload, done: VerifiedCallback) => {
     try {
         //finduserbyid usando id en payload.user.id
-        const user = "usuario"
+        const user = await userRepo.findOne(payload.user.id)
 
         if (!user) {
             return done(null, false);

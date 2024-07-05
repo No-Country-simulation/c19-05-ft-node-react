@@ -1,6 +1,21 @@
 /** @format */
 
-import mongoose, { Document, PopulatedDoc, Schema, Types } from "mongoose";
+import mongoose, { Document, PaginateModel, PopulatedDoc, Schema, Types } from "mongoose";
+import paginate from "mongoose-paginate-v2";
+
+export interface IUser extends Document {
+	id: Types.ObjectId;
+	name: string;
+	email: string;
+	password: string;
+	specialties: PopulatedDoc<specialty & Document>[];
+	interests: PopulatedDoc<specialty & Document>[];
+	description: string;
+	userRatings: PopulatedDoc<userRating & Document>[];
+	phoneNumber: string;
+	trades: PopulatedDoc<Types.ObjectId & Document>[];
+	contacts: PopulatedDoc<Types.ObjectId & Document>[];
+}
 
 type specialty = {
 	idCategory: Types.ObjectId;
@@ -24,20 +39,6 @@ type userRating = {
 	rating: enumType;
 };
 
-export interface IUser extends Document {
-	id: Types.ObjectId;
-	name: string;
-	email: string;
-	password: string;
-	specialties: PopulatedDoc<specialty & Document>[];
-	interests: PopulatedDoc<specialty & Document>[];
-	description: string;
-	userRatings: PopulatedDoc<userRating & Document>[];
-	phoneNumber: string;
-	trades: PopulatedDoc<Types.ObjectId & Document>[];
-	contacts: PopulatedDoc<Types.ObjectId & Document>[];
-}
-
 const UserSchema: Schema = new Schema({
 	name: {
 		type: String,
@@ -55,11 +56,11 @@ const UserSchema: Schema = new Schema({
 	},
 	specialties: [
 		{
-			idCategory: {
+			categoryId: {
 				type: Types.ObjectId,
 				ref: "Category",
 			},
-			idSpecialty: {
+			specialtyId: {
 				type: Types.ObjectId,
 				ref: "Specialty",
 			},
@@ -114,6 +115,13 @@ const UserSchema: Schema = new Schema({
 	],
 });
 
-const User = mongoose.model<IUser>("User", UserSchema);
+UserSchema.plugin(paginate);
 
-export default User;
+interface IUserDocument extends IUser {}
+
+// Crear el modelo con la paginación
+interface IUserModel<T extends Document> extends PaginateModel<T> {}
+
+const UserModel: IUserModel<IUserDocument> = mongoose.model<IUserDocument>("User", UserSchema) as IUserModel<IUserDocument>;
+
+export default UserModel;

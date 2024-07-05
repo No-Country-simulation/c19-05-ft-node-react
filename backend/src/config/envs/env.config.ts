@@ -11,4 +11,5 @@ export const envs = {
 	SMTP_USER: get("SMTP_USER").required().asString(),
 	SMTP_PASS: get("SMTP_PASS").required().asString(),
 	JWT_SECRET: get("JWT_SECRET").required().asString(),
+	BCRYPT_SALT: get("BCRYPT_SALT").required().asInt(),
 };

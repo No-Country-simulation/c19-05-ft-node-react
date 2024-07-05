@@ -11,6 +11,10 @@ Este proyecto es una simulacion de una experiencia laboral .
 - MerakiUI
 - Vercel
 
+### Ejecucion
+
+Para ajecutar el front ejecute `npm run dev` 😀
+
 ## BACKEND
 
 - NodeJs

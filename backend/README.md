@@ -12,6 +12,29 @@ Talent Trade resuelve este problema.
 - Express.js
 - TypeScript
 - Node.js
+# Instalación
+Antes de realizar la instalación, asegúrate de tener los siguientes programas instalados:
+
+- [Git](https://git-scm.com/download/win)
+- [Node.js](https://nodejs.org/en/download/prebuilt-installer)
+
+Después de tener los programas instalados, clonas el repositorio de todo el proyecto:
+```
+git clone https://github.com/No-Country-simulation/c19-05-ft-node-react.git TalentTrade
+```
+
+Luego, entras a la carpeta de la API de la aplicación:
+```
+cd TalentTrade/backend
+```
+
+Posteriormente, instalas las dependencias que se indican en el package.json:
+```
+npm install
+```
+
+continuará...
+
 
 # Créditos 
 - [Alexis Paz](https://github.com/AlexisMPaz)

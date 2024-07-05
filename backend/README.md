@@ -7,6 +7,12 @@ Imagina que eres una persona que tiene habilidades en HTML, CSS y JavaScript, pe
 
 Talent Trade resuelve este problema.
 
+# Tecnologías utilizadas
+- MongoDB (con Mongoose como ODM)
+- Express.js
+- TypeScript
+- Node.js
+
 # Créditos 
 - [Alexis Paz](https://github.com/AlexisMPaz)
 - [Catriel Escobar](https://github.com/Catriel-Escobar)

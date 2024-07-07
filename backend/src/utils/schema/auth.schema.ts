@@ -17,3 +17,13 @@ export const RegisterSchema = z.object({
 })
 
 export type RegisterType = z.infer<typeof RegisterSchema>
+
+
+
+export const LoginSchema = z.object({
+    email:z.string({required_error:"El email es requerido",invalid_type_error:"Tipo de dato string"}).email({message:"Email no valido"}),
+    password:z.string({required_error:"La contrase;a es requerida",invalid_type_error:"Tipo de dato string"}).min(8,{message:"La contraseña debe contener 8 caracteres minimo"}).regex(passwordRegex,{message:"La contraseña debe contener una mayuscula, un numero y un caracter especial"}),
+})
+
+
+export type LoginType = z.infer<typeof LoginSchema>

@@ -5,3 +5,6 @@ export const UserUpdateSchema = z.object({
     ,description:z.string({invalid_type_error:"La descripcion debe ser un string",required_error:"La descripcion es requerida"},),
     phoneNumber:z.string({invalid_type_error:"El numero telefonico debe ser un string",required_error:"El numero telefonico es requerido"},)
 })
+
+
+export type UserUpdateType = z.infer<typeof UserUpdateSchema>

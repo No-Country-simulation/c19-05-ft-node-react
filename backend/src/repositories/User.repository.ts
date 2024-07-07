@@ -2,6 +2,9 @@ import { Model, Types } from "mongoose";
 import User, { IUser } from "../models/User.model";
 import { RegisterType } from "../utils/schema/auth.schema";
 
+
+
+
 type OptionsType = {
 	page:number,
 	limit:number,
@@ -36,10 +39,8 @@ export class UserRepository {
 	}
 
 	async find(query:Query | {},options:OptionsType) {
-		
 		try {
-			 await this.UserModel.paginate(query,options)
-
+			 return await this.UserModel.paginate(query,options)
 		} catch (error) {
 			console.log(error)
             if(error instanceof Error) {
@@ -50,7 +51,8 @@ export class UserRepository {
 
 	async findOne(id: string): Promise<IUser | null> {
 		try {
-			return await this.UserModel.findById(id);
+			const result = await this.UserModel.findById(id).select("_id name email description phoneNumber specialties interests userRatings trades contacts");
+			return result
 		} catch (error) {
 			console.log(error)
             if(error instanceof Error) {

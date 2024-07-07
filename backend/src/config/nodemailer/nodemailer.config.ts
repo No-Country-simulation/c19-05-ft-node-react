@@ -1,7 +1,7 @@
 /** @format */
 
-import nodemailer from "nodemailer";
-import { envs } from "../envs/env.config";
+import nodemailer from 'nodemailer';
+import { envs } from '../envs/env.config';
 
 const config = () => {
 	return {

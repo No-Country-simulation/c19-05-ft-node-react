@@ -3,22 +3,57 @@ import { IUser } from "../models/User.model";
 import { UserRepository } from "../repositories/User.repository";
 import { hashPassword } from "../utils/bcrypt/bcrypt.config";
 import { RegisterType } from "../utils/schema/auth.schema";
+import {  dataRegisterJwt, generateJWTRegister } from "../utils/jwt/jwt.config";
+import { Emails } from "../email/registerEmail";
+import { UserUpdateType } from "../utils/schema/user.schema";
 
 type userFilterDataType = Pick<IUser,"name"| "description" | "specialties" | "interests" |"userRatings"> & {
     phoneNumber:string|null
 }
 
 export class UserService {
-    
-    private userRepository:UserRepository
+    userRepository: UserRepository;
 
-    constructor( userRepository:UserRepository){
+    constructor(userRepository: UserRepository) {
         this.userRepository = userRepository;
     }
 
     // ta ok.👍
-    async create (user:RegisterType) {
+    async verifyEmail  (user:RegisterType) {
         try {
+            const userFound = await this.userRepository.findByEmail(user.email);
+            if(userFound) {
+                return {
+                    status:"failed",
+                    payload:"El correo ya esta registrado"
+                }
+            }
+            const token = await generateJWTRegister(user)
+            const data = {
+                name:user.name,
+                email:user.email,
+                token:token
+            }
+            Emails.sendConfirmationEmail(data)
+
+            return {
+                status:"success",
+                payload:"Para terminar tu registro verifica tu email."
+            }
+        } catch(error) {
+            console.log(error)
+            if(error instanceof Error) {
+
+                throw Error(error.message)
+            }
+
+            throw new Error(String(error))
+            
+        }
+    }
+    async create (token:string) {
+        try {
+            const user = dataRegisterJwt(token)
             const userFound = await this.userRepository.findByEmail(user.email);
             if(userFound) {
                 return {
@@ -58,6 +93,8 @@ export class UserService {
           }
         try {
             const users = await this.userRepository.find(query,options)
+            console.log(users);
+            
             return {
                 status:"success",
                 payload:users
@@ -142,7 +179,7 @@ export class UserService {
     
 
     // ta ok.👍
-    async update (id:string,data:Partial<IUser>) {
+    async update (id:string,data:UserUpdateType) {
         try {
             const user = await this.userRepository.update(id,data);
             if(user) {

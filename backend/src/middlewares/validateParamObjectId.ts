@@ -3,7 +3,8 @@ import { Types } from "mongoose";
 
 export const middlewareParamsObjectId = (nombreId:string) => async (req:Request,res:Response,next:NextFunction) => {
     const result = Types.ObjectId.isValid(req.params[nombreId])
-    if(result) next();
+    
+    if(result) return next();
 
     res.status(400).send({
         status:"error",

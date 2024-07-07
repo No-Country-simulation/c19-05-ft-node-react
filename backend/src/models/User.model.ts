@@ -1,7 +1,7 @@
 /** @format */
 
-import mongoose, { Document, PaginateModel, PopulatedDoc, Schema, Types } from "mongoose";
-import paginate from "mongoose-paginate-v2";
+import mongoose, { Document, PaginateModel, PopulatedDoc, Schema, Types } from 'mongoose';
+import paginate from 'mongoose-paginate-v2';
 
 export interface IUser extends Document {
 	id: Types.ObjectId;
@@ -58,11 +58,11 @@ const UserSchema: Schema = new Schema({
 		{
 			categoryId: {
 				type: Types.ObjectId,
-				ref: "Category",
+				ref: 'Category',
 			},
 			specialtyId: {
 				type: Types.ObjectId,
-				ref: "Specialty",
+				ref: 'Specialty',
 			},
 		},
 	],
@@ -70,23 +70,23 @@ const UserSchema: Schema = new Schema({
 		{
 			idCategory: {
 				type: Types.ObjectId,
-				ref: "Category",
+				ref: 'Category',
 			},
 			idSpecialty: {
 				type: Types.ObjectId,
-				ref: "Specialty",
+				ref: 'Specialty',
 			},
 		},
 	],
 	description: {
 		type: String,
-		required: true,
+		default: 'Mi descripcion',
 	},
 	userRatings: [
 		{
 			userId: {
 				type: Types.ObjectId,
-				ref: "User",
+				ref: 'User',
 			},
 			comment: {
 				type: String,
@@ -99,18 +99,18 @@ const UserSchema: Schema = new Schema({
 	],
 	phoneNumber: {
 		type: String,
-		required: true,
+		default: '',
 	},
 	trades: [
 		{
 			type: Types.ObjectId,
-			ref: "Trade",
+			ref: 'Trade',
 		},
 	],
 	contacts: [
 		{
 			type: Types.ObjectId,
-			ref: "User",
+			ref: 'User',
 		},
 	],
 });
@@ -122,6 +122,6 @@ interface IUserDocument extends IUser {}
 // Crear el modelo con la paginación
 interface IUserModel<T extends Document> extends PaginateModel<T> {}
 
-const UserModel: IUserModel<IUserDocument> = mongoose.model<IUserDocument>("User", UserSchema) as IUserModel<IUserDocument>;
+const UserModel: IUserModel<IUserDocument> = mongoose.model<IUserDocument>('User', UserSchema) as IUserModel<IUserDocument>;
 
 export default UserModel;

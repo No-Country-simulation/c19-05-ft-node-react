@@ -27,17 +27,24 @@ export class UserRepository {
 			const user = await this.UserModel.create(data);
 			return user;
 		} catch (error) {
-			throw new Error(error);
+			console.log(error)
+            if(error instanceof Error) {
+                throw new Error(error.message)
+            }
+			throw Error("Error al crear usuario")
 		}
 	}
 
-	async find(query:Query,options:OptionsType) {
+	async find(query:Query | {},options:OptionsType) {
 		
 		try {
 			 await this.UserModel.paginate(query,options)
 
 		} catch (error) {
-			throw new Error(error);
+			console.log(error)
+            if(error instanceof Error) {
+                throw Error(error.message)
+            }
 		}
 	}
 
@@ -45,7 +52,23 @@ export class UserRepository {
 		try {
 			return await this.UserModel.findById(id);
 		} catch (error) {
-			throw new Error(error);
+			console.log(error)
+            if(error instanceof Error) {
+                throw Error(error.message)
+            }
+			throw Error("Error al buscar un usuario")
+		}
+	}
+
+	async findByEmail(email: string): Promise<IUser | null> {
+		try {
+			return await this.UserModel.findOne({email});
+		} catch (error) {
+			console.log(error)
+            if(error instanceof Error) {
+                throw Error(error.message)
+            }
+			throw Error("Error al buscar un usuario por email")
 		}
 	}
 
@@ -53,7 +76,11 @@ export class UserRepository {
 		try {
 			return await this.UserModel.findByIdAndUpdate(id, data, { new: true });
 		} catch (error) {
-			throw new Error(error);
+			console.log(error)
+            if(error instanceof Error) {
+                throw Error(error.message)
+            }
+			throw Error("Error al actualizar un usuario")
 		}
 	}
 
@@ -61,7 +88,11 @@ export class UserRepository {
 		try {
 			return await this.UserModel.findByIdAndDelete(id);
 		} catch (error) {
-			throw new Error(error);
+			console.log(error)
+            if(error instanceof Error) {
+                throw Error(error.message)
+            }
+			throw Error("Error al eliminar un usuario")
 		}
 	}
 }

@@ -10,15 +10,23 @@ type userFilterDataType = Pick<IUser,"name"| "description" | "specialties" | "in
 
 export class UserService {
     
-    constructor(private readonly userRepository:UserRepository){
+    private userRepository:UserRepository
 
+    constructor( userRepository:UserRepository){
+        this.userRepository = userRepository;
     }
 
     // ta ok.👍
     async create (user:RegisterType) {
         try {
+            const userFound = await this.userRepository.findByEmail(user.email);
+            if(userFound) {
+                return {
+                    status:"failed",
+                    payload:"El correo ya esta registrado"
+                }
+            }
             user.password = await hashPassword(user.password);
-
             const {password, ...data} = await this.userRepository.create(user)
             return {
                 status:"success",
@@ -26,37 +34,53 @@ export class UserService {
             }
         } catch (error) {
             console.log(error)
-            throw Error(error)
+            if(error instanceof Error) {
+
+                throw Error(error.message)
+            }
+
+            throw new Error(String(error))
         }
     }
     
     // ta ok.👍
-    async find (categoryId:string,page:number) {
+    async find ( categoryId:string | null, page:string | null ) {
         const options = {
-            page,
+            page: page ? +page : 1,
             limit:10,
             select: "name email description specialties interests"
           };
-      
-          const query = {
-            specialties: { $elemMatch: { categoryId: new Types.ObjectId(categoryId) } }
-          };
+          let query = {}
+          if(categoryId) {
+            query = {
+                specialties: { $elemMatch: { categoryId: new Types.ObjectId(categoryId) } }
+              };
+          }
         try {
             const users = await this.userRepository.find(query,options)
             return {
                 status:"success",
                 payload:users
             }
-        } catch (error) {
-            
+        } catch (error:any) {
+            console.log(error)
+            if(error instanceof Error) {
+                throw Error(error.message)
+            }
+            throw new Error(String(error))
+
         }
     }
     // ta ok.👍
-    async findById (user:IUser,searchedUserId:string) {
+    async findByIdAuth (user:IUser,searchedUserId:string) {
         try {
-
             const userFind = await this.userRepository.findOne(searchedUserId);
-            if(!userFind) throw new Error("User not found");
+            if(!userFind) {
+                return {
+                    status:"error",
+                    payload:"Usuario no encontrado"
+                }
+            };
             const result = userFind.contacts.find(contact => contact?.toString() === user.id.toString() )
             
             let userFilterData:userFilterDataType = {
@@ -75,9 +99,96 @@ export class UserService {
                 payload:userFilterData
             }
         } catch (error) {
-            throw Error(error)
+            console.log(error)
+            if(error instanceof Error) {
+                throw new Error(error.message)
+            }
+
+            throw new Error(String(error))
         }
     }
 
+
+    async findById (userId:string) {
+        try {
+            const userFind = await this.userRepository.findOne(userId);
+            if(!userFind) {
+                return {
+                    status:"error",
+                    payload:"User not found"
+                }
+            }
+            let userFilterData:userFilterDataType = {
+                name:userFind.name,
+                description:userFind.description,
+                specialties:userFind.specialties,
+                interests:userFind.interests,
+                userRatings:userFind.userRatings,
+                phoneNumber:null
+            }
+            return {
+                status:"success",
+                payload:userFilterData
+            }
+        } catch (error) {
+            console.log(error)
+            if(error instanceof Error) {
+                throw Error(error.message)
+            }
+            throw new Error(String(error))
+
+        }
+    }
+    
+
+    // ta ok.👍
+    async update (id:string,data:Partial<IUser>) {
+        try {
+            const user = await this.userRepository.update(id,data);
+            if(user) {
+                return {
+                    status:"success",
+                    payload:user
+                }
+            }else {
+                return {
+                    status:"error",
+                    payload:"Usuario no encontrado"
+                }
+            }
+        } catch (error) {
+            console.log(error)
+            if(error instanceof Error) {
+                throw Error(error.message)
+            }
+            throw new Error(String(error))
+            
+        }
+    }
+
+    // ta ok.👍
+    async delete (id:string) {
+        try {
+            const user = await this.userRepository.delete(id);
+            if(user) {
+                return {
+                    status:"success",
+                    payload:user
+                }
+            }else {
+                return {
+                    status:"error",
+                    payload:"Usuario no encontrado"
+                }
+            }
+        } catch (error) {
+            console.log(error)
+            if(error instanceof Error) {
+                throw Error(error.message)
+            }
+            throw new Error(String(error))
+            
+        }
+    }
     
 }

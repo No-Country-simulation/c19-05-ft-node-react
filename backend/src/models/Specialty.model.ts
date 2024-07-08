@@ -6,6 +6,7 @@ export interface ISpecialty extends Document {
 	id: Types.ObjectId;
 	name: string;
 	category: PopulatedDoc<Types.ObjectId & Document>;
+	status: boolean;
 }
 
 const SpecialtySchema: Schema = new Schema({
@@ -16,6 +17,10 @@ const SpecialtySchema: Schema = new Schema({
 	category: {
 		type: Types.ObjectId,
 		ref: "Category",
+	},
+	status: {
+		type: Boolean,
+		default: true,
 	},
 });
 

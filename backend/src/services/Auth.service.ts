@@ -19,7 +19,7 @@ export class AuthService {
                     payload:"User not found"
                 }
             }
-            const isValid = comparePassword(data.password,user.password)
+            const isValid = await comparePassword(data.password,user.password)
             if(!isValid) {
                 return {
                     status:"error",

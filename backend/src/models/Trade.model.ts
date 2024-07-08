@@ -11,11 +11,11 @@ type specialties = {
 	specialtyTwo: Types.ObjectId;
 };
 
-type comments = {
-	userId: Types.ObjectId;
-	comment: string;
-	createdAt: Date;
-};
+// type comments = {
+// 	userId: Types.ObjectId;
+// 	comment: string;
+// 	createdAt: Date;
+// };
 
 const tradeStatus = {
 	accepted: "ACCEPTED",
@@ -29,7 +29,7 @@ export interface ITrade extends Document {
 	id: Types.ObjectId;
 	members: PopulatedDoc<members & Document>[];
 	specialties: PopulatedDoc<specialties & Document>[];
-	comments: PopulatedDoc<comments & Document>[];
+	// comments: PopulatedDoc<comments & Document>[];
 	expiresAt: Date;
 	status: enumTradeStatus;
 }
@@ -59,22 +59,22 @@ const TradeSchema: Schema = new Schema({
 			},
 		},
 	],
-	comments: [
-		{
-			userId: {
-				type: Types.ObjectId,
-				ref: "User",
-			},
-			comment: {
-				type: String,
-				required: true,
-			},
-			createdAt: {
-				type: Date,
-				default: Date.now,
-			},
-		},
-	],
+	// comments: [
+	// 	{
+	// 		userId: {
+	// 			type: Types.ObjectId,
+	// 			ref: "User",
+	// 		},
+	// 		comment: {
+	// 			type: String,
+	// 			required: true,
+	// 		},
+	// 		createdAt: {
+	// 			type: Date,
+	// 			default: Date.now,
+	// 		},
+	// 	},
+	// ],
 	expiresAt: {
 		type: Date,
 		required: true,

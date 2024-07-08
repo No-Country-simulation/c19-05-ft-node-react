@@ -7,12 +7,12 @@ export const RegisterSchema = z.object({
 
     email:z.string({required_error:"El email es requerido",invalid_type_error:"Tipo de dato string"}).email({message:"Email no valido"}),
 
-    password:z.string({required_error:"La contrase;a es requerida",invalid_type_error:"Tipo de dato string"}).min(8,{message:"La contraseña debe contener 8 caracteres minimo"}).regex(passwordRegex,{message:"La contraseña debe contener una mayuscula, un numero y un caracter especial"}),
+    password:z.string({required_error:"La contraseña es requerida",invalid_type_error:"Tipo de dato string"}).min(8,{message:"La contraseña debe contener 8 caracteres minimo"}).regex(passwordRegex,{message:"La contraseña debe contener una mayuscula, un numero y un caracter especial"}),
     repassword:z.string(),
     phoneNumber:z.string({required_error:"El numero de telefono es requerido",invalid_type_error:"Tipo de dato string"}).min(8,{message:"Ingresa lo que te corresponde."}).optional(),
 
 }).refine((data) => data.password === data.repassword,{
-    message:"Las contrase;as no coinciden",
+    message:"Las contraseñas no coinciden",
     path:["repassword"]
 })
 

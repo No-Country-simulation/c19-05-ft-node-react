@@ -8,7 +8,7 @@ import passport from 'passport';
 declare global {
   namespace Express {
     interface Request {
-      user?: User;
+      user?: IUser;
     }
   }
 }
@@ -76,6 +76,21 @@ export const authValidatePassport = async (
         status: 'error',
         message: 'No se ha podido autenticar al usuario.',
       });
+    }
+
+    req.user = user as IUser;
+    next();
+  })(req, res, next);
+};
+
+export const authValidatePassportOptional = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  passport.authenticate('jwt', (error: any, user: IUser, info: any) => {
+    if (error || !user) {
+      next()
     }
 
     req.user = user as IUser;

@@ -64,7 +64,7 @@ export class UserRepository {
 
 	async findByEmail(email: string): Promise<IUser | null> {
 		try {
-			return await this.UserModel.findOne({email});
+			return await this.UserModel.findOne({email}).select("_id name email description password phoneNumber specialties interests userRatings trades contacts");
 		} catch (error) {
 			console.log(error)
             if(error instanceof Error) {
@@ -77,6 +77,18 @@ export class UserRepository {
 	async update(id: string, data: Partial<IUser>): Promise<IUser | null> {
 		try {
 			return await this.UserModel.findByIdAndUpdate(id, data, { new: true });
+		} catch (error) {
+			console.log(error)
+            if(error instanceof Error) {
+                throw Error(error.message)
+            }
+			throw Error("Error al actualizar un usuario")
+		}
+	}
+
+	async updateByEmail(email: string, data: Partial<IUser>): Promise<IUser | null> {
+		try {
+			return await this.UserModel.findOneAndUpdate({email}, data, { new: true });
 		} catch (error) {
 			console.log(error)
             if(error instanceof Error) {

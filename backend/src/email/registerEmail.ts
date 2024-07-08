@@ -27,4 +27,23 @@ export class Emails {
         throw new Error("Ocurrio un error al enviar el mail de confirmacion");
       }
     }
+
+    static sendResetPasswordEmail = async (parametros: IEmail) => {
+      try {
+        const info = await transport.sendMail({
+          from: "Ta Trade",
+          to: parametros.email,
+          subject: "Confirma tu email",
+          text: "Confirma tu email clickeando el enlace",
+          html: `<p>Hola: ${parametros.name} Ingresa en el siguiente Link para continuar el reset de tu contraseña.</p>
+          <p>Visita el siguiente enlace</p>
+          <a href="http://localhost:${envs.PORT}/api/user/reset-password/${parametros.token}">Reset</a>
+          <p>Este token expira en 30 minutos</p>
+          `,
+        });
+        console.log("mensaje enviado: ", info.messageId);
+      } catch (error) {
+        throw new Error("Ocurrio un error al enviar el mail de confirmacion");
+      }
+    }
 }

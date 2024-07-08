@@ -1,5 +1,8 @@
 import { z } from "zod";
 
+/** This ensures that passwords have at least one uppercase letter, one 
+ * lowercase letter, one number, and one special character.
+ */
 const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&(),.?":{}|<>])[A-Za-z\d!@#$%^&(),.?":{}|<>]+$/;
 
 export const RegisterSchema = z.object({

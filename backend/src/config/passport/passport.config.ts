@@ -21,7 +21,6 @@ export const initializePassport = () => {
 
 	passport.deserializeUser(async (id: string, done: (err: any, user?: IUser | null) => void) => {
 		try {
-			//finduserByID
 			const user = await userRepo.findOne(id)
 			done(null, user);
 		} catch (err) {

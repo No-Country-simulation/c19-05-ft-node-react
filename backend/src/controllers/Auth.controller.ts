@@ -46,7 +46,19 @@ export class AuthController {
         }
       };
 
-      user = (req: Request, res: Response) => { 
-        res.send(req.user!)
+      user = (req: Request, res: Response) => {
+        try {
+            res.status(200).send({
+                status:"success",
+                payload: req.user
+            })
+
+        } catch(error) {
+            if(error instanceof Error) {
+                res.status(500).send(error.message)
+            }else {
+                res.status(500).send("Error interno")
+            }
+        }
       }
 }

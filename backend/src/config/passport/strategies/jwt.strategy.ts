@@ -1,25 +1,23 @@
 import { Strategy as JwtStrategy, ExtractJwt, StrategyOptions, VerifiedCallback } from 'passport-jwt';
-// find userbyID
-import dotenv from 'dotenv';
 import { Request } from 'express';
 import { envs } from '../../envs/env.config';
 import { UserRepository } from '../../../repositories/User.repository';
 
-const userRepo = new UserRepository()
+type TokenPayload = {
+    id: string;
+  };
 
-interface JwtPayload {
-    user: {
-        id: string;
-    };
-}
+const userRepo = new UserRepository()
 
 const cookieExtractor = (req: Request): string | null => {
     const cookieHeader = req.headers.cookie;
+    console.log(cookieHeader)
     if (cookieHeader) {
         const cookies = cookieHeader.split(';');
         for (const cookie of cookies) {
             const [name, value] = cookie.trim().split('=');
-            if (name === 'jwt') {
+            if (name === 'token') {
+                console.log(value)
                 return value;
             }
         }
@@ -34,10 +32,10 @@ const options: StrategyOptions = {
     secretOrKey: envs.JWT_SECRET
 }
 
-export const strategyJWT = new JwtStrategy(options, async (payload: JwtPayload, done: VerifiedCallback) => {
+export const strategyJWT = new JwtStrategy(options, async (payload: TokenPayload, done: VerifiedCallback) => {
     try {
-        //finduserbyid usando id en payload.user.id
-        const user = await userRepo.findOne(payload.user.id)
+        console.log("Llegó al strategyJWT");
+        const user = await userRepo.findOne(payload.id);
 
         if (!user) {
             return done(null, false);

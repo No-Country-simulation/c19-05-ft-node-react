@@ -5,6 +5,7 @@ import { UserRepository } from "../repositories/User.repository";
 import { AuthService } from "../services/Auth.service";
 import { AuthController } from "../controllers/Auth.controller";
 import { authValidate } from "../middlewares/authValidate";
+import { authValidatePassport } from "../middlewares/authValidate";
 
 const router = Router();
 
@@ -15,7 +16,7 @@ const authController = new AuthController(authService);
 
 router.post("/auth/login",middlewareBody(LoginSchema),authController.login)
 router.get("/auth/logout",authController.logout)
-router.get("/auth/user",authValidate,authController.user)
+router.get("/auth/user",authValidatePassport,authController.user)
 
 
 

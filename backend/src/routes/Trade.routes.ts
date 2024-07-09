@@ -12,17 +12,13 @@ const tradeRepository = new TradeRepository()
 const tradeService = new TradeService(tradeRepository,userRepository)
 const tradeController = new TradeController(tradeService)
 
-const router = Router();
+const routerTrade = Router();
+
+
+
+routerTrade.post("/trade",middlewareBody(TradeSchema) ,authValidatePassport,tradeController.create)
 
 
 
 
-router.post("/trade",middlewareBody(TradeSchema) ,authValidatePassport,tradeController.create)
-
-
-
-
-
-
-
-export default router
+export default routerTrade;

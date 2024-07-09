@@ -1,12 +1,9 @@
 import { Request, Response, Router } from "express";
 import { addCategories, addSpecialties, categories, specialties } from "../seed/categorias";
 
-const router = Router();
+const routerSeed = Router();
 
-
-
-
-router.get("/seed",async (req: Request, res: Response) => {
+routerSeed.get("/seed",async (req: Request, res: Response) => {
 	try {
 		const result = await addCategories(categories);
 		res.send({ message: result });
@@ -15,7 +12,7 @@ router.get("/seed",async (req: Request, res: Response) => {
 	}
 })
 
-router.get("/seed/specialties",async (req: Request, res: Response) => {
+routerSeed.get("/seed/specialties",async (req: Request, res: Response) => {
 	try {
 		const result = await addSpecialties(specialties);
 		res.send({ message: result });
@@ -25,4 +22,4 @@ router.get("/seed/specialties",async (req: Request, res: Response) => {
 })
 
 
-export default router
+export default routerSeed;

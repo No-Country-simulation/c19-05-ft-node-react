@@ -8,10 +8,7 @@ import { connectDB } from './config/db/mongo.config';
 import passport from 'passport';
 import { initializePassport } from './config/passport/passport.config';
 
-import userRoutes from './routes/User.routes';
-import authRoutes from './routes/Auth.routes';
-import tradeRoutes from './routes/Trade.routes';
-import seedRoute from './routes/Seed.routes';
+import router from './routes/index.routes';
 
 import { envs } from './config/envs/env.config';
 import { addCategories, categories } from './seed/categorias';
@@ -30,10 +27,8 @@ initializePassport();
 app.use(passport.initialize());
 
 app.use(express.urlencoded({ extended: true }));
-app.use('/api', userRoutes);
-app.use('/api', authRoutes);
-app.use('/api', tradeRoutes);
-app.use('/', seedRoute);
+app.use('/', router);
+
 
 connectDB();
 

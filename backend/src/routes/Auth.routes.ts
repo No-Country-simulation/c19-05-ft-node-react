@@ -7,24 +7,15 @@ import { AuthController } from "../controllers/Auth.controller";
 import { authValidate } from "../middlewares/authValidate";
 import { authValidatePassport } from "../middlewares/authValidate";
 
-const router = Router();
+const routerAuth = Router();
 
 const userRepository = new UserRepository();
 const authService = new AuthService(userRepository);
 const authController = new AuthController(authService);
 
 
-router.post("/auth/login",middlewareBody(LoginSchema),authController.login)
-router.get("/auth/logout",authController.logout)
-router.get("/auth/user",authValidatePassport,authController.user)
+routerAuth.post("/auth/login",middlewareBody(LoginSchema),authController.login)
+routerAuth.get("/auth/logout",authController.logout)
+routerAuth.get("/auth/user",authValidatePassport,authController.user)
 
-
-
-
-
-
-
-
-
-
-export default router
+export default routerAuth;

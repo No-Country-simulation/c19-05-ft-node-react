@@ -16,27 +16,24 @@ const tradeService = new TradeService(tradeRepository,userRepository)
 const userService = new UserService(userRepository,tradeService);
 const userController = new UserController(userService);
 
-const router = Router();
+const routerUser = Router();
 
-router.post("/user",middlewareBody(RegisterSchema),userController.createUser);
-router.get("/user/confirm-email/:token", userController.confirmRegister);
-router.post("/user/reset-password",middlewareBody(UserEmailSchema), userController.sendResetPasswordToken);
-router.put("/user/reset-password/:token", middlewareBody(ResetPasswordSchema), userController.resetPassword);
+routerUser.post("/user",middlewareBody(RegisterSchema),userController.createUser);
+routerUser.get("/user/confirm-email/:token", userController.confirmRegister);
+routerUser.post("/user/reset-password",middlewareBody(UserEmailSchema), userController.sendResetPasswordToken);
+routerUser.put("/user/reset-password/:token", middlewareBody(ResetPasswordSchema), userController.resetPassword);
 
 
-router.get("/user/:categoryId?",userController.getUsers)
+routerUser.get("/user/:categoryId?",userController.getUsers)
 
 // ! Middleware general 
-router.param("userId",middlewareParamsObjectId("userId"))
+routerUser.param("userId",middlewareParamsObjectId("userId"))
 
-router.get("/user/details/:userId", authValidatePassportOptional ,userController.getUser);
-router.put("/user/:userId",middlewareBody(UserUpdateSchema),userController.updateUser);
-router.delete("/user/:userId",userController.delete);
-
-
+routerUser.get("/user/details/:userId", authValidatePassportOptional ,userController.getUser);
+routerUser.put("/user/:userId",middlewareBody(UserUpdateSchema),userController.updateUser);
+routerUser.delete("/user/:userId",userController.delete);
 
 
 
 
-
-export default router;
+export default routerUser;

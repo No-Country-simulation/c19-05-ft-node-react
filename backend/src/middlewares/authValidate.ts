@@ -90,7 +90,7 @@ export const authValidatePassportOptional = async (
 ) => {
   passport.authenticate('jwt', (error: any, user: IUser, info: any) => {
     if (error || !user) {
-      next()
+      return next();
     }
 
     req.user = user as IUser;

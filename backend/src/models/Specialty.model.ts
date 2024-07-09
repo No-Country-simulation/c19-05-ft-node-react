@@ -1,6 +1,6 @@
 /** @format */
 
-import mongoose, { Document, PopulatedDoc, Schema, Types, mongo } from "mongoose";
+import mongoose, { Document, PopulatedDoc, Schema, Types, mongo } from 'mongoose';
 
 export interface ISpecialty extends Document {
 	id: Types.ObjectId;
@@ -14,9 +14,10 @@ const SpecialtySchema: Schema = new Schema({
 		type: String,
 		required: true,
 	},
-	category: {
+	categoryId: {
 		type: Types.ObjectId,
-		ref: "Category",
+		ref: 'Category',
+		required: true,
 	},
 	status: {
 		type: Boolean,
@@ -24,6 +25,6 @@ const SpecialtySchema: Schema = new Schema({
 	},
 });
 
-const Specialty = mongoose.model<ISpecialty>("Specialty", SpecialtySchema);
+const Specialty = mongoose.model<ISpecialty>('Specialty', SpecialtySchema);
 
 export default Specialty;

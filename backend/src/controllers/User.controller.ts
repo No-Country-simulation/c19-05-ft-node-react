@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { UserService } from "../services/User.service";
-import { IUser } from "../models/User.model";
+import { enumType, IUser } from "../models/User.model";
 import { UserUpdateType } from "../utils/schema/user.schema";
 
 
@@ -101,17 +101,16 @@ export class UserController {
 
     getUser = async (req: Request, res: Response) => {
         const { userId } = req.params;
-        const user = req.user
+        const user = req.user;
         try {
 
-            let result
-
-            result = await this.userService.findById(user, userId)
-
+           const result = await this.userService.findById(user, userId)
+            console.log(result);
+            
             result.status == "success" ? res.send(result)
                 : res.status(400).send(result)
         } catch (error) {
-            console.log(error);
+            console.log("hola error");
             if (error instanceof Error) {
                 res.status(500).send(error.message)
             } else {
@@ -130,6 +129,23 @@ export class UserController {
 
             result.status == "success" ? res.send(result)
                 : res.status(400).send(result)
+
+        } catch (error) {
+            console.log(error);
+            if (error instanceof Error) {
+                res.status(500).send(error.message)
+            } else {
+                res.status(500).send("Error interno")
+            }
+        }
+    }
+
+    updateUserRating = async (req: Request, res: Response) => {
+        const { userId:CarlosID , tradeId } = req.params;
+        const {comment = "",rating}:{comment:string | undefined,rating:enumType} = req.body;
+        const userId = req.user!.id
+        try {
+            const result = await this.userService.updateRating({userId,tradeId,comment,rating},CarlosID)
 
         } catch (error) {
             console.log(error);

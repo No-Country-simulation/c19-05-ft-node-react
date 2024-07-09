@@ -27,7 +27,11 @@ export class AuthService {
                 }
             }
 
+
+
             const token = generateJWT({id:user.id})
+
+            
 
             return {
                 status:"success",

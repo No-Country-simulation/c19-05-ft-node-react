@@ -1,5 +1,5 @@
-import { Model, Types } from "mongoose";
-import User, { IUser } from "../models/User.model";
+import {  Types } from "mongoose";
+import User, { IUser, userRating } from "../models/User.model";
 import { RegisterType } from "../utils/schema/auth.schema";
 
 
@@ -51,7 +51,11 @@ export class UserRepository {
 
 	async findOne(id: string): Promise<IUser | null> {
 		try {
-			const result = await this.UserModel.findById(id).select("_id name email description phoneNumber specialties interests userRatings trades contacts");
+			const result = await this.UserModel.findById(id)
+			.select("_id name email description phoneNumber specialties interests userRatings trades contacts")
+			.populate({path:"trades",select:"_id status members expiresAt"})
+			.populate("specialties")
+			.populate("contacts").lean()
 			return result
 		} catch (error) {
 			console.log(error)
@@ -74,9 +78,24 @@ export class UserRepository {
 		}
 	}
 
-	async update(id: string, data: Partial<IUser>): Promise<IUser | null> {
+	async update(id:string | Types.ObjectId, data: Partial<IUser>): Promise<IUser | null> {
 		try {
 			return await this.UserModel.findByIdAndUpdate(id, data, { new: true });
+		} catch (error) {
+			console.log(error)
+            if(error instanceof Error) {
+                throw Error(error.message)
+            }
+			throw Error("Error al actualizar un usuario")
+		}
+	}
+
+	async updateTrades(id:string | Types.ObjectId, tradeId:Types.ObjectId ): Promise<IUser | null> {
+		try {
+			const user = await this.UserModel.findById(id)
+			if(!user) return null
+			user.trades.push(tradeId)
+			return await user.save()
 		} catch (error) {
 			console.log(error)
             if(error instanceof Error) {
@@ -96,6 +115,10 @@ export class UserRepository {
             }
 			throw Error("Error al actualizar un usuario")
 		}
+	}
+
+	async updateRating (data:userRating) {
+		
 	}
 
 	async delete(id: string): Promise<IUser | null> {

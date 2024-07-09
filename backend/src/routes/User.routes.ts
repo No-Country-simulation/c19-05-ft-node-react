@@ -7,9 +7,13 @@ import { UserUpdateSchema, UserEmailSchema, ResetPasswordSchema } from "../utils
 import { UserRepository } from "../repositories/User.repository";
 import { UserService } from "../services/User.service";
 import { authValidatePassport, authValidatePassportOptional } from "../middlewares/authValidate";
+import { TradeService } from "../services/Trade.service";
+import { TradeRepository } from "../repositories/Trade.repository";
 
 const userRepository = new UserRepository();
-const userService = new UserService(userRepository);
+const tradeRepository = new TradeRepository()
+const tradeService = new TradeService(tradeRepository,userRepository)
+const userService = new UserService(userRepository,tradeService);
 const userController = new UserController(userService);
 
 const router = Router();

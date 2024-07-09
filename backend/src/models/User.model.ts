@@ -3,20 +3,6 @@
 import mongoose, { Document, PaginateModel, PopulatedDoc, Schema, Types } from 'mongoose';
 import paginate from 'mongoose-paginate-v2';
 
-export interface IUser extends Document {
-	id: Types.ObjectId;
-	name: string;
-	email: string;
-	password: string;
-	specialties: PopulatedDoc<specialty & Document>[];
-	interests: PopulatedDoc<specialty & Document>[];
-	description: string;
-	userRatings: PopulatedDoc<userRating & Document>[];
-	phoneNumber: string;
-	trades: PopulatedDoc<Types.ObjectId & Document>[];
-	contacts: PopulatedDoc<Types.ObjectId & Document>[];
-}
-
 type specialty = {
 	idCategory: Types.ObjectId;
 	specialty: Types.ObjectId;
@@ -30,14 +16,28 @@ const numberEnum = {
 	Five: 5,
 } as const;
 
-type enumType = (typeof numberEnum)[keyof typeof numberEnum];
+export type enumType = (typeof numberEnum)[keyof typeof numberEnum];
 
-type userRating = {
-	userId: Types.ObjectId;
-	tradeId: Types.ObjectId;
+export type userRating = {
+	userId: Types.ObjectId | string;
+	tradeId: Types.ObjectId | string;
 	comment: string;
 	rating: enumType;
 };
+
+export interface IUser extends Document {
+	_id: Types.ObjectId;
+	name: string;
+	email: string;
+	password: string;
+	specialties: PopulatedDoc<specialty & Document>[];
+	interests: PopulatedDoc<specialty & Document>[];
+	description: string;
+	userRatings: userRating[];
+	phoneNumber: string;
+	trades: Types.ObjectId[];
+	contacts: PopulatedDoc<Types.ObjectId & Document>[];
+}
 
 const UserSchema: Schema = new Schema({
 	name: {
@@ -54,65 +54,85 @@ const UserSchema: Schema = new Schema({
 		type: String,
 		required: true,
 	},
-	specialties: [
-		{
-			categoryId: {
-				type: Types.ObjectId,
-				ref: 'Category',
+	specialties: {
+		type: [
+			{
+				categoryId: {
+					type: Types.ObjectId,
+					ref: 'Category',
+				},
+				specialtyId: {
+					type: Types.ObjectId,
+					ref: 'Specialty',
+				},
 			},
-			specialtyId: {
-				type: Types.ObjectId,
-				ref: 'Specialty',
+		],
+		default: [],
+	},
+	interests: {
+		type: [
+			{
+				idCategory: {
+					type: Types.ObjectId,
+					ref: 'Category',
+				},
+				idSpecialty: {
+					type: Types.ObjectId,
+					ref: 'Specialty',
+				},
 			},
-		},
-	],
-	interests: [
-		{
-			idCategory: {
-				type: Types.ObjectId,
-				ref: 'Category',
-			},
-			idSpecialty: {
-				type: Types.ObjectId,
-				ref: 'Specialty',
-			},
-		},
-	],
+		],
+		default: [],
+	},
 	description: {
 		type: String,
 		default: 'Mi descripcion',
 	},
-	userRatings: [
-		{
-			userId: {
-				type: Types.ObjectId,
-				ref: 'User',
+	userRatings: {
+		type: [
+			{
+				userId: {
+					type: Types.ObjectId,
+					ref: 'User',
+				},
+				tradeId: {
+					type: Types.ObjectId,
+					ref: 'Trade',
+				},
+				comment: {
+					type: String,
+					default: '',
+				},
+				rating: {
+					type: Number,
+					enum: [1, 2, 3, 4, 5],
+				},
 			},
-			comment: {
-				type: String,
-			},
-			rating: {
-				type: Number,
-				enum: [1, 2, 3, 4, 5],
-			},
-		},
-	],
+		],
+		default: [],
+	},
 	phoneNumber: {
 		type: String,
 		default: '',
 	},
-	trades: [
-		{
-			type: Types.ObjectId,
-			ref: 'Trade',
-		},
-	],
-	contacts: [
-		{
-			type: Types.ObjectId,
-			ref: 'User',
-		},
-	],
+	trades: {
+		type: [
+			{
+				type: Types.ObjectId,
+				ref: 'Trade',
+			},
+		],
+		default: [],
+	},
+	contacts: {
+		type: [
+			{
+				type: Types.ObjectId,
+				ref: 'User',
+			},
+		],
+		default: [],
+	},
 });
 
 UserSchema.plugin(paginate);

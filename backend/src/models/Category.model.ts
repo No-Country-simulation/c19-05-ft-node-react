@@ -1,11 +1,12 @@
 /** @format */
 
-import mongoose, { Document, PopulatedDoc, Schema, Types } from "mongoose";
+import mongoose, { Document, PopulatedDoc, Schema, Types } from 'mongoose';
 
 export interface ICategory extends Document {
 	_id: Types.ObjectId;
 	name: string;
 	status: boolean;
+	customId: number;
 }
 
 const CategorySchema: Schema = new Schema({
@@ -17,8 +18,12 @@ const CategorySchema: Schema = new Schema({
 		type: Boolean,
 		default: true,
 	},
+	customId: {
+		type: Number,
+		required: true,
+	},
 });
 
-const Category = mongoose.model<ICategory>("Category", CategorySchema);
+const Category = mongoose.model<ICategory>('Category', CategorySchema);
 
 export default Category;

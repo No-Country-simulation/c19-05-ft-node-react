@@ -1,21 +1,34 @@
 import { Types } from "mongoose";
-import { IUser } from "../models/User.model";
+import { enumType, IUser } from "../models/User.model";
 import { UserRepository } from "../repositories/User.repository";
 import { hashPassword } from "../utils/bcrypt/bcrypt.config";
 import { RegisterType } from "../utils/schema/auth.schema";
 import {  dataRegisterJwt, generateJWTRegister, generateJWTEmail, dataEmailJwt } from "../utils/jwt/jwt.config";
 import { Emails } from "../email/registerEmail";
 import { UserUpdateType } from "../utils/schema/user.schema";
+import { TradeService } from "./Trade.service";
+
 
 type userFilterDataType = Pick<IUser,"name"| "description" | "specialties" | "interests" |"userRatings"> & {
     phoneNumber:string|null
 }
 
+type userRating = {
+	userId: Types.ObjectId;
+	tradeId: string;
+	comment: string;
+	rating: enumType;
+};
+
 export class UserService {
     userRepository: UserRepository;
+    tradeService: TradeService;
 
-    constructor(userRepository: UserRepository) {
+
+    
+    constructor(userRepository: UserRepository,tradeService: TradeService) {
         this.userRepository = userRepository;
+        this.tradeService = tradeService
     }
 
     // ta ok.👍
@@ -171,6 +184,7 @@ export class UserService {
     async findById (user:IUser | undefined,searchedUserId:string) {
         try {
             const userFind = await this.userRepository.findOne(searchedUserId);
+            
             if(!userFind) {
                 return {
                     status:"error",
@@ -186,7 +200,7 @@ export class UserService {
                 userRatings:userFind.userRatings,
                 phoneNumber:null
             }
-
+            
             if (user) {
                 const result = userFind.contacts.findIndex(contact => contact?.toString() === user.id.toString() )
                 if(result !== -1) {  
@@ -300,4 +314,39 @@ export class UserService {
         }
     }
     
+    async updateRating (data:userRating,userId:string) {
+		try {
+            const userFound = await this.userRepository.findOne(userId)
+            if(!userFound) return {status:"error",payload:"Usuario no encontrado"}
+
+            const trade = await this.tradeService.findOne(data.tradeId)
+            if(!trade) return {status:"error",payload:"Trade no encontrado"}
+            if(trade.status !=="FINISHED") return {status:"error",payload:"El trade todavia no finalizo dijo juan."}
+
+            if(userFound.userRatings.length > 0) {
+                const findIndex = userFound.userRatings.findIndex(rating => rating.tradeId === data.tradeId)
+
+                 if(findIndex !== -1) return {status:"error",payload:"Ya diste tu valoracion en este trade"}
+
+                 userFound.userRatings.push(data)
+
+                 const [resultUser,resultTrade] = await Promise.allSettled([userFound.save(),this.tradeService.updateHasRated(trade.id,data.userId)])
+                
+                 console.log(resultTrade);
+                 
+                 return {
+                    status:"success",
+                    payload:resultUser
+                 }
+            }
+
+        } catch (error) {
+            console.log(error)
+            if(error instanceof Error) {
+                throw Error(error.message)
+            }
+            throw new Error(String(error))
+        }
+	}
+
 }

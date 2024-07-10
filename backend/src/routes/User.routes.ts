@@ -3,7 +3,7 @@ import { middlewareParamsObjectId } from "../middlewares/validateParamObjectId";
 import { middlewareBody } from "../middlewares/validateBody";
 import { RegisterSchema } from "../utils/schema/auth.schema";
 import { UserController } from "../controllers/User.controller";
-import { UserUpdateSchema, UserEmailSchema, ResetPasswordSchema, CategoryAndSpecialtyIdSchema } from "../utils/schema/user.schema";
+import { UserUpdateSchema, UserEmailSchema, ResetPasswordSchema, SpecialtiesSchema } from "../utils/schema/user.schema";
 import { UserRepository } from "../repositories/User.repository";
 import { UserService } from "../services/User.service";
 import { authValidatePassport, authValidatePassportOptional } from "../middlewares/authValidate";
@@ -35,7 +35,7 @@ routerUser.put("/user/:userId",middlewareBody(UserUpdateSchema),userController.u
 routerUser.delete("/user/:userId",userController.delete);
 
 // ruta para agregar especialidad y categoría
-routerUser.post("/user/addCategoryAndSpecialty", middlewareBody(CategoryAndSpecialtyIdSchema), authValidatePassport, verifyCategoryAndSpecialty, userController.addCategoryAndSpecialty);
+routerUser.post("/user/addCategoryAndSpecialty", middlewareBody(SpecialtiesSchema), authValidatePassport, verifyCategoryAndSpecialty, userController.addCategoryAndSpecialty);
 
 
 

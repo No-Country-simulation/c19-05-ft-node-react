@@ -184,11 +184,11 @@ export class UserController {
 
         // Aprovechamos a tomar el id del usuario a partir del req (se agregó en el middleware authValidatePassport)
         // sacamos id del usuario y de la categoria y especialidad
-        const {categoryId, specialtyId} = req.body;
-        const user: IUser = req.user!;
+        // const {categoryId, specialtyId} = req.body;
+        // const user: IUser = req.user!;
 
         // this.userService.addSpecialtyAndCategory(userId, categoryId, specialtyId);
-        this.userService.addSpecialtyAndCategory(user, categoryId, specialtyId);
+        // this.userService.addSpecialtyAndCategory(user, categoryId, specialtyId);
 
         res.status(201).send('Se ha añadido una categoría y una especialidad');
     }

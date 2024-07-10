@@ -24,9 +24,14 @@ export const UserEmailSchema = z.object({
 })
 
 // Esquema para verificar los ids de categoría y especialidad
-export const CategoryAndSpecialtyIdSchema = z.object({
-    // TODO: modificarlo para que coincida con el array que va a mandar el frontend
+const CategoryAndSpecialtyIdSchema = z.object({
     categoryId:z.string({required_error: 'El id de la categoría es requerido', invalid_type_error: "Tipo de dato string"}).regex(objectIdRegex, {message: "ObjectId inválido"}),
     specialtyId:z.string({required_error: 'El id de la especialidad es requerido', invalid_type_error: "Tipo de dato string"}).regex(objectIdRegex, {message: "ObjectId inválido"})
-
 })
+
+
+export const SpecialtiesSchema = z.object({
+    specialties:z.array(CategoryAndSpecialtyIdSchema).default([])
+})
+
+type SpecialtiesSchema = z.infer<typeof SpecialtiesSchema>  

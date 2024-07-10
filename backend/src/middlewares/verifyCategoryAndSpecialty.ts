@@ -8,18 +8,20 @@ export const verifyCategoryAndSpecialty = async (req: Request, res: Response, ne
     // Si alguno de ellos es inválido o no existe, zampe un 400
     // Si todos pasan, pushee todo el array, reemplazando el que ya existe en la base de datos
     // tomamos el body
-    const {categoryId, specialtyId} = req.body;
+    console.log(req.body);
+    
+    const user = req.user!
 
     try {
         // consulta a la base de datos la categoría y especialidad
-        const[category, specialty] = await Promise.all([Category.findById(categoryId), Specialty.findById(specialtyId)]);
+        // const[category, specialty] = await Promise.all([Category.findById(categoryId), Specialty.findById(specialtyId)]);
         // verifica que tanto la categoría como la especialidad existan
-        if(!category || !specialty){
-            return res.status(404).json({
-                status: 'failed',
-                payload: 'No category nor specialty found'
-            });
-        }
+        // if(!category || !specialty){
+        //     return res.status(404).json({
+        //         status: 'failed',
+        //         payload: 'No category nor specialty found'
+        //     });
+        // }
         // A este punto, ambos ids son válidos. Se puede pasar
         // tranquilamente al controlador
         return next();

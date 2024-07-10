@@ -360,11 +360,28 @@ export class UserService {
 	}
 
     // servicio para actualizar especialidad y categoría de una persona
-    async addSpecialtyAndCategory(user: IUser, specialties:specialty[]){
+    async addSpecialties (user: IUser, specialties:specialty[]){
         // tenemos que chequear que los ids de la categoría y especialidad EXISTAN. Si no, pues manda error
         // idea: hacer un middleware que verifique esto
         try {
             user.specialties = specialties;
+            const update = await user.save()
+            return update
+        } catch (error) {
+            console.log(error)
+            if(error instanceof Error) {
+                throw Error(error.message)
+            }
+            throw new Error(String(error))
+        }
+
+    }
+
+    async addInterests(user: IUser, interests:specialty[]){
+        // tenemos que chequear que los ids de la categoría y especialidad EXISTAN. Si no, pues manda error
+        // idea: hacer un middleware que verifique esto
+        try {
+            user.interests = interests;
             const update = await user.save()
             return update
         } catch (error) {

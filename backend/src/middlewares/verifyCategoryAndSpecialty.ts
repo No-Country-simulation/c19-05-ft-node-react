@@ -12,7 +12,9 @@ declare global {
     }
   }
 
-export const verifyCategoryAndSpecialty = async (req: Request, res: Response, next: NextFunction) => {
+type ParameterType = "specialties" | "interests";
+
+export const verifyCategoryAndSpecialty = (specialtiesOrInterests:ParameterType) => async (req: Request, res: Response, next: NextFunction) => {
     // TODO: realizar la comparación entre el array de especialidades de la base de datos y el array de especialidades
     // que manda el frontend. Los que no coincidan, verificar que existan en la base de datos.
     // Si alguno de ellos es inválido o no existe, zampe un 400
@@ -32,8 +34,16 @@ export const verifyCategoryAndSpecialty = async (req: Request, res: Response, ne
         return accumulator;
     }, []); // chequeo que no vengan objetos repetidos. en caso de venir repetidos limpio el array
 
-    const newArray = uniqueArray.filter(specialty =>  !user.specialties.some(specialtyOld => specialtyOld!.specialtyId.toString() === specialty.specialtyId.toString())
+    let newArray:specialty[] ;
+    if(specialtiesOrInterests === "specialties") {
+        newArray = uniqueArray.filter(specialty =>  !user.specialties.some(specialtyOld => specialtyOld!.specialtyId.toString() === specialty.specialtyId.toString())
     ); // filtro el array de especialties que ya tengo en la db y solo dejo las nuevas para luego comprobar que existan en el esquema 
+    }else {
+        newArray = uniqueArray.filter(specialty =>  !user.interests.some(specialtyOld => specialtyOld!.specialtyId.toString() === specialty.specialtyId.toString())
+    )
+    }
+
+
     if(newArray.length === 0) {
         req.specialties = uniqueArray
         return next()

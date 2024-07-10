@@ -4,8 +4,8 @@ import mongoose, { Document, PaginateModel, PopulatedDoc, Schema, Types } from '
 import paginate from 'mongoose-paginate-v2';
 
 type specialty = {
-	idCategory: Types.ObjectId;
-	specialty: Types.ObjectId;
+	categoryId: Types.ObjectId;
+	specialtyId: Types.ObjectId;
 };
 
 const numberEnum = {
@@ -30,7 +30,7 @@ export interface IUser extends Document {
 	name: string;
 	email: string;
 	password: string;
-	specialties: PopulatedDoc<specialty & Document>[];
+	specialties: specialty[];
 	interests: PopulatedDoc<specialty & Document>[];
 	description: string;
 	userRatings: userRating[];
@@ -72,11 +72,11 @@ const UserSchema: Schema = new Schema({
 	interests: {
 		type: [
 			{
-				idCategory: {
+				categoryId: {
 					type: Types.ObjectId,
 					ref: 'Category',
 				},
-				idSpecialty: {
+				specialtyId: {
 					type: Types.ObjectId,
 					ref: 'Specialty',
 				},

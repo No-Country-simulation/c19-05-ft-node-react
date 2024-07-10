@@ -24,15 +24,12 @@ export class TradeService {
                 }
             }
             const newTrade = await this.tradeRepository.create(trade);
-            const [uno,dos] = await Promise.allSettled([this.userRepository.updateTrades(memberOne.id,newTrade.id),  
-                this.userRepository.updateTrades(memberTwo.id,newTrade.id)]);
-                console.log(uno, dos);
-                
+            const [uno,dos] = await Promise.allSettled([this.userRepository.updateTrades(memberOne._id,newTrade.id),  
+                this.userRepository.updateTrades(memberTwo._id,newTrade.id)]);    
             return {
                 status:"success",
                 payload:newTrade
             }
-
         } catch (error) {
             console.log(error)
             if(error instanceof Error) {

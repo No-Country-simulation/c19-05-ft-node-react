@@ -9,8 +9,10 @@ import { UserUpdateType } from "../utils/schema/user.schema";
 import { TradeService } from "./Trade.service";
 
 
-type userFilterDataType = Pick<IUser,"name"| "description" | "specialties" | "interests" |"userRatings"> & {
-    phoneNumber:string|null
+
+type userFilterDataType = Pick<IUser,"id"|"name"| "description" | "specialties" | "interests" |"userRatings"  > & {
+    phoneNumber:string|null;
+    trades:Types.ObjectId[] | null
 }
 
 type userRating = {
@@ -193,18 +195,25 @@ export class UserService {
             };
 
             let userFilterData:userFilterDataType = {
+                id:userFind.id,
                 name:userFind.name,
                 description:userFind.description,
                 specialties:userFind.specialties,
                 interests:userFind.interests,
                 userRatings:userFind.userRatings,
+                trades:null,
                 phoneNumber:null
             }
             
             if (user) {
-                const result = userFind.contacts.findIndex(contact => contact?.toString() === user.id.toString() )
-                if(result !== -1) {  
+                if(user._id.toString() === userFind._id.toString()) {
+                    userFilterData.trades = userFind.trades
                     userFilterData.phoneNumber = userFind.phoneNumber
+                }else {
+                    const result = userFind.contacts.findIndex(contact => contact?.toString() === user.id.toString() )
+                    if(result !== -1) {  
+                        userFilterData.phoneNumber = userFind.phoneNumber
+                    }
                 }
             }
 
@@ -239,6 +248,7 @@ export class UserService {
                 specialties:userFind.specialties,
                 interests:userFind.interests,
                 userRatings:userFind.userRatings,
+                trades:userFind.trades,
                 phoneNumber:null
             }
 

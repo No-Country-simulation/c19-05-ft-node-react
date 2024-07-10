@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { enumType, IUser } from "../models/User.model";
+import { enumType, IUser, specialty } from "../models/User.model";
 import { UserRepository } from "../repositories/User.repository";
 import { hashPassword } from "../utils/bcrypt/bcrypt.config";
 import { RegisterType } from "../utils/schema/auth.schema";
@@ -360,10 +360,21 @@ export class UserService {
 	}
 
     // servicio para actualizar especialidad y categoría de una persona
-    async addSpecialtyAndCategory(user: IUser, categoryId: string, specialtyId: string){
+    async addSpecialtyAndCategory(user: IUser, specialties:specialty[]){
         // tenemos que chequear que los ids de la categoría y especialidad EXISTAN. Si no, pues manda error
         // idea: hacer un middleware que verifique esto
-        
+        try {
+            user.specialties = specialties;
+            const update = await user.save()
+            return update
+        } catch (error) {
+            console.log(error)
+            if(error instanceof Error) {
+                throw Error(error.message)
+            }
+            throw new Error(String(error))
+        }
+
     }
 
 }

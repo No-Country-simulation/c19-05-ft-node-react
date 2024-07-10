@@ -2,6 +2,7 @@ import { Strategy as JwtStrategy, ExtractJwt, StrategyOptions, VerifiedCallback 
 import { Request } from 'express';
 import { envs } from '../../envs/env.config';
 import { UserRepository } from '../../../repositories/User.repository';
+import UserModel from '../../../models/User.model';
 
 type TokenPayload = {
     id: string;
@@ -18,7 +19,7 @@ const cookieExtractor = (req: Request): string | null => {
             if (name === 'token') {
                 return value;
             }
-        }
+        }   
     }
 
     const token = req.cookies ? req.cookies.jwt : null;
@@ -32,7 +33,7 @@ const options: StrategyOptions = {
 
 export const strategyJWT = new JwtStrategy(options, async (payload: TokenPayload, done: VerifiedCallback) => {
     try {
-        const user = await userRepo.findOne(payload.id);
+        const user = await UserModel.findById(payload.id)
 
         if (!user) {
             return done(null, false);

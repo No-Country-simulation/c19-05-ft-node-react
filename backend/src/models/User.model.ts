@@ -3,7 +3,7 @@
 import mongoose, { Document, PaginateModel, PopulatedDoc, Schema, Types } from 'mongoose';
 import paginate from 'mongoose-paginate-v2';
 
-type specialty = {
+export type specialty = {
 	categoryId: Types.ObjectId;
 	specialtyId: Types.ObjectId;
 };
@@ -137,11 +137,9 @@ const UserSchema: Schema = new Schema({
 
 UserSchema.plugin(paginate);
 
-interface IUserDocument extends IUser {}
-
 // Crear el modelo con la paginación
 interface IUserModel<T extends Document> extends PaginateModel<T> {}
 
-const UserModel: IUserModel<IUserDocument> = mongoose.model<IUserDocument>('User', UserSchema) as IUserModel<IUserDocument>;
+const UserModel = mongoose.model<IUser>('User', UserSchema) as IUserModel<IUser>;
 
 export default UserModel;

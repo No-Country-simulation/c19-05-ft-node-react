@@ -5,8 +5,9 @@ export const middlewareBody = (schema: ZodSchema) => async (req:Request,res:Resp
     try {
         
         await schema.parse(req.body)
-            next()
+        next()
     } catch (error) {
+        console.log("hola");
         if(error instanceof ZodError) {
             const errorDetails = error.errors.map((error) => ({
                 path:error.path.join("."),

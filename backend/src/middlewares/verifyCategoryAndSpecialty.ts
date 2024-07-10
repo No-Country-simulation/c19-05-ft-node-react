@@ -15,7 +15,8 @@ export const verifyCategoryAndSpecialty = async (req: Request, res: Response, ne
                 payload: 'No category nor specialty found'
             });
         }
-        return next();
+        // return next();
+        return res.status(200).send('Ambos Ids existen!');
     } catch (error) {
         return res.status(500).send('internal server error');
     }

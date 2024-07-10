@@ -3,9 +3,8 @@
 import React from "react";
 import { usePathname } from "next/navigation";
 
-import NavBar from "@/components/NavBar/NavBar";
 import Footer from "@/components/Footer/Footer";
-import Error404 from "./Error404";
+import Header from "./Header/Header";
 
 const CommonLayout: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -16,7 +15,7 @@ const CommonLayout: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <>
-      <NavBar />
+      <Header />
       <div> {children}</div>
       <Footer />
     </>

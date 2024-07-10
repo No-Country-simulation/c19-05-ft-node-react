@@ -16,7 +16,12 @@ export const verifyCategoryAndSpecialty = async (req: Request, res: Response, ne
             });
         }
         // return next();
+        // A este punto ambos ids son válidos, entonces tranquilamente se puede 
+        // solicitar a la base de datos que añada eso
         return res.status(200).send('Ambos Ids existen!');
+
+        // Debería ir algo tipo
+        // Usuario.actualizarusuario()
     } catch (error) {
         return res.status(500).send('internal server error');
     }

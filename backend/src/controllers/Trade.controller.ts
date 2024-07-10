@@ -9,9 +9,12 @@ export class TradeController {
 
     create = async (req:Request,res:Response) => {
         console.log(req.body);
-        
+        // desestructurar de una
+        let {members, duration} = req.body;
+        duration = duration * 24 * 60 * 60 * 1000;
+
         try {
-                const result = await this.tradeService.create(req.body)
+                const result = await this.tradeService.create({members, duration});
                 res.send(result)
             
         } catch (error) {

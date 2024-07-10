@@ -3,12 +3,13 @@ import { middlewareParamsObjectId } from "../middlewares/validateParamObjectId";
 import { middlewareBody } from "../middlewares/validateBody";
 import { RegisterSchema } from "../utils/schema/auth.schema";
 import { UserController } from "../controllers/User.controller";
-import { UserUpdateSchema, UserEmailSchema, ResetPasswordSchema } from "../utils/schema/user.schema";
+import { UserUpdateSchema, UserEmailSchema, ResetPasswordSchema, CategoryAndSpecialtyIdSchema } from "../utils/schema/user.schema";
 import { UserRepository } from "../repositories/User.repository";
 import { UserService } from "../services/User.service";
 import { authValidatePassport, authValidatePassportOptional } from "../middlewares/authValidate";
 import { TradeService } from "../services/Trade.service";
 import { TradeRepository } from "../repositories/Trade.repository";
+import { verifyCategoryAndSpecialty } from "../middlewares/verifyCategoryAndSpecialty";
 
 const userRepository = new UserRepository();
 const tradeRepository = new TradeRepository()
@@ -33,6 +34,8 @@ routerUser.get("/user/details/:userId", authValidatePassportOptional ,userContro
 routerUser.put("/user/:userId",middlewareBody(UserUpdateSchema),userController.updateUser);
 routerUser.delete("/user/:userId",userController.delete);
 
+// ruta para agregar especialidad y categoría
+routerUser.post("/user/addCategoryAndSpecialty", middlewareBody(CategoryAndSpecialtyIdSchema), authValidatePassport, verifyCategoryAndSpecialty);
 
 
 

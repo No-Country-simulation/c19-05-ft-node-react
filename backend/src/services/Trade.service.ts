@@ -14,7 +14,8 @@ export class TradeService {
 
     async create (trade:createTradeType) {
         try {
-            
+            // TODO: verificar que la especialidad del miembro que propone el trade coincida con el interés del que recibe la propuesta del trade
+            // y viceversa.
             const [memberOne,memberTwo] = await Promise.all([this.userRepository.findOne(trade.members.memberOne.id),this.userRepository.findOne(trade.members.memberTwo.id)])
             if(!memberOne || !memberTwo) {
                 return {

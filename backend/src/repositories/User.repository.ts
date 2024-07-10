@@ -132,4 +132,28 @@ export class UserRepository {
 			throw Error("Error al eliminar un usuario")
 		}
 	}
+
+	// método para agregar especialidad
+	async addSpecialty(docId: string, specialtyId: string, categoryId: string): Promise<IUser | null>{
+		try {
+		// método de Mongoose para ACTUALIZAR un usuario, devuelva el usuario en sí o nulo
+		// await this.UserModel.findByIdAndUpdate(docId, {specialties: [specialtyId, categoryId]});
+		const userUpdated = await this.UserModel.findByIdAndUpdate(docId, {
+      $push: {
+        specialties: { categoryId, specialtyId }
+      }
+    },
+    { new: true });
+
+	return userUpdated;
+
+		} catch (error) {
+			console.log(error)
+            if(error instanceof Error) {
+                throw Error(error.message)
+            }
+			throw Error("Error al eliminar un usuario")
+		}
+
+	}
 }

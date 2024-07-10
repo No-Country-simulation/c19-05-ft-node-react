@@ -349,4 +349,11 @@ export class UserService {
         }
 	}
 
+    // servicio para actualizar especialidad y categoría de una persona
+    async addSpecialtyAndCategory(){
+        // tenemos que chequear que los ids de la categoría y especialidad EXISTAN. Si no, pues manda error
+        // idea: hacer un middleware que verifique esto
+
+    }
+
 }

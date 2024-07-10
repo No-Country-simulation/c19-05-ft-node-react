@@ -143,7 +143,7 @@ export class UserController {
     updateUserRating = async (req: Request, res: Response) => {
         const { userId:CarlosID , tradeId } = req.params;
         const {comment = "",rating}:{comment:string | undefined,rating:enumType} = req.body;
-        const userId = req.user!.id
+        const userId = req.user!._id
         try {
             const result = await this.userService.updateRating({userId,tradeId,comment,rating},CarlosID)
 
@@ -178,9 +178,18 @@ export class UserController {
         }
     }
 
-    // Se debe poner el controlador que se encarga de agregar una especialidad
-    // y una categoría a un solo usuario
     addCategoryAndSpecialty = async (req: Request, res: Response) => {
+        // A este punto, el body ya tiene ambas ids válidas, se puede proceder a actualizar
+        // la base de datos
+
+        // Aprovechamos a tomar el id del usuario a partir del req (se agregó en el middleware authValidatePassport)
+        // sacamos id del usuario y de la categoria y especialidad
+        const {categoryId, specialtyId} = req.body;
+        const user: IUser = req.user!;
+
+        // this.userService.addSpecialtyAndCategory(userId, categoryId, specialtyId);
+        this.userService.addSpecialtyAndCategory(user, categoryId, specialtyId);
+
         res.status(201).send('Se ha añadido una categoría y una especialidad');
     }
 }

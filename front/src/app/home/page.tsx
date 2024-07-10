@@ -1,11 +1,12 @@
 import React from "react";
-import Testimonials from "@/components/Testimonials/TestimonialsSection";
+import TestimonialsSection from "@/components/Testimonials/TestimonialsSection";
+
 type Props = {};
 
 const HomePage = (props: Props) => {
   return (
-    <div className="container min-h-screen min-w-full  mx-auto">
-      <Testimonials />
+    <div className="my-20 min-h-screen min-w-full">
+      <TestimonialsSection />
     </div>
   );
 };

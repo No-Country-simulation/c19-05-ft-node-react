@@ -8,7 +8,6 @@ export class TradeController {
     }
 
     create = async (req:Request,res:Response) => {
-        console.log(req.body);
         // desestructurar de una
         let {members, duration} = req.body;
         duration = duration * 24 * 60 * 60 * 1000;

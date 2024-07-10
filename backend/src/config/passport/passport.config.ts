@@ -1,7 +1,7 @@
 import passport from "passport";
 //finduserByID
 import { strategyJWT } from "./strategies/jwt.strategy";
-import { IUser } from "../../models/User.model";
+import UserModel, { IUser } from "../../models/User.model";
 import { UserRepository } from "../../repositories/User.repository";
 
 
@@ -21,7 +21,7 @@ export const initializePassport = () => {
 
 	passport.deserializeUser(async (id: string, done: (err: any, user?: IUser | null) => void) => {
 		try {
-			const user = await userRepo.findOne(id)
+			const user = await UserModel.findById(id)
 			done(null, user);
 		} catch (err) {
 			done(err);

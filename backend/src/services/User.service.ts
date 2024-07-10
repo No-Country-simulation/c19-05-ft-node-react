@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { enumType, IUser } from "../models/User.model";
+import { enumType, IUser, specialty } from "../models/User.model";
 import { UserRepository } from "../repositories/User.repository";
 import { hashPassword } from "../utils/bcrypt/bcrypt.config";
 import { RegisterType } from "../utils/schema/auth.schema";
@@ -9,8 +9,10 @@ import { UserUpdateType } from "../utils/schema/user.schema";
 import { TradeService } from "./Trade.service";
 
 
-type userFilterDataType = Pick<IUser,"name"| "description" | "specialties" | "interests" |"userRatings"> & {
-    phoneNumber:string|null
+
+type userFilterDataType = Pick<IUser,"id"|"name"| "description" | "specialties" | "interests" |"userRatings"  > & {
+    phoneNumber:string|null;
+    trades:Types.ObjectId[] | null
 }
 
 type userRating = {
@@ -193,18 +195,25 @@ export class UserService {
             };
 
             let userFilterData:userFilterDataType = {
+                id:userFind.id,
                 name:userFind.name,
                 description:userFind.description,
                 specialties:userFind.specialties,
                 interests:userFind.interests,
                 userRatings:userFind.userRatings,
+                trades:null,
                 phoneNumber:null
             }
             
             if (user) {
-                const result = userFind.contacts.findIndex(contact => contact?.toString() === user.id.toString() )
-                if(result !== -1) {  
+                if(user._id.toString() === userFind._id.toString()) {
+                    userFilterData.trades = userFind.trades
                     userFilterData.phoneNumber = userFind.phoneNumber
+                }else {
+                    const result = userFind.contacts.findIndex(contact => contact?.toString() === user.id.toString() )
+                    if(result !== -1) {  
+                        userFilterData.phoneNumber = userFind.phoneNumber
+                    }
                 }
             }
 
@@ -239,6 +248,7 @@ export class UserService {
                 specialties:userFind.specialties,
                 interests:userFind.interests,
                 userRatings:userFind.userRatings,
+                trades:userFind.trades,
                 phoneNumber:null
             }
 
@@ -350,10 +360,38 @@ export class UserService {
 	}
 
     // servicio para actualizar especialidad y categoría de una persona
-    async addSpecialtyAndCategory(user: IUser, categoryId: string, specialtyId: string){
+    async addSpecialties (user: IUser, specialties:specialty[]){
         // tenemos que chequear que los ids de la categoría y especialidad EXISTAN. Si no, pues manda error
         // idea: hacer un middleware que verifique esto
-        
+        try {
+            user.specialties = specialties;
+            const update = await user.save()
+            return update
+        } catch (error) {
+            console.log(error)
+            if(error instanceof Error) {
+                throw Error(error.message)
+            }
+            throw new Error(String(error))
+        }
+
+    }
+
+    async addInterests(user: IUser, interests:specialty[]){
+        // tenemos que chequear que los ids de la categoría y especialidad EXISTAN. Si no, pues manda error
+        // idea: hacer un middleware que verifique esto
+        try {
+            user.interests = interests;
+            const update = await user.save()
+            return update
+        } catch (error) {
+            console.log(error)
+            if(error instanceof Error) {
+                throw Error(error.message)
+            }
+            throw new Error(String(error))
+        }
+
     }
 
 }

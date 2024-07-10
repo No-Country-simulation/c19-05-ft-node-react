@@ -1,6 +1,7 @@
 import {  Types } from "mongoose";
 import User, { IUser, userRating } from "../models/User.model";
 import { RegisterType } from "../utils/schema/auth.schema";
+import { populate } from "dotenv";
 
 
 
@@ -49,11 +50,19 @@ export class UserRepository {
 		}
 	}
 
-	async findOne(id: string): Promise<IUser | null> {
+	async findOne(id: string | Types.ObjectId): Promise<IUser | null> {
 		try {
 			const result = await this.UserModel.findById(id)
 			.select("_id name email description phoneNumber specialties interests userRatings trades contacts")
-			.populate({path:"trades",select:"_id status members expiresAt"})
+			.populate({
+				path: 'trades',
+				populate: [
+				  { path: 'members.memberOne.id', model: 'User', select:"name email _id" },
+				  { path: 'members.memberTwo.id', model: 'User',select:"name email _id" },
+				  { path: 'members.memberOne.specialty', model: 'Specialty',select:"name",populate:[{path:"categoryId",model:"Category",select:"name"}]},
+				  { path: 'members.memberTwo.specialty', model: 'Specialty',select:"name",populate:[{path:"categoryId",model:"Category",select:"name"}]},
+				],
+			  })
 			.populate("specialties")
 			.populate("contacts").lean()
 			return result
@@ -91,7 +100,7 @@ export class UserRepository {
 	}
 
 	async updateTrades(id:string | Types.ObjectId, tradeId:Types.ObjectId ): Promise<IUser | null> {
-		try {
+		try {		
 			const user = await this.UserModel.findById(id)
 			if(!user) return null
 			user.trades.push(tradeId)

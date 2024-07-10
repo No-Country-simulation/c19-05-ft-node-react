@@ -35,7 +35,7 @@ routerUser.put("/user/:userId",middlewareBody(UserUpdateSchema),userController.u
 routerUser.delete("/user/:userId",userController.delete);
 
 // ruta para agregar especialidad y categoría
-routerUser.post("/user/addCategoryAndSpecialty", middlewareBody(CategoryAndSpecialtyIdSchema), authValidatePassport, verifyCategoryAndSpecialty);
+routerUser.post("/user/addCategoryAndSpecialty", middlewareBody(CategoryAndSpecialtyIdSchema), authValidatePassport, verifyCategoryAndSpecialty, userController.addCategoryAndSpecialty);
 
 
 

@@ -15,10 +15,10 @@ export const verifyCategoryAndSpecialty = async (req: Request, res: Response, ne
                 payload: 'No category nor specialty found'
             });
         }
-        // return next();
         // A este punto ambos ids son válidos, entonces tranquilamente se puede 
         // solicitar a la base de datos que añada eso
-        return res.status(200).send('Ambos Ids existen!');
+        // return res.status(200).send('Ambos Ids existen!');
+        return next();
 
         // Debería ir algo tipo
         // Usuario.actualizarusuario()

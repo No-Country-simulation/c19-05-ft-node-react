@@ -181,5 +181,6 @@ export class UserController {
     // Se debe poner el controlador que se encarga de agregar una especialidad
     // y una categoría a un solo usuario
     addCategoryAndSpecialty = async (req: Request, res: Response) => {
+        res.status(201).send('Se ha añadido una categoría y una especialidad');
     }
 }

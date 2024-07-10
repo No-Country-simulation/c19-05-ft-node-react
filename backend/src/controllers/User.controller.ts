@@ -178,11 +178,27 @@ export class UserController {
         }
     }
 
-    addCategoryAndSpecialty = async (req: Request, res: Response) => {
+    addSpecialties = async (req: Request, res: Response) => {
         const specialties = req.specialties!
         
         try {
-            const result = await this.userService.addSpecialtyAndCategory(req.user!,specialties)
+            const result = await this.userService.addSpecialties(req.user!,specialties)
+            res.status(201).send(result);
+        } catch (error) {
+            console.log(error);
+            if (error instanceof Error) {
+                res.status(500).send(error.message)
+            } else {
+                res.status(500).send("Error interno")
+            }
+        }
+    }
+
+    addInterests = async (req: Request, res: Response) => {
+        const interests = req.specialties!
+        
+        try {
+            const result = await this.userService.addInterests(req.user!,interests)
             res.status(201).send(result);
         } catch (error) {
             console.log(error);

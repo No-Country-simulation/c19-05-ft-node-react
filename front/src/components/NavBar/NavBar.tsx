@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 import TalentTradeLogo from "@/assets/Talent_Trade_Logo.png";
->>>>>>> bd601013d1a6a63ade07350e7a01c9611d732ecf
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";

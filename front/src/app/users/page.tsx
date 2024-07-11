@@ -40,7 +40,7 @@ const UsersPage = () => {
   return (
     <>
       <div className="container min-h-screen min-w-full mx-auto my-20 py-5">
-        <div className="container mx-auto grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="container mx-auto grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 px-5 py-5">
           {users.map((user, index) => (
             <CardUser key={index} {...user} />
           ))}

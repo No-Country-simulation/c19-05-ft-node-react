@@ -39,6 +39,20 @@ export class TradeRepository {
         }
     }
 
+    async findOnePending (userId:string | Types.ObjectId):Promise<ITrade[] | null> {
+        try {
+            return await this.TradeModel.find({$or:[{ 'members.memberOne.id': userId },
+                { 'members.memberTwo.id': userId }]},{status:"PENDING"}).select("duration members")
+
+        } catch (error) {
+            console.log(error)
+            if(error instanceof Error) {
+                throw new Error(error.message)
+            }
+			throw Error("Error al buscar trade")
+        }
+    }
+
     async findTradesById(userId: string):Promise<ITrade[]> {
         try {
 

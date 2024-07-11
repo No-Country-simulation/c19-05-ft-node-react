@@ -1,5 +1,5 @@
 import React from "react";
-import TestimonialsSection from "@/components/Testimonials/TestimonialsSection"
+import TestimonialsSection from "@/components/Testimonials/TestimonialsSection";
 import Hero from "@/components/Hero/Hero";
 import CategoriesHomeSection from "@/components/Categories/CategoriesHomeSection";
 
@@ -12,7 +12,7 @@ const HomePage = (props: Props) => {
       <CategoriesHomeSection />
       <TestimonialsSection />
     </div>
-  )
-}
+  );
+};
 
 export default HomePage;

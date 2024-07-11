@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { UserService } from "../services/User.service";
-import { enumType, IUser } from "../models/User.model";
+import { enumType } from "../models/User.model";
 import { UserUpdateType } from "../utils/schema/user.schema";
 
 
@@ -178,18 +178,35 @@ export class UserController {
         }
     }
 
-    addCategoryAndSpecialty = async (req: Request, res: Response) => {
-        // A este punto, el body ya tiene ambas ids válidas, se puede proceder a actualizar
-        // la base de datos
+    addSpecialties = async (req: Request, res: Response) => {
+        const specialties = req.specialties!
+        
+        try {
+            const result = await this.userService.addSpecialties(req.user!,specialties)
+            res.status(201).send(result);
+        } catch (error) {
+            console.log(error);
+            if (error instanceof Error) {
+                res.status(500).send(error.message)
+            } else {
+                res.status(500).send("Error interno")
+            }
+        }
+    }
 
-        // Aprovechamos a tomar el id del usuario a partir del req (se agregó en el middleware authValidatePassport)
-        // sacamos id del usuario y de la categoria y especialidad
-        // const {categoryId, specialtyId} = req.body;
-        // const user: IUser = req.user!;
-
-        // this.userService.addSpecialtyAndCategory(userId, categoryId, specialtyId);
-        // this.userService.addSpecialtyAndCategory(user, categoryId, specialtyId);
-
-        res.status(201).send('Se ha añadido una categoría y una especialidad');
+    addInterests = async (req: Request, res: Response) => {
+        const interests = req.specialties!
+        
+        try {
+            const result = await this.userService.addInterests(req.user!,interests)
+            res.status(201).send(result);
+        } catch (error) {
+            console.log(error);
+            if (error instanceof Error) {
+                res.status(500).send(error.message)
+            } else {
+                res.status(500).send("Error interno")
+            }
+        }
     }
 }

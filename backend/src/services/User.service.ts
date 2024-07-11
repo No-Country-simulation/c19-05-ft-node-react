@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { enumType, IUser } from "../models/User.model";
+import { enumType, IUser, specialty } from "../models/User.model";
 import { UserRepository } from "../repositories/User.repository";
 import { hashPassword } from "../utils/bcrypt/bcrypt.config";
 import { RegisterType } from "../utils/schema/auth.schema";
@@ -185,7 +185,7 @@ export class UserService {
     // ta ok.👍
     async findById (user:IUser | undefined,searchedUserId:string) {
         try {
-            const userFind = await this.userRepository.findOne(searchedUserId);
+            const userFind = await this.userRepository.findOnePopulated(searchedUserId);
             
             if(!userFind) {
                 return {
@@ -326,7 +326,7 @@ export class UserService {
     
     async updateRating (data:userRating,userId:string) {
 		try {
-            const userFound = await this.userRepository.findOne(userId)
+            const userFound = await this.userRepository.findOnePopulated(userId)
             if(!userFound) return {status:"error",payload:"Usuario no encontrado"}
 
             const trade = await this.tradeService.findOne(data.tradeId)
@@ -360,10 +360,38 @@ export class UserService {
 	}
 
     // servicio para actualizar especialidad y categoría de una persona
-    async addSpecialtyAndCategory(user: IUser, categoryId: string, specialtyId: string){
+    async addSpecialties (user: IUser, specialties:specialty[]){
         // tenemos que chequear que los ids de la categoría y especialidad EXISTAN. Si no, pues manda error
         // idea: hacer un middleware que verifique esto
-        
+        try {
+            user.specialties = specialties;
+            const update = await user.save()
+            return update
+        } catch (error) {
+            console.log(error)
+            if(error instanceof Error) {
+                throw Error(error.message)
+            }
+            throw new Error(String(error))
+        }
+
+    }
+
+    async addInterests(user: IUser, interests:specialty[]){
+        // tenemos que chequear que los ids de la categoría y especialidad EXISTAN. Si no, pues manda error
+        // idea: hacer un middleware que verifique esto
+        try {
+            user.interests = interests;
+            const update = await user.save()
+            return update
+        } catch (error) {
+            console.log(error)
+            if(error instanceof Error) {
+                throw Error(error.message)
+            }
+            throw new Error(String(error))
+        }
+
     }
 
 }

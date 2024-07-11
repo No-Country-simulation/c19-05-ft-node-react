@@ -55,13 +55,13 @@ export default function NavBar() {
         {!auth ? (
           <div>
             <Link
-              href="/sign-up"
+              href="/auth/sign-up"
               className="border border-gray-600 text-sm lg:text-base py-2 px-3 rounded-l-xl hover:bg-gray-200"
             >
               <span className="whitespace-nowrap font-medium">Sign Up</span>
             </Link>
             <Link
-              href="/"
+              href="/auth/sign-in"
               className="border-t border-r border-b border-gray-600 text-sm lg:text-base py-2 px-3 rounded-r-xl hover:bg-gray-200"
               onClick={() => setAuth(!auth)}
             >

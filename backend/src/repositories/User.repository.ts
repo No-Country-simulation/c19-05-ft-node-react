@@ -50,7 +50,7 @@ export class UserRepository {
 		}
 	}
 
-	async findOne(id: string | Types.ObjectId): Promise<IUser | null> {
+	async findOnePopulated(id: string | Types.ObjectId): Promise<IUser | null> {
 		try {
 			const result = await this.UserModel.findById(id)
 			.select("_id name email description phoneNumber specialties interests userRatings trades contacts")
@@ -74,6 +74,22 @@ export class UserRepository {
 			throw Error("Error al buscar un usuario")
 		}
 	}
+	async findOne(id: string | Types.ObjectId): Promise<IUser> {
+		try {
+			const result = await this.UserModel.findById(id)
+			if(!result){
+				throw new Error("Usuario no encontrado")
+			}
+			return result
+		} catch (error) {
+			console.log(error)
+            if(error instanceof Error) {
+                throw Error(error.message)
+            }
+			throw Error("Error al buscar un usuario")
+		}
+	}
+
 
 	async findByEmail(email: string): Promise<IUser | null> {
 		try {

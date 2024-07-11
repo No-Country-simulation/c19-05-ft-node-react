@@ -2,6 +2,7 @@ import { Types } from "mongoose";
 import { TradeRepository } from "../repositories/Trade.repository";
 import { UserRepository } from "../repositories/User.repository";
 import { createTradeType, enumTradeStatus } from "../models/Trade.model";
+import { IUser } from "../models/User.model";
 
 export class TradeService {
     private readonly tradeRepository: TradeRepository;
@@ -12,20 +13,60 @@ export class TradeService {
          this.userRepository = userRepository;
         } 
 
-    async create (trade:createTradeType) {
+    async create (trade:createTradeType,userOne:IUser) {
         try {
             // TODO: verificar que la especialidad del miembro que propone el trade coincida con el interés del que recibe la propuesta del trade
             // y viceversa.
-            const [memberOne,memberTwo] = await Promise.all([this.userRepository.findOne(trade.members.memberOne.id),this.userRepository.findOne(trade.members.memberTwo.id)])
-            if(!memberOne || !memberTwo) {
+            if(userOne.specialties.length === 0) {
+                return {
+                    status:"error",
+                    payload:"No podes crear un trade sin especialidades en tu perfil."
+                }
+            }
+           
+            const trades = await this.tradeRepository.findOnePending(userOne._id)
+            
+            const isPossible = trades!.findIndex(trade => trade.members.memberOne.id.toString() === userOne._id.toString() || trade.members.memberTwo.id.toString() === userOne._id.toString() )
+
+            if(isPossible !== -1) {
+                return {
+                    status:"error",
+                    payload:"No podes crear un trade con este usuario. Hay un trade pendiente."
+                }
+            }
+            const userTwo = await this.userRepository.findOne(trade.members.memberTwo.id)
+            if(!userTwo ) {
                 return {
                     status:"error",
                     payload:"Usuario no encontrado"
                 }
             }
+            //chequear que los intereses sean correspondientes
+            const findIndexOneSpecialty = userOne.specialties.findIndex(specialty => specialty.specialtyId.toString() === trade.members.memberOne.specialty.toString())
+            const findIndexOneInterest = userOne.interests.findIndex(interest => interest.specialtyId.toString() === trade.members.memberTwo.specialty.toString())
+
+            if(findIndexOneSpecialty === -1 || findIndexOneInterest === -1) {
+                return {
+                    status:"error",
+                    payload:"Los intereses no corresponden con las especialidades."
+                }
+            }
+            const findIndexTwoSpecialty = userTwo.specialties.findIndex(specialty => specialty.specialtyId.toString() === trade.members.memberTwo.specialty.toString())
+            const findIndexTwoInterest = userTwo.interests.findIndex(interest => interest.specialtyId.toString() === trade.members.memberOne.specialty.toString())
+
+            if(findIndexTwoSpecialty === -1 || findIndexTwoInterest === -1) {
+                return {
+                    status:"error",
+                    payload:"Los intereses no corresponden con las especialidades."
+                }
+            }
+           
             const newTrade = await this.tradeRepository.create(trade);
-            const [uno,dos] = await Promise.allSettled([this.userRepository.updateTrades(memberOne._id,newTrade.id),  
-                this.userRepository.updateTrades(memberTwo._id,newTrade.id)]);    
+
+            userOne.trades.push(newTrade.id)
+            userTwo.trades.push(newTrade.id)
+
+            const [uno,dos] = await Promise.allSettled([userTwo.save(),userOne.save()]); 
             return {
                 status:"success",
                 payload:newTrade

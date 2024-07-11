@@ -9,6 +9,11 @@ export interface IRating extends Document {
 	status: boolean;
 }
 
+export type createRatingType = {
+	userId: string;
+	description: string;
+}
+
 const RatingSchema: Schema = new Schema({
 	userId: {
 		type: Types.ObjectId,
@@ -25,3 +30,5 @@ const RatingSchema: Schema = new Schema({
 });
 
 const Rating = mongoose.model<IRating>("Rating", RatingSchema);
+
+export default Rating;

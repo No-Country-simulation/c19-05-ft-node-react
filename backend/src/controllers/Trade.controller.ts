@@ -13,7 +13,7 @@ export class TradeController {
         duration = duration * 24 * 60 * 60 * 1000;
 
         try {
-                const result = await this.tradeService.create({members, duration});
+                const result = await this.tradeService.create({members, duration},req.user!);
                 res.send(result)
             
         } catch (error) {

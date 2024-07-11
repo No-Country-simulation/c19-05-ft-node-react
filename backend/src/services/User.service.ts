@@ -185,7 +185,7 @@ export class UserService {
     // ta ok.👍
     async findById (user:IUser | undefined,searchedUserId:string) {
         try {
-            const userFind = await this.userRepository.findOne(searchedUserId);
+            const userFind = await this.userRepository.findOnePopulated(searchedUserId);
             
             if(!userFind) {
                 return {
@@ -326,7 +326,7 @@ export class UserService {
     
     async updateRating (data:userRating,userId:string) {
 		try {
-            const userFound = await this.userRepository.findOne(userId)
+            const userFound = await this.userRepository.findOnePopulated(userId)
             if(!userFound) return {status:"error",payload:"Usuario no encontrado"}
 
             const trade = await this.tradeService.findOne(data.tradeId)

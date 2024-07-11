@@ -34,27 +34,18 @@ export const verifyCategoryAndSpecialty = (specialtiesOrInterests:ParameterType)
         return accumulator;
     }, []); // chequeo que no vengan objetos repetidos. en caso de venir repetidos limpio el array
 
-    let newArray:specialty[] ;
-    if(specialtiesOrInterests === "specialties") {
-        newArray = uniqueArray.filter(specialty =>  !user.specialties.some(specialtyOld => specialtyOld!.specialtyId.toString() === specialty.specialtyId.toString())
-    ); // filtro el array de especialties que ya tengo en la db y solo dejo las nuevas para luego comprobar que existan en el esquema 
-    }else {
-        newArray = uniqueArray.filter(specialty =>  !user.interests.some(specialtyOld => specialtyOld!.specialtyId.toString() === specialty.specialtyId.toString())
-    )
-    }
-
-
-    if(newArray.length === 0) {
+    if(uniqueArray.length === 0) {
         req.specialties = uniqueArray
         return next()
     }
-    const arrayPromiseM = newArray.map(array => {  
-        return [Category.findById(array!.categoryId),Specialty.findById(array!.specialtyId)]
+    const arrayPromise = uniqueArray.map(array => {  
+        return Specialty.find({ _id: array.specialtyId, categoryId: array.categoryId })
     }) // verificar si ingresaron nuevas specialties. para luego separarlas y verificar si existen en db
-    const arrayPromise = arrayPromiseM.flat() // aplastar el array.
     try {
-        const response = await Promise.all(arrayPromise) //verificacion en la db     
-        const hasError = response.some(resp => !resp); // verificar que no hayan null's 
+        const response = await Promise.all(arrayPromise) //verificacion en la db 
+        
+        const hasError = response.some(resp => resp.length === 0
+        ); // verificar que no hayan null's 
         if (hasError) {
             return res.send({
                 status: "error",

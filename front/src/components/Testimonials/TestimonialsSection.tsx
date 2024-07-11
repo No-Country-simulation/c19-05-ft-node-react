@@ -21,7 +21,7 @@ export default function SimpleSlider() {
   };
   return (
     <div className="p-10">
-        <h1 className="text-4xl text-center font-semibold mb-8">Testimonials</h1>
+        <h1 className="text-4xl text-center font-medium mb-8 text-gray-800">Testimonials</h1>
     
         <Slider {...settings}>
             {/* Aquí se hará un map devolviendo los testimonials */}

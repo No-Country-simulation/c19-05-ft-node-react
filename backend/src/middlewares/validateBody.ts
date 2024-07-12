@@ -3,7 +3,6 @@ import { ZodError, ZodSchema } from "zod";
 
 export const middlewareBody = (schema: ZodSchema) => async (req:Request,res:Response, next:NextFunction) => {
     try {
-        
         await schema.parse(req.body)
         next()
     } catch (error) {

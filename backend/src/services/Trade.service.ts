@@ -13,6 +13,7 @@ export class TradeService {
          this.userRepository = userRepository;
         } 
 
+    //ta ok👍
     async create (trade:createTradeType,userOne:IUser) {
         try {
             // TODO: verificar que la especialidad del miembro que propone el trade coincida con el interés del que recibe la propuesta del trade
@@ -24,8 +25,9 @@ export class TradeService {
                 }
             }
            
-            const trades = await this.tradeRepository.findOnePending(userOne._id)
-            
+            const trades = await this.tradeRepository.findTradesById(userOne._id,"PENDING")
+            // console.log(trades);
+            // return
             const isPossible = trades!.findIndex(trade => trade.members.memberOne.id.toString() === userOne._id.toString() || trade.members.memberTwo.id.toString() === userOne._id.toString() )
 
             if(isPossible !== -1) {
@@ -82,15 +84,20 @@ export class TradeService {
             
         }
     }
+
+
     // trae todos los trades, chequea que no haya trades vencidos. en caso de haber los actualiza y los devuelve al front.
-    async findTrades(userTrades:string[]) {
+    //ta ok👍
+    async findTrades(userId:string | Types.ObjectId) {
         try {
-            const arrayTradesPromise = userTrades.map(trade => {
-                    return this.tradeRepository.findOne(trade)
-            })
-            const arrayTradesResult = await Promise.all(arrayTradesPromise)
-            const updateTrade = arrayTradesResult.map(trade => {
-                if( trade && trade.expiresAt && trade.expiresAt < new Date() && trade.status === "ACCEPTED" ) {
+            const trades = await this.tradeRepository.findTradesById(userId,{})
+            
+            if(!trades) {
+                return {status:"error",payload:"No hay trades"}
+            }
+
+            const updateTrade = trades.map(trade => {
+                if(  trade.status === "ACCEPTED" && trade.expiresAt! < new Date() ) {
                     trade.status = "FINISHED"
                     return trade.save()
                 }else if(trade) {
@@ -98,8 +105,9 @@ export class TradeService {
                 }
             })
 
-            await Promise.allSettled(updateTrade);
-            return updateTrade;
+            const update = await Promise.all(updateTrade);
+            
+            return {status:"success",payload:update};
 
         } catch (error) {
             console.log(error)
@@ -112,26 +120,47 @@ export class TradeService {
         }
     }
 
-    async findOne(tradeId:string) {
+    async findOne(user:IUser,tradeId:string,status:{status:enumTradeStatus}|{}) {
+       
+
         try {
-            return await this.tradeRepository.findOne(tradeId)
+            const trade = await this.tradeRepository.findOnePending(user._id,tradeId,status)
+            if(!trade) {
+                return {
+                    status:"error",
+                    payload:"No existe el trade"
+                }
+            }
+            return {
+                status:"success",
+                payload:trade
+            }
         } catch (error) {
             console.log(error)
             if(error instanceof Error) {
-                throw Error(error.message)
+                // throw Error(error.message)
             }
             throw new Error(String(error)) 
         }
     }
 
-    async updateAccepted (tradeId:string) {
+
+    //ta ok👍
+    async updateAccepted (user:IUser,tradeId:string) {
         try {
-            const trade = await this.tradeRepository.findOne(tradeId)
+            const trade = await this.tradeRepository.findOnePending(user._id,tradeId,{status:"PENDING"})
+            
             if(!trade) return {status:"error",payload:"trade no encontrado"}
+
+            if(trade.members.memberTwo.id.toString() !== user._id.toString()) {
+                return {status:"error",payload:"No te hagas el piola porque vos creaste el trade y no lo podes aceptar."}
+            }
             const duration = trade.duration;
-            const expiresAt = new Date(new Date().getTime() + duration)
-            const tradeUpdated = await this.tradeRepository.updateAccepted(tradeId,expiresAt)
-            return {status:"success",payload:tradeUpdated}
+            trade.expiresAt = new Date(new Date().getTime() + duration)
+            trade.status = "ACCEPTED"
+            // const tradeUpdated = await this.tradeRepository.updateAccepted(tradeId,expiresAt)
+            await trade.save()
+            return {status:"success",payload:trade}
         } catch (error) {
             console.log(error)
             if(error instanceof Error) {

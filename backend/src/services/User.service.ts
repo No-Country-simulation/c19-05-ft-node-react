@@ -7,6 +7,7 @@ import {  dataRegisterJwt, generateJWTRegister, generateJWTEmail, dataEmailJwt }
 import { Emails } from "../email/registerEmail";
 import { UserUpdateType } from "../utils/schema/user.schema";
 import { TradeService } from "./Trade.service";
+import { TradeRepository } from "../repositories/Trade.repository";
 
 
 
@@ -24,13 +25,13 @@ type userRating = {
 
 export class UserService {
     userRepository: UserRepository;
-    tradeService: TradeService;
+    tradeRepository: TradeRepository;
 
 
     
-    constructor(userRepository: UserRepository,tradeService: TradeService) {
+    constructor(userRepository: UserRepository,tradeRepository: TradeRepository) {
         this.userRepository = userRepository;
-        this.tradeService = tradeService
+        this.tradeRepository = tradeRepository;
     }
 
     // ta ok.👍
@@ -69,7 +70,9 @@ export class UserService {
     async create (token:string) {
         try {
             const user = dataRegisterJwt(token)
+
             const userFound = await this.userRepository.findByEmail(user.email);
+            
             if(userFound) {
                 return {
                     status:"failed",
@@ -77,7 +80,7 @@ export class UserService {
                 }
             }
             user.password = await hashPassword(user.password);
-            const {password, ...data} = await this.userRepository.create(user)
+            const data = await this.userRepository.create(user)       
             return {
                 status:"success",
                 payload:data
@@ -324,12 +327,12 @@ export class UserService {
         }
     }
     
-    async updateRating (data:userRating,userId:string) {
+    async updateRating (data:userRating,user:IUser) {
 		try {
-            const userFound = await this.userRepository.findOnePopulated(userId)
+            const userFound = await this.userRepository.findOnePopulated(user._id)
             if(!userFound) return {status:"error",payload:"Usuario no encontrado"}
 
-            const trade = await this.tradeService.findOne(data.tradeId)
+            const trade = await this.tradeRepository.findOnePending(user._id,data.tradeId,{})
             if(!trade) return {status:"error",payload:"Trade no encontrado"}
             if(trade.status !=="FINISHED") return {status:"error",payload:"El trade todavia no finalizo dijo juan."}
 
@@ -340,7 +343,7 @@ export class UserService {
 
                  userFound.userRatings.push(data)
 
-                 const [resultUser,resultTrade] = await Promise.allSettled([userFound.save(),this.tradeService.updateHasRated(trade.id,data.userId)])
+                 const [resultUser,resultTrade] = await Promise.allSettled([userFound.save(),this.tradeRepository.updateStatusHasRated(trade.id,data.userId)])
                 
                  console.log(resultTrade);
                  

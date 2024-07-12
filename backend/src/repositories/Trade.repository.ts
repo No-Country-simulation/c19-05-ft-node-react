@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import Trade, { createTradeType, ITrade, membersType } from "../models/Trade.model";
+import Trade, { createTradeType, enumTradeStatus, ITrade, membersType } from "../models/Trade.model";
 import { UserRepository } from "./User.repository";
 
 
@@ -39,10 +39,10 @@ export class TradeRepository {
         }
     }
 
-    async findOnePending (userId:string | Types.ObjectId):Promise<ITrade[] | null> {
+    async findTradesById (userId:string | Types.ObjectId,status:{status:enumTradeStatus}|{}):Promise<ITrade[] | null> {
         try {
             return await this.TradeModel.find({$or:[{ 'members.memberOne.id': userId },
-                { 'members.memberTwo.id': userId }]},{status:"PENDING"}).select("duration members")
+                { 'members.memberTwo.id': userId }]},status)
 
         } catch (error) {
             console.log(error)
@@ -53,7 +53,25 @@ export class TradeRepository {
         }
     }
 
-    async findTradesById(userId: string):Promise<ITrade[]> {
+    async findOnePending (userId:string | Types.ObjectId,tradeId:string | Types.ObjectId,status:{status:enumTradeStatus}|{}):Promise<ITrade | null> {
+        try {
+            const trade = await this.TradeModel.findOne(
+                {_id:tradeId,
+                $or: [
+                    { 'members.memberOne.id': userId },
+                    { 'members.memberTwo.id': userId },
+                ]},status)
+            return trade
+        } catch (error) {
+            console.log(error)
+            if(error instanceof Error) {
+                throw new Error(error.message)
+            }
+			throw Error("Error al buscar trade")
+        }
+    }
+
+    async findTradesByIdPopulated(userId: string):Promise<ITrade[]> {
         try {
 
             const userObjectId = new Types.ObjectId(userId); 
@@ -109,11 +127,11 @@ export class TradeRepository {
         }
     }
 
-    async updateStatusHasRated(idTrade: Types.ObjectId, memberId: Types.ObjectId) {
+    async updateStatusHasRated(tradeId: Types.ObjectId, memberId: Types.ObjectId) {
         try {
             const updatedTrade = await this.TradeModel.findOneAndUpdate(
                 {
-                  _id: idTrade
+                  _id: tradeId
                 },
                 {
                   $set: {

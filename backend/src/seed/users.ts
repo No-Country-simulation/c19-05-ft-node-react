@@ -1,4 +1,5 @@
 import { Types } from "mongoose"
+import { hashPassword } from "../utils/bcrypt/bcrypt.config"
 
 interface IUser {
    name: string
@@ -13,6 +14,17 @@ interface IUser {
 type specialty = {
    categoryId: Types.ObjectId
    specialtyId: Types.ObjectId
+}
+
+// funcion para hashear las contraseñas
+export async function hashAllPasswords(users: IUser[]): Promise<IUser[]> {
+    const updatedUsers = await Promise.all(
+        users.map(async (user) => {
+            const hashedPassword = await hashPassword(user.password);
+            return { ...user, password: hashedPassword};
+        })
+    );
+    return updatedUsers;
 }
 
 

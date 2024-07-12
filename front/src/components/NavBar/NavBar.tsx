@@ -1,172 +1,133 @@
-"use client";
-
+import TalentTradeLogo from "@/assets/Talent_Trade_Logo.png";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
-import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
-import { MdDarkMode } from "react-icons/md";
-import avatar from "@/assets/avatar.jpeg";
-type Props = {};
+import { useState } from "react";
+import { HiMenu, HiUserCircle } from "react-icons/hi";
 
-const NavBar = (props: Props) => {
-  //==============etates==========
-  const [open, setOpen] = useState(false);
-  const [color, setColor] = useState("rgb(91 33 182)");
-  const [textColor, setTextColor] = useState("#FFFFFF");
-  const [darkMode, setDarkMode] = useState(false);
-  //handlers
-  const handleOpen = () => {
-    setOpen(!open);
+export default function NavBar() {
+  const [auth, setAuth] = useState(true);
+
+  const [navbarVisible, setNavbarVisible] = useState(false);
+
+  const toggleNavbar = () => {
+    setNavbarVisible(!navbarVisible);
   };
-
-  //===========useEffect=============
-
-  useEffect(() => {
-    const changeColor = () => {
-      if (window.scrollY >= 240) {
-        //rgba(15, 23, 42, 0.7)
-        //#FFFFFF
-        setColor("#FFFFFF");
-        setTextColor("rgb(91 33 182)");
-      } else {
-        setColor("rgb(91 33 182)");
-        setTextColor("#FFFFFF");
-      }
-    };
-    window.addEventListener("scroll", changeColor);
-    return () => {
-      window.removeEventListener("scroll", changeColor);
-    };
-  }, []);
-
-  /*
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-  };
-*/
 
   return (
-    <>
-      <div
-        style={{ backgroundColor: `${color}` }}
-        className="fixed left-0 top-0 w-full  z-10 ease-in duration-300  rounded-b-md "
-      >
-        {/* header web */}
-        <div
-          className={`max-w-full h-16 flex items-center justify-between p-2 mx-2`}
-          style={{ color: textColor }}
-        >
-          <Link href="/" className="flex justify-center items-center gap-1">
-            {/*
-              <Image
-              src={""}
-              alt="logo"
-              width={45}
-              height={45}
-              className="object-contain img"
-            />
-            */}
+    <header className="fixed top-0 left-0 shadow-md py-2 w-full bg-white z-40">
+      <div className="container mx-auto px-6 flex items-center justify-between gap-x-4">
+        <Link href={"/"}>
+          <Image
+            src={TalentTradeLogo}
+            alt="Picture of testimonial"
+            width="250"
+            height="50"
+            className="w-36 lg:w-60"
+          />
+        </Link>
 
-            <h1 className="font-bold text-xl">No country</h1>
+        <nav className="w-full hidden lg:flex lg:justify-center lg:gap-x-16">
+          <Link href={`/`} className={`cursor-pointer hover:text-gray-900`}>
+            Home
           </Link>
-
-          {/**aca empieza el  */}
-
-          <ul
-            style={{ color: `${textColor}` }}
-            className="hidden  sm:flex  items-center justify-center "
+          <Link
+            href={`/connect/`}
+            className={`cursor-pointer hover:text-gray-900`}
           >
-            {/*
-            
-            <li>
-              <MdDarkMode
-                size={30}
-                color={darkMode ? "white" : "#229c19"}
-                className={`p-1 rounded-full hover:border-2 ${
-                  darkMode ? "border-white" : "border-[#229c19]"
-                } `}
-                onClick={toggleDarkMode}
-              />
-            </li>
-            */}
-            <li>
-              <Link href="/" className="p-4">
-                Inicio
-              </Link>
-            </li>
-            <li>
-              <Link href="/#" className="p-4">
-                Nosotros
-              </Link>
-            </li>
-            <li>
-              <Link href="/#" className="p-4">
-                Tareas
-              </Link>
-            </li>
+            Connect
+          </Link>
+          <Link
+            href={`/support/`}
+            className={`cursor-pointer hover:text-gray-900`}
+          >
+            Support
+          </Link>
+          {auth && (
+            <Link
+              href={`/support/`}
+              className={`cursor-pointer text-green-500 hover:text-green-600 font-bold border-b-2 border-gray-300 hover:border-gray-400`}
+            >
+              Trades
+            </Link>
+          )}
+        </nav>
 
-            <li>
-              <Image
-                alt="avatar"
-                src={avatar}
-                width={27}
-                height={27}
-                className="rounded-full"
-              />
-            </li>
-          </ul>
+        {!auth ? (
+          <div>
+            <Link
+              href="/auth/sign-up"
+              className="border border-gray-600 text-sm lg:text-base py-2 px-3 rounded-l-xl hover:bg-gray-200"
+            >
+              <span className="whitespace-nowrap font-medium">Sign Up</span>
+            </Link>
+            <Link
+              href="/auth/sign-in"
+              className="border-t border-r border-b border-gray-600 text-sm lg:text-base py-2 px-3 rounded-r-xl hover:bg-gray-200"
+              onClick={() => setAuth(!auth)}
+            >
+              <span className="whitespace-nowrap font-medium">Sign In</span>
+            </Link>
+          </div>
+        ) : (
+          <div className="relative">
+            <button
+              className="flex gap-1 items-center border border-gray-300 hover:shadow-sm py-2 px-3 rounded-full bg-white whitespace-nowrap"
+              onClick={toggleNavbar}
+            >
+              <HiMenu className="text-xl" />
+              <HiUserCircle className="text-2xl" />
+              <span className="text-xs font-bold">Owen</span>
+            </button>
 
-          {/*=============== Mobile================= */}
-
-          {/* ======mobile button menu======= */}
-          <div className="block  sm:hidden z-50  relative" onClick={handleOpen}>
-            {/* aca de avcuerdo a si esta abierto o cerrado el drawer se ve un icono o otro */}
-
-            {open ? (
-              <AiOutlineClose size={27} color="#000000" />
-            ) : (
-              <AiOutlineMenu
-                size={30}
-                color={`${textColor}`}
-                style={{ border: `1px solid ${textColor}` }}
-                className={`p-1 rounded-full `}
-              />
+            {navbarVisible && (
+              <div className="bg-white shadow p-4 rounded-lg absolute right-0 w-full mt-4 z-40 whitespace-nowrap">
+                <nav>
+                  <ul className="flex flex-col gap-3 text-xs font-semibold">
+                    <li>
+                      <Link href={"/user/profile"}>My profile</Link>
+                    </li>
+                    <li>
+                      <Link href={"/user/trades"}>My trades</Link>
+                    </li>
+                    <li>
+                      <button onClick={() => setAuth(!auth)}>Sign out</button>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
             )}
           </div>
-
-          {/*  mobile menu*/}
-
-          <div
-            className={
-              open
-                ? "sm:hidden absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center w-full h-screen bg-white  text-black text-center ease-in-out duration-500"
-                : "sm:hidden absolute top-0 left-[-100%] right-0 bottom-0 flex justify-center items-center w-full h-screen bg-white text-black text-center ease-in-out duration-500"
-            }
-          >
-            <ul className="z-50">
-              <li>
-                <Link href="/" className="p-4 text-4xl  hover:text-gray-500">
-                  Inicio
-                </Link>
-              </li>
-              <li className="m-4">
-                <Link href="/#" className="p-4  text-4xl  hover:text-gray-500">
-                  Acerca de Nosotros
-                </Link>
-              </li>
-              <li className="m-4">
-                <Link href="#" className="p-4  text-4xl hover:text-gray-500   ">
-                  Tareas
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* FIN de mobile button */}
-        </div>
+        )}
       </div>
-    </>
-  );
-};
 
-export default NavBar;
+      <nav className="w-full flex justify-center gap-x-8 mt-4 text-center flex-wrap lg:hidden">
+        <Link
+          href={`/`}
+          className={`cursor-pointer hover:text-gray-900 text-sm`}
+        >
+          Home
+        </Link>
+        <Link
+          href={`/connect/`}
+          className={`cursor-pointer hover:text-gray-900 text-sm`}
+        >
+          Connect
+        </Link>
+        <Link
+          href={`/support/`}
+          className={`cursor-pointer hover:text-gray-900 text-sm`}
+        >
+          Support
+        </Link>
+        {auth && (
+          <Link
+            href={`/support/`}
+            className={`cursor-pointer text-green-500 hover:text-green-600 font-bold border-b-2 border-gray-300 hover:border-gray-400 text-sm`}
+          >
+            Trades
+          </Link>
+        )}
+      </nav>
+    </header>
+  );
+}

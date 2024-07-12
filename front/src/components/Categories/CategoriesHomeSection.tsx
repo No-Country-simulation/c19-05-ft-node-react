@@ -47,7 +47,7 @@ export default function CategoriesHomeSection() {
       <div className="slider-container">
         <Slider {...settings}>
           {categories.map((category) => (
-            <div className="w-56 h-56">
+            <div key={category.name} className="w-56 h-56">
               <Image
                 src={category.image}
                 alt="Picture of the category"

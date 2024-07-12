@@ -19,7 +19,16 @@ routerSeed.get("/seed/specialties",async (req: Request, res: Response) => {
 	} catch (error) {
 		console.log(error);
 	}
-})
+});
 
+routerSeed.get("/seed/users", async (req: Request, res: Response) => {
+	try {
+		// 1) conseguir lista de especialidades, las cuales vamos a usar para agregar a cada usuario
+
+		res.status(201).send('este endpoint está sirviendo');
+	} catch (error) {
+		
+	}
+})
 
 export default routerSeed;

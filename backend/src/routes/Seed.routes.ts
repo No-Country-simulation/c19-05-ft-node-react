@@ -1,6 +1,8 @@
 import { Request, Response, Router } from "express";
 import { addCategories, addSpecialties, categories, specialties } from "../seed/categorias";
 import Specialty from "../models/Specialty.model";
+import { users } from "../seed/users";
+import { hashPassword } from "../utils/bcrypt/bcrypt.config";
 
 const routerSeed = Router();
 
@@ -37,9 +39,13 @@ routerSeed.get("/seed/users", async (req: Request, res: Response) => {
 			}
 		});
 
+		// 3) se consigue la lista de usuarios y se hashea el password
+		// 3.1) consiga la función que te hashea el password
+
 		res.status(201).json({
 			results: specialtiesFiltered.length,
-			specialtiesFiltered
+			specialtiesFiltered,
+			users
 		});
 	} catch (error) {
 		

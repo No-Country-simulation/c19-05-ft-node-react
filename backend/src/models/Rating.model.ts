@@ -5,13 +5,13 @@ import mongoose, { Document, PopulatedDoc, Schema, Types } from "mongoose";
 export interface IRating extends Document {
 	_id: Types.ObjectId;
 	userId: PopulatedDoc<Types.ObjectId>;
-	description: string;
+	comment: string;
 	status: boolean;
 }
 
 export type createRatingType = {
 	userId: string;
-	description: string;
+	comment: string;
 }
 
 const RatingSchema: Schema = new Schema({
@@ -19,7 +19,7 @@ const RatingSchema: Schema = new Schema({
 		type: Types.ObjectId,
 		ref: "User",
 	},
-	description: {
+	comment: {
 		type: String,
 		required: true,
 	},

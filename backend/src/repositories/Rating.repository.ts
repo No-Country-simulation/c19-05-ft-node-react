@@ -36,7 +36,7 @@ export class RatingRepository {
 
     async findFeaturedRatings() {
         try {
-            const ratings = await this.RatingModel.find({status: true});
+            const ratings = await this.RatingModel.findOne({status: true});
             return ratings;
 
         } catch (error) {
@@ -64,7 +64,7 @@ export class RatingRepository {
 
     async findByUserId(id: string) {
         try {
-            const rating = await this.RatingModel.find({ userId: id });
+            const rating = await this.RatingModel.findOne({ userId: id });
             return rating;
 
         } catch (error) {
@@ -76,11 +76,11 @@ export class RatingRepository {
         }
     }
 
-    async updateComment(id: string, description: string) {
+    async updateComment(id: string, comment: string) {
         try {
-            const rating = await this.RatingModel.findByIdAndUpdate(id, { description });
+            const rating = await this.RatingModel.findOneAndUpdate({userId:id}, {comment}, { new: true });
             return rating;
-
+            
         } catch (error) {
             console.log(error);
             if (error instanceof Error) {
@@ -92,7 +92,7 @@ export class RatingRepository {
 
     async updateFeaturedRatings(ratingIds: string[]) {
         try {
-            await this.RatingModel.updateMany({}, { $set: { status: false } });
+            await this.RatingModel.updateMany({}, { $set: { status: false } }, { new: true });
 
             if (ratingIds.length > 0) {
                 await this.RatingModel.updateMany(

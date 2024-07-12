@@ -1,7 +1,7 @@
 import { Types } from "mongoose"
 import { hashPassword } from "../utils/bcrypt/bcrypt.config"
 
-interface IUser {
+export interface IUserSeed {
    name: string
    email: string
    password: string
@@ -11,13 +11,13 @@ interface IUser {
    phoneNumber?: string
 }
 
-type specialty = {
+export type specialty = {
    categoryId: Types.ObjectId
    specialtyId: Types.ObjectId
 }
 
 // funcion para hashear las contraseñas
-export async function hashAllPasswords(users: IUser[]): Promise<IUser[]> {
+export async function hashAllPasswords(users: IUserSeed[]): Promise<IUserSeed[]> {
     const updatedUsers = await Promise.all(
         users.map(async (user) => {
             const hashedPassword = await hashPassword(user.password);
@@ -27,8 +27,36 @@ export async function hashAllPasswords(users: IUser[]): Promise<IUser[]> {
     return updatedUsers;
 }
 
+// funcion para asignar especialidades e intereses a cada usuario
+export function assignSpecialtiesAndInterests(users: IUserSeed[], allSpecialties: specialty[]): IUserSeed[] {
+    return users.map(user => {
+        // Generar números aleatorios para la cantidad de specialties
+        // e interests para añadir al usuario de la iteración actual
+        const numSpecialties: number = Math.floor(Math.random() * 5) + 1;
+        const numInterests: number = Math.floor(Math.random() * 5) + 1;
 
-export const users: IUser[] = [
+        // Se mezcla el array de especialidades
+        const shuffledSpecialties: specialty[] = [...allSpecialties].sort(() => 0.5 - Math.random());
+
+        // Y se asignan los primeros specialties
+        const specialties: specialty[] = shuffledSpecialties.slice(0, numSpecialties);
+
+        // Asignar interests (excluyendo las especialidades ya asignadas)
+        const remainingSpecialties = shuffledSpecialties.filter(spec => 
+            !specialties.some(s => s.specialtyId === spec.specialtyId)
+        );
+        const interests = remainingSpecialties.slice(0, numInterests);
+
+        return {
+            ...user,
+            specialties,
+            interests
+        };
+    });
+}
+
+
+export const users: IUserSeed[] = [
     {
         name: 'Catriel Milei',
         email: 'catrielmilei@gmail.com',

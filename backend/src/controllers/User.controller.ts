@@ -14,8 +14,9 @@ export class UserController {
 
         try {
             const result = await this.userService.verifyEmail(req.body)
-            result.status == "success" ? res.send(result)
-                : res.status(409).send(result)
+            
+            result.status === "success" ? res.send(result)
+                : res.status(404).send(result)
 
         } catch (error) {
             console.log(error);
@@ -30,7 +31,7 @@ export class UserController {
     confirmRegister = async (req: Request, res: Response) => {
         const { token } = req.params;
         try {
-            const result = await this.userService.create(token)
+            const result = await this.userService.create(token)          
             result.status == "success" ? res.send(result)
                 : res.status(409).send(result)
         } catch (error) {
@@ -84,11 +85,9 @@ export class UserController {
             page = null
         }
         try {
-
             const result = await this.userService.find(categoryId, page)
             result.status == "success" ? res.send(result)
                 : res.status(500).send(result)
-
         } catch (error: any) {
             console.log(error);
             if (error instanceof Error) {
@@ -145,7 +144,7 @@ export class UserController {
         const {comment = "",rating}:{comment:string | undefined,rating:enumType} = req.body;
         const userId = req.user!._id
         try {
-            const result = await this.userService.updateRating({userId,tradeId,comment,rating},CarlosID)
+            const result = await this.userService.updateRating({userId,tradeId,comment,rating},req.user!)
 
         } catch (error) {
             console.log(error);

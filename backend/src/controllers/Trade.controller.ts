@@ -20,5 +20,54 @@ export class TradeController {
             console.log(error);
             
         }
-    } 
+    }
+
+    updateAccepted = async (req:Request,res:Response) => {
+        const {tradeId} = req.params;
+        const user = req.user!
+        try {
+            const result = await this.tradeService.updateAccepted(user,tradeId)
+            console.log(result);
+            result.status === "success" ? res.send(result) : res.status(400).send(result)
+        } catch (error) {
+            console.log(error);
+            if (error instanceof Error) {
+                res.status(500).send(error.message)
+            } else {
+                res.status(500).send("Error interno")
+            }
+        }
+    }
+
+    findOne = async (req:Request,res:Response) => {
+        const {tradeId} = req.params;
+        const user = req.user!
+        try {
+            const result = await this.tradeService.findOne(user,tradeId,{})
+            result.status === "success" ? res.send(result) : res.status(400).send(result)
+        } catch (error) {
+            console.log(error);
+            if (error instanceof Error) {
+                res.status(500).send(error.message)
+            } else {
+                res.status(500).send("Error interno")
+            }
+        }
+    }
+
+    findTrades = async (req:Request,res:Response) => { 
+        const user = req.user!
+        try {
+            const result = await this.tradeService.findTrades(user._id)
+            result.status === "success" ? res.send(result) : res.status(400).send(result)
+        } catch (error) {
+            console.log(error);
+            if (error instanceof Error) {
+                res.status(500).send(error.message)
+            } else {
+                res.status(500).send("Error interno")
+            }
+        }
+     }
+
 }

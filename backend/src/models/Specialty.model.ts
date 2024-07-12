@@ -5,7 +5,7 @@ import mongoose, { Document, PopulatedDoc, Schema, Types, mongo } from 'mongoose
 export interface ISpecialty extends Document {
 	id: Types.ObjectId;
 	name: string;
-	category: PopulatedDoc<Types.ObjectId & Document>;
+	categoryId: PopulatedDoc<Types.ObjectId & Document>;
 	status: boolean;
 }
 

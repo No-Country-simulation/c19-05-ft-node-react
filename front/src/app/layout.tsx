@@ -1,14 +1,18 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import NavBar from "@/components/NavBar/NavBar";
+
 import CommonLayout from "@/components/CommonLayout";
+import TradeProvider from "@/context/TradeContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  title: "Talent Trade - Exchange and Expand Your Knowledge",
+  description: "Talent Trade is an innovative platform for knowledge exchange. Connect with experts in various fields and expand your skills collaboratively.",
   title: "Talent Trade - Intercambia y Expande tu Conocimiento",
-  description: "Talent Trade es una plataforma innovadora para el intercambio de conocimientos. Conecta con expertos en diversas áreas y amplía tus habilidades de manera colaborativa.",
+  description:
+    "Talent Trade es una plataforma innovadora para el intercambio de conocimientos. Conecta con expertos en diversas áreas y amplía tus habilidades de manera colaborativa.",
 };
 
 export default function RootLayout({
@@ -17,9 +21,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className="h-screen w-full m-0 p-0">
+    <html lang="es" className="min-h-screen min-w-full m-0 p-0">
       <body className={`${inter.className} bg-gray-100`}>
-        <CommonLayout>{children}</CommonLayout>
+        <TradeProvider>
+          <CommonLayout>{children}</CommonLayout>
+        </TradeProvider>
       </body>
     </html>
   );

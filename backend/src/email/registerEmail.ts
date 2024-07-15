@@ -23,10 +23,8 @@ export class Emails {
                 <p>Hola, <strong>${parametros.name}</strong>,</p>
                 <p>¡Gracias por registrarte en Talent Trade! Ya casi has finalizado el registro, solo queda que confirmes tu email.</p>
                 <p style="text-align: center;">
-                  <a href="http://localhost:${envs.PORT}/api/user/confirm-email/${parametros.token}" style="display: inline-block; padding: 10px 20px; color: #fff; background-color: #4CAF50; border-radius: 5px; text-decoration: none;">Confirmar Cuenta</a>
+                  <a href="${envs.FRONTEND_URL}/auth/confirm-account/${parametros.token}" style="display: inline-block; padding: 10px 20px; color: #fff; background-color: #4CAF50; border-radius: 5px; text-decoration: none;">Confirmar Cuenta</a>
                 </p>
-                <p>O puedes copiar y pegar el siguiente enlace en tu navegador:</p>
-                <p><a href="http://localhost:${envs.PORT}/api/user/confirm-email/${parametros.token}" style="color: #4CAF50;">Click aca</a></p>
                 <p style="color: #888;">Este token expira en 30 minutos.</p>
                 <p>Si no te has registrado en Talent Trade, por favor ignora este correo.</p>
                 <p style="text-align: center; color: #888; font-size: 12px;">&copy; 2024 Talent Trade. Todos los derechos reservados.</p>

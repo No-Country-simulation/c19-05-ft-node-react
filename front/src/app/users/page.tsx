@@ -7,10 +7,8 @@ import { users } from "@/utils/array_data";
 interface User {
   avatar: string;
   name: string;
-  email: string;
   specialties: string[];
-  interests: string[];
-  description: string;
+  location: string;
   // phoneNumber: string;
 }
 
@@ -39,8 +37,8 @@ const UsersPage = () => {
 
   return (
     <>
-      <div className="container min-h-screen min-w-full mx-auto my-20 py-5">
-        <div className="container mx-auto grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 px-5 py-5">
+      <div className="container min-h-screen min-w-full my-20 py-5">
+        <div className="container mx-auto flex flex-wrap gap-5 justify-center px-5 py-5">
           {users.map((user, index) => (
             <CardUser key={index} {...user} />
           ))}

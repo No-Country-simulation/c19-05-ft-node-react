@@ -8,10 +8,39 @@ import { Emails } from "../email/registerEmail";
 import { UserUpdateType } from "../utils/schema/user.schema";
 import { TradeService } from "./Trade.service";
 import { TradeRepository } from "../repositories/Trade.repository";
+import { UploadApiResponse } from "cloudinary";
+import { cloudinary } from "../config/cloudinary/cloudinary.config";
+import { populate } from "dotenv";
 
 
+export interface CloudinaryResponse {
+    asset_id: string;
+    public_id: string;
+    version: number;
+    version_id: string;
+    signature: string;
+    width: number;
+    height: number;
+    format: string;
+    resource_type: string;
+    created_at: Date;
+    tags: any[];
+    bytes: number;
+    type: string;
+    etag: string;
+    placeholder: boolean;
+    url: string;
+    secure_url: string;
+    asset_folder?: string; // Hacer opcional si no está siempre presente
+    display_name?: string; // Hacer opcional si no está siempre presente
+    access_mode: string;
+    overwritten: boolean;
+    original_filename: string;
+    api_key: string;
+  }
 
-type userFilterDataType = Pick<IUser,"id"|"name"| "description" | "specialties" | "interests" |"userRatings"  > & {
+
+type userFilterDataType = Pick<IUser,"id"|"name"| "aboutme" | "specialties" | "interests" |"userRatings"  > & {
     phoneNumber:string|null;
     trades:Types.ObjectId[] | null
 }
@@ -159,8 +188,47 @@ export class UserService {
     async find ( categoryId:string | null, page:string | null ) {
         const options = {
             page: page ? +page : 1,
-            limit:10,
-            select: "name email description specialties interests"
+            limit: 10,
+            select: "name avatar aboutme specialties interests userRatings",
+            populate: [
+                {
+                  path: 'specialties',
+                  populate: [
+                    {
+                      path: 'categoryId',
+                      select:"name",
+                      model: 'Category', 
+                    },
+                    {
+                      path: 'specialtyId',
+                      select:"name",
+                      model: 'Specialty', 
+                    }
+                  ]
+                },
+                {
+                  path: 'interests',
+                  populate: [
+                    {
+                      path: 'categoryId',
+                      select:"name",
+                      model: 'Category', 
+                    },
+                    {
+                      path: 'specialtyId',
+                      select:"name",
+                      model: 'Specialty', 
+                    }
+                  ]
+                },
+                {
+                    path: 'userRatings',
+                    populate: {
+                      path: 'userId',
+                      select: 'name avatar'
+                    }
+                  }
+              ]
           };
           let query = {}
           if(categoryId) {
@@ -200,7 +268,7 @@ export class UserService {
             let userFilterData:userFilterDataType = {
                 id:userFind.id,
                 name:userFind.name,
-                description:userFind.description,
+                aboutme:userFind.aboutme,
                 specialties:userFind.specialties,
                 interests:userFind.interests,
                 userRatings:userFind.userRatings,
@@ -247,7 +315,7 @@ export class UserService {
 
             let userFilterData:userFilterDataType = {
                 name:userFind.name,
-                description:userFind.description,
+                aboutme:userFind.aboutme,
                 specialties:userFind.specialties,
                 interests:userFind.interests,
                 userRatings:userFind.userRatings,
@@ -278,7 +346,7 @@ export class UserService {
     }
 
     // ta ok.👍
-    async update (id:string,data:UserUpdateType) {
+    async update (id:string| Types.ObjectId,data:UserUpdateType) {
         try {
             const user = await this.userRepository.update(id,data);
             if(user) {
@@ -361,40 +429,37 @@ export class UserService {
             throw new Error(String(error))
         }
 	}
-
-    // servicio para actualizar especialidad y categoría de una persona
-    async addSpecialties (user: IUser, specialties:specialty[]){
-        // tenemos que chequear que los ids de la categoría y especialidad EXISTAN. Si no, pues manda error
-        // idea: hacer un middleware que verifique esto
+    async updatePick(user: IUser, photo: Express.Multer.File) {
+        
         try {
-            user.specialties = specialties;
-            const update = await user.save()
-            return update
+          const uploadResult: CloudinaryResponse = await new Promise((resolve, reject) => {
+            const uploadStream = cloudinary.v2.uploader.upload_stream(
+              {
+                upload_preset: 'tatrade_profile',
+                public_id: `${user.email}`,
+                use_filename: true,
+                overwrite: true,
+                transformation: [
+                  { width: 250, height: 250, gravity: 'faces', crop: 'thumb' },
+                  { radius: 'max' },
+                ],
+              },
+              (error, result: UploadApiResponse | undefined) => {
+                if (error) return reject(error);
+                resolve(result as unknown as CloudinaryResponse);
+              },
+            );
+            uploadStream.end(photo.buffer);
+          });
+          user.avatar = uploadResult!.url;
+          await user.save();
+          return {status:"success",payload:user};
         } catch (error) {
-            console.log(error)
-            if(error instanceof Error) {
-                throw Error(error.message)
-            }
-            throw new Error(String(error))
+          if (error instanceof Error) {
+            throw new Error(error.message);
+          }
+          throw new Error(String(error));
         }
-
-    }
-
-    async addInterests(user: IUser, interests:specialty[]){
-        // tenemos que chequear que los ids de la categoría y especialidad EXISTAN. Si no, pues manda error
-        // idea: hacer un middleware que verifique esto
-        try {
-            user.interests = interests;
-            const update = await user.save()
-            return update
-        } catch (error) {
-            console.log(error)
-            if(error instanceof Error) {
-                throw Error(error.message)
-            }
-            throw new Error(String(error))
-        }
-
-    }
+      }
 
 }

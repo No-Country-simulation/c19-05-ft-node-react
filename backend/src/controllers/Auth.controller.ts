@@ -33,6 +33,8 @@ export class AuthController {
     }
 
     logout = async (req: Request, res: Response) => {
+        console.log("first");
+        
         try {
           res.clearCookie("token");
           res.sendStatus(200);

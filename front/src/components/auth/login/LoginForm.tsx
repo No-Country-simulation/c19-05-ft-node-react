@@ -1,10 +1,8 @@
-"use client"
-
+'use client';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
-import Alert from '@/components/Alert/Alert';
 import Link from 'next/link';
+import { useAuth } from '@/context/session/sessionContext';
 
 interface FormValues {
   email: string;
@@ -17,34 +15,18 @@ const LoginForm: React.FC = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>();
-
+  const { isLoading, isResponse, login, user } = useAuth();
   const [alert, setAlert] = useState<{
     message: string;
     type: 'success' | 'error';
   } | null>(null);
 
   const onSubmit = async (data: FormValues) => {
-    const { email, password } = data;
     try {
-      const response = await axios.post('/api/auth/login', { email, password });
-      const { token } = response.data; // Assuming your API returns a token
-
-      // Store the token in localStorage or sessionStorage
-      localStorage.setItem('token', token);
-
-      // Set success alert
-      setAlert({ message: 'Login successful!', type: 'success' });
-
-      // Redirect to dashboard or another protected route
-      // Example: window.location.href = '/dashboard';
+      await login(data);
     } catch (error) {
-      console.error('Login error:', error);
-      setAlert({ message: 'Email or password invalid.', type: 'error' });
+      console.log(error);
     }
-  };
-
-  const closeAlert = () => {
-    setAlert(null);
   };
 
   return (
@@ -56,9 +38,9 @@ const LoginForm: React.FC = () => {
             Exchange knowledge with more people.
           </h2>
         </div>
-        {alert && (
-          <Alert message={alert.message} type={alert.type} onClose={closeAlert} />
-        )}
+        {/* Mejorar mensaje */}
+        {isLoading && 'Cargando...'}
+        {isResponse.status ? isResponse.message : isResponse.message}
         <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
           <div className="">
             <div className="flex justify-center">
@@ -71,10 +53,10 @@ const LoginForm: React.FC = () => {
                   type="email"
                   autoComplete="email"
                   required
-                  {...register("email", { required: true })}
+                  {...register('email', { required: true })}
                   className="block w-full px-2 py-2 rounded-md sm:text-sm"
                   placeholder="Email"
-                  style={{ maxWidth: "15rem" }}
+                  style={{ maxWidth: '15rem' }}
                 />
               </div>
             </div>
@@ -89,10 +71,10 @@ const LoginForm: React.FC = () => {
                   type="password"
                   autoComplete="current-password"
                   required
-                  {...register("password", { required: true })}
+                  {...register('password', { required: true })}
                   className="block w-full px-2 py-2 rounded-md sm:text-sm"
                   placeholder="Password"
-                  style={{ maxWidth: "15rem" }}
+                  style={{ maxWidth: '15rem' }}
                 />
               </div>
             </div>
@@ -101,7 +83,7 @@ const LoginForm: React.FC = () => {
           <div>
             <p className="flex justify-center">
               <span className="mr-2 text-[0.9rem]">Don't have an account?</span>
-              <Link href={"/auth/sign-up"} legacyBehavior>
+              <Link href={'/auth/sign-up'} legacyBehavior>
                 <a className="font-bold text-black-500 text-[0.9rem]">
                   Register Here
                 </a>
@@ -112,7 +94,7 @@ const LoginForm: React.FC = () => {
               <span className="mr-2 text-[0.9rem]">
                 Can't remember your password?
               </span>
-              <Link href={"/auth/forgot-password"} legacyBehavior>
+              <Link href={'/auth/forgot-password'} legacyBehavior>
                 <a className="font-bold text-black-500 text-[0.9rem]">
                   Click Here
                 </a>

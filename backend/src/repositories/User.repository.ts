@@ -7,9 +7,10 @@ import { populate } from "dotenv";
 
 
 type OptionsType = {
-	page:number,
-	limit:number,
-	select:string
+	page:number;
+	limit:number;
+	select:string;
+	populate:{path:string}[]
 }
 
 type Query = {

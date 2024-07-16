@@ -1,8 +1,8 @@
 "use client"
 import { ReactNode } from 'react';
-import { AuthProvider } from '../session/session';
-import { TradesProvider } from '../trades/trades';
-import { UserProvider } from './user';
+import { AuthProvider } from './session/sessionContext';
+import { TradesProvider } from './trades/trades';
+import { UserProvider } from './user/userContext';
 
 
 interface ProvidersProps {

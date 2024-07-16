@@ -30,9 +30,10 @@ export interface IUser extends Document {
    name: string
    email: string
    password: string
+   avatar:string;
    specialties: specialty[]
    interests: specialty[]
-   description: string
+   aboutme: {teach:string,learn:string}
    userRatings: userRating[]
    phoneNumber: string
    trades: Types.ObjectId[]
@@ -50,9 +51,14 @@ const UserSchema: Schema = new Schema({
       required: true,
       unique: true,
    },
+   
    password: {
       type: String,
       required: true,
+   },
+   avatar: {
+      type:String,
+      default:"/assets/default.jpeg"
    },
    specialties: {
       type: [
@@ -84,9 +90,15 @@ const UserSchema: Schema = new Schema({
       ],
       default: [],
    },
-   description: {
-      type: String,
-      default: "Mi descripcion",
+   aboutme: {
+      teach: {
+         type: String,
+      default: "",
+      },
+      learn: {
+         type: String,
+      default: "",
+      },
    },
    userRatings: {
       type: [

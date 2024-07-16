@@ -56,8 +56,8 @@ const ResetPassword: React.FC = () => {
                             <div className='flex justify-center rounded-md border border-grey-200'> 
                             <label htmlFor="name" className="sr-only">Name</label>
                             <input
-                               id="re-password"
-                               name="re-password"
+                               id="repassword"
+                               name="repassword"
                                type="password"
                                autoComplete="new-password"
                                required

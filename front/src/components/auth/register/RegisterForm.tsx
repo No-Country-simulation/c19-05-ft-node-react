@@ -1,9 +1,9 @@
-"use client"
+'use client';
 
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import Link from 'next/link';
-import { useAuth } from '@/context/session/session';
+import { useAuth } from '@/context/session/sessionContext';
 
 interface FormValues {
   name: string;
@@ -14,28 +14,34 @@ interface FormValues {
 }
 
 const RegisterForm: React.FC = () => {
-  const {registerContext, isLoading, isResponse} = useAuth()
-  console.log(registerContext)
-  const { register, handleSubmit, reset, watch, formState: { errors } } = useForm<FormValues>();
+  const { registerContext, isLoading, isResponse } = useAuth();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    formState: { errors },
+  } = useForm<FormValues>();
   const [alert, setAlert] = useState<{
     message: string;
     type: 'success' | 'error';
   } | null>(null);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    try { 
-    console.log('NO ANDA UNA MIERDA ACA')
-    await registerContext(data)
-  
-      
+    try {
+      console.log('NO ANDA UNA MIERDA ACA');
+      await registerContext(data);
+      console.log(isResponse);
     } catch (error) {
       console.error('Registration error:', error);
-      setAlert({ message: 'Failed to create account. Please try again.', type: 'error' });
+      setAlert({
+        message: 'Failed to create account. Please try again.',
+        type: 'error',
+      });
     }
   };
- 
-  
-  const password = watch("password");
+
+  const password = watch('password');
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-grey-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
@@ -46,7 +52,8 @@ const RegisterForm: React.FC = () => {
             it's quick and easy
           </h2>
         </div>
-        {isLoading ? 'Loading...' : isResponse?.message}
+        {isLoading && 'Cargando...'}
+        {isResponse && isResponse.message}
         <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
           <div>
             <div className="flex justify-center">
@@ -63,7 +70,9 @@ const RegisterForm: React.FC = () => {
                 />
               </div>
             </div>
-            {errors.name && <span className="text-red-500">Name is required</span>}
+            {errors.name && (
+              <span className="text-red-500">Name is required</span>
+            )}
             <br />
             <div className="flex justify-center">
               <div className="flex justify-center rounded-md border border-grey-200">
@@ -75,12 +84,14 @@ const RegisterForm: React.FC = () => {
                   {...register('email', { required: true })}
                   className="block w-full px-2 py-2 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   placeholder="Email address"
-                  type='email'
+                  type="email"
                   style={{ maxWidth: '240px' }}
                 />
               </div>
             </div>
-            {errors.email && <span className="text-red-500">Email address is required</span>}
+            {errors.email && (
+              <span className="text-red-500">Email address is required</span>
+            )}
             <br />
             <div className="flex justify-center">
               <div className="flex justify-center rounded-md border border-grey-200">
@@ -93,21 +104,28 @@ const RegisterForm: React.FC = () => {
                     required: 'Passwod is required',
                     minLength: {
                       value: 8,
-                      message: 'Password must be at least 8 characters'
+                      message: 'Password must be at least 8 characters',
                     },
                     pattern: {
-                      value: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/,
-                      message: 'Password must include at least one uppercase letter, one lowercase letter, one number, and one special character'
-                    }
+                      value:
+                        /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/,
+                      message:
+                        'Password must include at least one uppercase letter, one lowercase letter, one number, and one special character',
+                    },
                   })}
                   className="block w-full px-2 py-2 rounded-md sm:text-sm"
                   placeholder="Password"
-                  type='password'
+                  type="password"
                   style={{ maxWidth: '240px' }}
                 />
               </div>
             </div>
-            {errors.password && <span className="text-red-500">Password must be at least 8 character and contain a special character</span>}
+            {errors.password && (
+              <span className="text-red-500">
+                Password must be at least 8 character and contain a special
+                character
+              </span>
+            )}
             <br />
             <div className="flex justify-center">
               <div className="flex justify-center rounded-md border border-grey-200">
@@ -116,16 +134,22 @@ const RegisterForm: React.FC = () => {
                 </label>
                 <input
                   id="repassword"
-                  {...register('repassword', { required: true, validate: (value) =>
-                    value === password || "The passwords dont match try again",})}
+                  {...register('repassword', {
+                    required: 'La concha de tu madre',
+                    validate: (value) =>
+                      value === password ||
+                      'The passwords dont match try again',
+                  })}
                   className="block w-full px-2 py-2 rounded-md sm:text-sm"
                   placeholder="Re-enter Password"
-                  type='password'
+                  type="password"
                   style={{ maxWidth: '240px' }}
                 />
               </div>
             </div>
-            {errors.repassword && <span className="text-red-500">Re-enter Password is required</span>}
+            {errors.repassword && (
+              <span className="text-red-500">{errors.repassword.message}</span>
+            )}
             <br />
             <div className="flex justify-center">
               <div className="flex justify-center rounded-md border border-grey-200">
@@ -146,9 +170,13 @@ const RegisterForm: React.FC = () => {
 
           <div>
             <p className="flex justify-center">
-              <span className="mr-2 text-[0.9rem]">Already have an account?</span>{' '}
+              <span className="mr-2 text-[0.9rem]">
+                Already have an account?
+              </span>{' '}
               <Link href={'/auth/sign-in'} legacyBehavior>
-                <a className="font-bold text-black-500 text-[0.9rem]">Click Here</a>
+                <a className="font-bold text-black-500 text-[0.9rem]">
+                  Click Here
+                </a>
               </Link>
             </p>
           </div>

@@ -1,5 +1,7 @@
-import Link from "next/link";
-import React from "react";
+import { GetUser } from '@/types/user.type';
+import Image from 'next/image';
+import Link from 'next/link';
+import React from 'react';
 /**
           
           name: string;
@@ -24,18 +26,22 @@ import React from "react";
           
            */
 interface User {
-  avatar: string;
-  name: string;
-  specialties: string[];
-  location: string;
+  // avatar: string;
+  // name: string;
+  // specialties: string[];
+  user: GetUser;
 }
 
-const CardUser: React.FC<User> = (user) => {
+const CardUser: React.FC<User> = ({ user }: User) => {
   return (
     <div className="container w-full max-w-xs overflow-hidden bg-white hover:scale-105 transition-all rounded-lg shadow-lg px-4">
       <div className="flex justify-center items-center p-6">
-        <img
+        <Image
           className="object-cover object-center w-24 h-24 rounded-full"
+          src={user.avatar}
+          width={96}
+          height={96}
+          alt="foto facha"
         />
       </div>
 
@@ -44,10 +50,10 @@ const CardUser: React.FC<User> = (user) => {
           if (index < 3) {
             return (
               <div
-                key={index}
+                key={specialty.specialtyId._id}
                 className="border border-gray-400 rounded-2xl p-2 text-center text-xs m-1"
               >
-                {specialty}
+                {specialty.specialtyId.name}
               </div>
             );
           }
@@ -61,13 +67,11 @@ const CardUser: React.FC<User> = (user) => {
       </div>
 
       <div className="mt-3 text-center">
-        <h1 className="text-lg font-medium text-gray-800">
-          {user.name}
-        </h1>
-
+        <h1 className="text-lg font-medium text-gray-800">{user.name}</h1>
+        {/* 
         <p className="py-1 text-sm text-gray-800">
           {user.location}
-        </p>
+        </p> */}
 
         <div className="flex justify-between my-2 py-2">
           <Link href="#">

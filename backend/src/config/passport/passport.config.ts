@@ -21,7 +21,44 @@ export const initializePassport = () => {
 
 	passport.deserializeUser(async (id: string, done: (err: any, user?: IUser | null) => void) => {
 		try {
-			const user = await UserModel.findById(id)
+			const user = await UserModel.findById(id).populate({
+				path: 'specialties',
+				populate: [
+				  {
+					path: 'categoryId',
+					select:"name",
+					model: 'Category' 
+				  },
+				  {
+					path: 'specialtyId',
+					select:"name",
+					model: 'Specialty'
+				  }
+				]
+			  })
+			  .populate({
+				path: 'interests',
+				populate: [
+				  {
+					path: 'categoryId',
+					select:"name",
+					model: 'Category' 
+				  },
+				  {
+					path: 'specialtyId',
+					select:"name",
+					model: 'Specialty' 
+				  }
+				]
+			  })
+			  .populate({
+				path: 'userRatings',
+				populate: {
+				  path: 'userId',
+				  select: 'name avatar'
+				}
+			  })
+			  
 			done(null, user);
 		} catch (err) {
 			done(err);

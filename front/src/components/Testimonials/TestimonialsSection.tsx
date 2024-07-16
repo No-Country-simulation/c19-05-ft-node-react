@@ -23,20 +23,20 @@ export default function Testimonials() {
     nextArrow: <CustomNextArrow />,
   };
   return (
-    <div className="container  my-20 p-10 mx-auto">
-      <h1 className="text-4xl text-center font-semibold mb-8">Testimonials</h1>
-
-      <Slider {...settings}>
-        {/* Aquí se hará un map devolviendo los testimonials */}
-        <div>
-          <div className="flex flex-col items-center justify-center text-center text-gray-800 my-8 px-6">
-            <Image
-              src={JavierMileiPhoto}
-              alt="Picture of testimonial"
-              width="160"
-              height="160"
-              className="rounded-full object-center mb-8"
-            />
+     <div className="p-10">
+        <h1 className="text-4xl text-center font-medium mb-8 text-gray-800">Testimonials</h1>
+    
+        <Slider {...settings}>
+            {/* Aquí se hará un map devolviendo los testimonials */}
+            <div>
+                <div className="flex flex-col items-center justify-center text-center text-gray-800 my-8 px-6">
+                    <Image 
+                        src={JavierMileiPhoto} 
+                        alt="Picture of testimonial"
+                        width="160"
+                        height="160"
+                        className="rounded-full object-center mb-8"
+                    />
 
             <h3 className="sm:max-w-sm md:max-w-lg lg:max-w-2xl mb-6 text-lg">
               ¡Talent Trade es una plataforma increíble! He podido intercambiar

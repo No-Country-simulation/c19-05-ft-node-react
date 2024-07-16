@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { useState, FormEvent, useEffect } from "react";
 import { useRouter } from "next/router"; // Importa el hook useRouter

@@ -1,0 +1,43 @@
+.about-container {
+    text-align: center;
+}
+
+.about-portada {
+    background-image: url("../../assets/about-portada.png");
+    background-size: cover;
+}
+
+.about-first, .about-second {
+    font-size: x-large;
+}
+
+.about-portada-first {
+    width: 25%;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    color: white;
+}
+
+@media (max-width: 800px) {
+    .about-portada-first {
+        width: 40%;
+        font-size: small;
+    }
+    .about-first, .about-second {
+        font-size: large;
+    }
+}
+
+@media (max-width: 600px) {
+    .about-first, .about-second {
+        font-size: medium;
+    }
+}
+
+@media (max-width: 450px) {
+    .about-portada-first {
+        width: 50%;
+    }
+}

@@ -23,7 +23,7 @@ export default function Testimonials() {
     nextArrow: <CustomNextArrow />,
   };
   return (
-    <div className="p-10">
+     <div className="p-10">
         <h1 className="text-4xl text-center font-medium mb-8 text-gray-800">Testimonials</h1>
     
         <Slider {...settings}>

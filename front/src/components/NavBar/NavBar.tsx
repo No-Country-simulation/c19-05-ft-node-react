@@ -44,7 +44,7 @@ export default function NavBar() {
           </Link>
           {auth && (
             <Link
-              href={`/support/`}
+              href={`/user/trades`}
               className={`cursor-pointer text-green-500 hover:text-green-600 font-bold border-b-2 border-gray-300 hover:border-gray-400`}
             >
               Trades
@@ -121,7 +121,7 @@ export default function NavBar() {
         </Link>
         {auth && (
           <Link
-            href={`/support/`}
+            href={`/user/trades`}
             className={`cursor-pointer text-green-500 hover:text-green-600 font-bold border-b-2 border-gray-300 hover:border-gray-400 text-sm`}
           >
             Trades

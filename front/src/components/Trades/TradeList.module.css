@@ -1,0 +1,21 @@
+.title {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0;
+  white-space: nowrap;
+}
+
+.title::before {
+  content: "";
+  flex: 5%;
+  border-bottom: 1px solid #9ca3af;
+  margin: 0 10px;
+}
+
+.title::after {
+  content: "";
+  flex: 95%;
+  border-bottom: 1px solid #9ca3af;
+  margin: 0 10px;
+}

@@ -1,7 +1,7 @@
-import React from "react";
-import TestimonialsSection from "@/components/Testimonials/TestimonialsSection";
-import Hero from "@/components/Hero/Hero";
-import CategoriesHomeSection from "@/components/Categories/CategoriesHomeSection";
+import React from 'react';
+import TestimonialsSection from '@/components/Testimonials/TestimonialsSection';
+import Hero from '@/components/Hero/Hero';
+import CategoriesHomeSection from '@/components/Categories/CategoriesHomeSection';
 
 type Props = {};
 
@@ -14,5 +14,4 @@ const HomePage = (props: Props) => {
     </div>
   );
 };
-
 export default HomePage;

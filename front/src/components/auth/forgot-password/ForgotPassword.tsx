@@ -1,22 +1,19 @@
-"use client";
+'use client';
 
-import { useState, FormEvent, useEffect } from "react";
-import { useRouter } from "next/router"; // Importa el hook useRouter
-import Alert from "@/components/Alert/Alert";
+import { useState, FormEvent, useEffect } from 'react';
+import Alert from '@/components/Alert/Alert';
 
 const ForgotPassword: React.FC = () => {
-  const [email, setEmail] = useState<string>("");
+  const [email, setEmail] = useState<string>('');
 
   const [alert, setAlert] = useState<{
     message: string;
-    type: "success" | "error";
+    type: 'success' | 'error';
   } | null>(null);
-
-  //const router = useRouter(); // Usa el hook useRouter
 
   useEffect(() => {
     // Verifica que el componente esté montado en el cliente
-    if (typeof window !== "undefined") {
+    if (typeof window !== 'undefined') {
       // Código que solo se ejecuta en el cliente
     }
   }, []);
@@ -30,14 +27,14 @@ const ForgotPassword: React.FC = () => {
 
     if (isValidEmail(email)) {
       // Redirigir al usuario y mensaje de exito
-      setAlert({ message: "Confirm Changes at your mail", type: "success" });
+      setAlert({ message: 'Confirm Changes at your mail', type: 'success' });
       // Usa router para redirigir
       // router.push("/");
     } else {
       // Mensaje de correo no valido o inexistente
       setAlert({
-        message: "Please enter a valid email address.",
-        type: "error",
+        message: 'Please enter a valid email address.',
+        type: 'error',
       });
     }
   };
@@ -79,7 +76,7 @@ const ForgotPassword: React.FC = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   className="block w-full px-4 py-4 rounded-md sm:text-sm"
                   placeholder="Email"
-                  style={{ maxWidth: "18rem" }}
+                  style={{ maxWidth: '18rem' }}
                 />
               </div>
             </div>

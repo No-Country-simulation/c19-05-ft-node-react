@@ -21,10 +21,14 @@ export const verifyCategoryAndSpecialty = (specialtiesOrInterests:ParameterType)
     // Si todos pasan, pushee todo el array, reemplazando el que ya existe en la base de datos
     // tomamos el body
     const user = req.user!
-    
-    const {specialties}:{specialties:specialty[]} = req.body
+    let checkSpecialtiesOrInterests:specialty[] = []
+     if(specialtiesOrInterests === "specialties") {
+        checkSpecialtiesOrInterests = req.body.specialties
+     }else if (specialtiesOrInterests === "interests") {
+        checkSpecialtiesOrInterests = req.body.interests
+     }
 
-    const uniqueArray = specialties.reduce((accumulator:specialty[], current) => {
+    const uniqueArray = checkSpecialtiesOrInterests.reduce((accumulator:specialty[], current) => {
         const exists = accumulator.some(item => 
             item.categoryId === current.categoryId && item.specialtyId === current.specialtyId
         );
@@ -34,9 +38,16 @@ export const verifyCategoryAndSpecialty = (specialtiesOrInterests:ParameterType)
         return accumulator;
     }, []); // chequeo que no vengan objetos repetidos. en caso de venir repetidos limpio el array
 
-    if(uniqueArray.length === 0) {
-        req.specialties = uniqueArray
-        return next()
+    if(specialtiesOrInterests === "specialties") {
+        if(uniqueArray.length === 0) {
+            req.body.specialties = uniqueArray
+            return next()
+        }
+    }else  if(specialtiesOrInterests === "interests") {
+        if(uniqueArray.length === 0) {
+            req.body.interests = uniqueArray
+            return next()
+        }
     }
     const arrayPromise = uniqueArray.map(array => {  
         return Specialty.find({ _id: array.specialtyId, categoryId: array.categoryId })
@@ -52,7 +63,6 @@ export const verifyCategoryAndSpecialty = (specialtiesOrInterests:ParameterType)
                 payload: "Hubo un error en las categorías/especialidades recibidas"
             });
         }   
-        req.specialties = uniqueArray
         return next();
     } catch (error) {
         return res.status(500).send('internal server error');

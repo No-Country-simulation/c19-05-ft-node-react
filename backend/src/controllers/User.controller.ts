@@ -30,6 +30,7 @@ export class UserController {
 
     confirmRegister = async (req: Request, res: Response) => {
         const { token } = req.params;
+        
         try {
             const result = await this.userService.create(token)          
             result.status == "success" ? res.send(result)
@@ -121,10 +122,10 @@ export class UserController {
 
     // Nombre descripcion numero
     updateUser = async (req: Request, res: Response) => {
-        const { userId } = req.params;
+        
         const data: UserUpdateType = req.body;
         try {
-            const result = await this.userService.update(userId, data);
+            const result = await this.userService.update(req.user!._id, data);
 
             result.status == "success" ? res.send(result)
                 : res.status(400).send(result)
@@ -177,35 +178,20 @@ export class UserController {
         }
     }
 
-    addSpecialties = async (req: Request, res: Response) => {
-        const specialties = req.specialties!
-        
+    updatePick = async (req: Request, res: Response) => {
+        const photo = req.file;
         try {
-            const result = await this.userService.addSpecialties(req.user!,specialties)
-            res.status(201).send(result);
+          if (!photo || photo === undefined) {
+            return res.status(400).send({ status: false, payload: 'No se envio ningun archivo' });
+          }
+          const { status, payload } = await this.userService.updatePick(req.user!, photo!);
+          res.send({ status, payload: 'Perfil actualizado' });
         } catch (error) {
-            console.log(error);
-            if (error instanceof Error) {
-                res.status(500).send(error.message)
-            } else {
-                res.status(500).send("Error interno")
-            }
+          console.log(error);
+          if (error instanceof Error) {
+            res.status(400).send({ status: false, payload: error.message });
+          }
+          res.status(500).send({ status: false, payload: 'Error interno' });
         }
-    }
-
-    addInterests = async (req: Request, res: Response) => {
-        const interests = req.specialties!
-        
-        try {
-            const result = await this.userService.addInterests(req.user!,interests)
-            res.status(201).send(result);
-        } catch (error) {
-            console.log(error);
-            if (error instanceof Error) {
-                res.status(500).send(error.message)
-            } else {
-                res.status(500).send("Error interno")
-            }
-        }
-    }
+      };
 }

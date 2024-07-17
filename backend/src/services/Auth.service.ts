@@ -12,28 +12,6 @@ export class AuthService {
 		this.userRepository = userRepository;
 	}
 
-<<<<<<< HEAD
-	async login(data: LoginType) {
-		try {
-			const user = await this.userRepository.findByEmail(data.email);
-			console.log(user?.provider);
-
-			if (!user || user.provider !== 'local') {
-				return {
-					status: 'error',
-					payload: 'User not found',
-				};
-			}
-			const isValid = await comparePassword(data.password, user.password);
-			if (!isValid) {
-				return {
-					status: 'error',
-					payload: 'Incorrect password',
-				};
-			}
-
-			const token = generateJWT({ id: user.id });
-=======
     async login (data:LoginType) {
         try {
             const user = await this.userRepository.findByEmail(data.email);
@@ -101,15 +79,6 @@ export class AuthService {
             }
             
         } catch (error) {
-            console.log(error)
-            if(error instanceof Error) {
->>>>>>> login
-
-			return {
-				status: 'success',
-				payload: token,
-			};
-		} catch (error) {
 			console.log(error);
 			if (error instanceof Error) {
 				throw Error(error.message);

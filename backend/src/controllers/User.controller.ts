@@ -32,12 +32,17 @@ export class UserController {
         const { token } = req.params;
 
         try {
-            const result = await this.userService.create(token)
+            const result = await this.userService.create(token);
 
+            if(result.status === "success") {
+                res.cookie("token", result.token, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 });
 
+                return {
+                    status: result.status,
+                    payload: result.payload
+                }
+            }
 
-            result.status == "success" ? res.send(result)
-                : res.status(409).send(result)
         } catch (error) {
             console.log(error);
             if (error instanceof Error) {

@@ -54,8 +54,6 @@ export class AuthController {
     user = async (req: Request, res: Response) => {
         const user = req.user;
         try {
-
-
             const populatedUser = await user!.populate([
                 {
                     path: 'specialties',

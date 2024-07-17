@@ -30,43 +30,7 @@ const options: StrategyOptions = {
 
 const strategyJWT = new JwtStrategy(options, async (payload: TokenPayload, done: VerifiedCallback) => {
     try {
-        const user = await UserModel.findById(payload.id).populate({
-            path: 'specialties',
-            populate: [
-              {
-                path: 'categoryId',
-                select:"name",
-                model: 'Category' 
-              },
-              {
-                path: 'specialtyId',
-                select:"name",
-                model: 'Specialty'
-              }
-            ]
-          })
-          .populate({
-            path: 'interests',
-            populate: [
-              {
-                path: 'categoryId',
-                select:"name",
-                model: 'Category' 
-              },
-              {
-                path: 'specialtyId',
-                select:"name",
-                model: 'Specialty' 
-              }
-            ]
-          })
-          .populate({
-            path: 'userRatings',
-            populate: {
-              path: 'userId',
-              select: 'name avatar'
-            }
-          })
+        const user = await UserModel.findById(payload.id);
 
         if (!user) {
             return done(null, false);

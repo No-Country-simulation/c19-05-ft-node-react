@@ -16,10 +16,10 @@ export class AuthController {
             if (result.status !== "success") {
                 res.status(400).send(result)
             } else {
-                res.cookie("token", result.payload, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 })
-                res.send({
+                res.cookie("token", result.token, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 })
+                res.status(200).send({
                     status: "success",
-                    payload: "Login exitoso"
+                    payload: result.payload
                 })
             }
         } catch (error) {
@@ -37,7 +37,10 @@ export class AuthController {
 
         try {
             res.clearCookie("token");
-            res.sendStatus(200);
+            res.status(200).send({
+                status: "success",
+                payload: "Login correcto."
+            });
         } catch (error) {
             console.log(error);
             if (error instanceof Error) {
@@ -48,11 +51,54 @@ export class AuthController {
         }
     };
 
-    user = (req: Request, res: Response) => {
+    user = async (req: Request, res: Response) => {
+        const user = req.user;
         try {
+
+
+            const populatedUser = await user!.populate([
+                {
+                    path: 'specialties',
+                    populate: [
+                        {
+                            path: 'categoryId',
+                            select: "name",
+                            model: 'Category',
+                        },
+                        {
+                            path: 'specialtyId',
+                            select: "name",
+                            model: 'Specialty',
+                        }
+                    ]
+                },
+                {
+                    path: 'interests',
+                    populate: [
+                        {
+                            path: 'categoryId',
+                            select: "name",
+                            model: 'Category',
+                        },
+                        {
+                            path: 'specialtyId',
+                            select: "name",
+                            model: 'Specialty',
+                        }
+                    ]
+                },
+                {
+                    path: 'userRatings',
+                    populate: {
+                        path: 'userId',
+                        select: 'name avatar'
+                    }
+                }
+            ])
+
             res.status(200).send({
                 status: "success",
-                payload: req.user
+                payload: populatedUser
             })
 
         } catch (error) {

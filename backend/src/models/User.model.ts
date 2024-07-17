@@ -27,6 +27,7 @@ export type userRating = {
 
 export interface IUser extends Document {
    _id: Types.ObjectId
+   provider: string
    name: string
    email: string
    password: string
@@ -45,6 +46,10 @@ const UserSchema: Schema = new Schema({
       type: String,
       required: true,
       trim: true,
+   },
+   provider: {
+      type: String,
+      default: "local"
    },
    email: {
       type: String,

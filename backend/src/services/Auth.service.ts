@@ -13,7 +13,7 @@ export class AuthService {
     async login (data:LoginType) {
         try {
             const user = await this.userRepository.findByEmail(data.email);
-            if(!user) {
+            if(!user || user.provider !== "local") {
                 return {
                     status:"error",
                     payload:"User not found"
@@ -27,11 +27,35 @@ export class AuthService {
                 }
             }
 
-
-
             const token = generateJWT({id:user.id})
 
+            return {
+                status:"success",
+                payload:token
+            }
             
+        } catch (error) {
+            console.log(error)
+            if(error instanceof Error) {
+
+                throw Error(error.message)
+            }
+
+            throw new Error(String(error))
+        }
+    }
+
+    async loginGoogle (email: string) {
+        try {
+            const user = await this.userRepository.findByEmail(email);
+            if(!user) {
+                return {
+                    status:"error",
+                    payload:"User not found"
+                }
+            }
+        
+            const token = generateJWT({id:user.id})
 
             return {
                 status:"success",

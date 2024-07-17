@@ -97,3 +97,18 @@ export const authValidatePassportOptional = async (
     return next();
   })(req, res, next);
 };
+
+export const authValidatePassportGoogle = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  passport.authenticate('gmail', (error: any, user: IUser, info: any) => {
+    if (error || !user) {
+      return next()
+    }
+
+    req.user = user as IUser;
+    return next();
+  })(req, res, next);
+};

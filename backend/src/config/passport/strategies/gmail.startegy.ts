@@ -1,6 +1,7 @@
 import { Strategy as GoogleStrategy } from 'passport-google-oauth2';
 import { envs } from "../../envs/env.config";
 import UserModel from "../../../models/User.model";
+import { hashPassword } from '../../../utils/bcrypt/bcrypt.config';
 
 const serverUrl =  envs.SERVER_URL;
 
@@ -22,15 +23,17 @@ const strategyGmail = new GoogleStrategy(options, async (accessToken, refreshTok
             return done(null, user);
         }
 
+        const passwordHashed = hashPassword(profile.id);
+
         const newUser = await UserModel.create({
             name: profile.displayName,
+            provider: "google",
             email: profile.email,
-            password: profile.id,
+            password: passwordHashed,
             avatar: profile.picture
         })
 
-        return done(null, newUser)
-
+        return done(null, newUser);
 
     } catch (err) {
 

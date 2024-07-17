@@ -2,7 +2,6 @@ import React from "react";
 import TestimonialsSection from "@/components/Testimonials/TestimonialsSection";
 import Hero from "@/components/Hero/Hero";
 import CategoriesHomeSection from "@/components/Categories/CategoriesHomeSection";
-import About from "@/components/About/About";
 
 type Props = {};
 
@@ -12,7 +11,6 @@ const HomePage = (props: Props) => {
       <Hero />
       <CategoriesHomeSection />
       <TestimonialsSection />
-      <About />
     </div>
   );
 };

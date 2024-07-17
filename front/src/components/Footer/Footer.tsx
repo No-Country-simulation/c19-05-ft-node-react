@@ -4,9 +4,11 @@ import logo from '../../assets/Talent_Trade_Logo.png'
 import './Footer.css'
 import { FaCopyright } from "react-icons/fa";
 
+
 type Props = {};
 
 const Footer = (props: Props) => {
+  
   return (
     <>
       <footer className="bg-white px-6 py-8 mx-auto">

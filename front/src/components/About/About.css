@@ -7,10 +7,6 @@
     background-size: cover;
 }
 
-.about-first, .about-second {
-    font-size: x-large;
-}
-
 .about-portada-first {
     width: 25%;
     height: 400px;
@@ -20,6 +16,17 @@
     color: white;
 }
 
+.about-gallery {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.about-first, .about-second {
+    font-size: x-large;
+}
+
+
+/*  Media queries    */
 @media (max-width: 800px) {
     .about-portada-first {
         width: 40%;

@@ -21,8 +21,6 @@ routerRating.get("/rating/user/:userId",  ratingController.findByUserId); //Admi
 routerRating.get("/rating/featured", ratingController.findFeaturedRatings);
 routerRating.get("/rating/:ratingId",  ratingController.findById); //Admin
 
-
-
 routerRating.post("/rating", middlewareBody(CreateRatingSchema), authValidatePassport, ratingController.create); //Login required
 
 routerRating.put("/rating", authValidatePassport, ratingController.updateComment); //Login required

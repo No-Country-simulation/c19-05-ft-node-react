@@ -35,7 +35,6 @@ const UsersPage = () => {
   // useEffect(() => {
   //   setData(users);
   // }, []);
-  console.log(users);
 
   if (!user) return redirect('/auth/sign-in');
   return (

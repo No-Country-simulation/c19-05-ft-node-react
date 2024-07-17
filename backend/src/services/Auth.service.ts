@@ -12,6 +12,7 @@ export class AuthService {
 		this.userRepository = userRepository;
 	}
 
+<<<<<<< HEAD
 	async login(data: LoginType) {
 		try {
 			const user = await this.userRepository.findByEmail(data.email);
@@ -32,6 +33,77 @@ export class AuthService {
 			}
 
 			const token = generateJWT({ id: user.id });
+=======
+    async login (data:LoginType) {
+        try {
+            const user = await this.userRepository.findByEmail(data.email);
+            
+            if(!user || user.provider !== "local") {
+                return {
+                    status:"error",
+                    payload:"User not found"
+                }
+            }
+            const isValid = await comparePassword(data.password,user.password)
+            if(!isValid) {
+                return {
+                    status:"error",
+                    payload:"Incorrect password"
+                }
+            }
+
+            const populatedUser = await user.populate([
+                {
+                    path: 'specialties',
+                    populate: [
+                        {
+                            path: 'categoryId',
+                            select: "name",
+                            model: 'Category',
+                        },
+                        {
+                            path: 'specialtyId',
+                            select: "name",
+                            model: 'Specialty',
+                        }
+                    ]
+                },
+                {
+                    path: 'interests',
+                    populate: [
+                        {
+                            path: 'categoryId',
+                            select: "name",
+                            model: 'Category',
+                        },
+                        {
+                            path: 'specialtyId',
+                            select: "name",
+                            model: 'Specialty',
+                        }
+                    ]
+                },
+                {
+                    path: 'userRatings',
+                    populate: {
+                        path: 'userId',
+                        select: 'name avatar'
+                    }
+                }
+            ])
+
+            const token = generateJWT({id:user.id})
+
+            return {
+                status:"success",
+                payload: populatedUser,
+                token: token
+            }
+            
+        } catch (error) {
+            console.log(error)
+            if(error instanceof Error) {
+>>>>>>> login
 
 			return {
 				status: 'success',

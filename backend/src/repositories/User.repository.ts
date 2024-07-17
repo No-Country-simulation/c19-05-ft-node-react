@@ -114,9 +114,7 @@ export class UserRepository {
 
 	async findByEmail(email: string): Promise<IUser | null> {
 		try {
-			return await this.UserModel.findOne({ email }).select(
-				'_id name email description provider password phoneNumber specialties interests userRatings trades contacts'
-			);
+			return await this.UserModel.findOne({email}).select("_id name email provider description password phoneNumber specialties interests userRatings trades contacts");
 		} catch (error) {
 			console.log(error);
 			if (error instanceof Error) {

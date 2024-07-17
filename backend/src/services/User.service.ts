@@ -3,7 +3,7 @@ import { enumType, IUser, specialty } from "../models/User.model";
 import { UserRepository } from "../repositories/User.repository";
 import { hashPassword } from "../utils/bcrypt/bcrypt.config";
 import { RegisterType } from "../utils/schema/auth.schema";
-import {  dataRegisterJwt, generateJWTRegister, generateJWTEmail, dataEmailJwt } from "../utils/jwt/jwt.config";
+import {  dataRegisterJwt, generateJWTRegister, generateJWTEmail, dataEmailJwt, generateJWT } from "../utils/jwt/jwt.config";
 import { Emails } from "../email/registerEmail";
 import { UserUpdateType } from "../utils/schema/user.schema";
 import { TradeService } from "./Trade.service";
@@ -109,10 +109,54 @@ export class UserService {
                 }
             }
             user.password = await hashPassword(user.password);
-            const data = await this.userRepository.create(user)       
+            const newUser = await this.userRepository.create(user);
+
+            const jwt = generateJWT({id:newUser._id});
+            
+            const populatedUser = await newUser.populate([
+                {
+                    path: 'specialties',
+                    populate: [
+                        {
+                            path: 'categoryId',
+                            select: "name",
+                            model: 'Category',
+                        },
+                        {
+                            path: 'specialtyId',
+                            select: "name",
+                            model: 'Specialty',
+                        }
+                    ]
+                },
+                {
+                    path: 'interests',
+                    populate: [
+                        {
+                            path: 'categoryId',
+                            select: "name",
+                            model: 'Category',
+                        },
+                        {
+                            path: 'specialtyId',
+                            select: "name",
+                            model: 'Specialty',
+                        }
+                    ]
+                },
+                {
+                    path: 'userRatings',
+                    populate: {
+                        path: 'userId',
+                        select: 'name avatar'
+                    }
+                }
+            ])
+
             return {
                 status:"success",
-                payload:data
+                payload: populatedUser,
+                token: jwt
             }
         } catch (error) {
             console.log(error)

@@ -1,5 +1,5 @@
 import passport from "passport";
-import strategyJWT  from "./strategies/jwt.strategy";
+import strategyJWT from "./strategies/jwt.strategy";
 import strategyGmail from "./strategies/gmail.startegy";
 import UserModel, { IUser } from "../../models/User.model";
 import { UserRepository } from "../../repositories/User.repository";
@@ -25,41 +25,39 @@ export const initializePassport = () => {
 			const user = await UserModel.findById(id).populate({
 				path: 'specialties',
 				populate: [
-				  {
-					path: 'categoryId',
-					select:"name",
-					model: 'Category' 
-				  },
-				  {
-					path: 'specialtyId',
-					select:"name",
-					model: 'Specialty'
-				  }
+					{
+						path: 'categoryId',
+						select: "name",
+						model: 'Category'
+					},
+					{
+						path: 'specialtyId',
+						select: "name",
+						model: 'Specialty'
+					}
 				]
-			  })
-			  .populate({
+			}).populate({
 				path: 'interests',
 				populate: [
-				  {
-					path: 'categoryId',
-					select:"name",
-					model: 'Category' 
-				  },
-				  {
-					path: 'specialtyId',
-					select:"name",
-					model: 'Specialty' 
-				  }
+					{
+						path: 'categoryId',
+						select: "name",
+						model: 'Category'
+					},
+					{
+						path: 'specialtyId',
+						select: "name",
+						model: 'Specialty'
+					}
 				]
-			  })
-			  .populate({
+			}).populate({
 				path: 'userRatings',
 				populate: {
-				  path: 'userId',
-				  select: 'name avatar'
+					path: 'userId',
+					select: 'name avatar'
 				}
-			  })
-			  
+			})
+
 			done(null, user);
 		} catch (err) {
 			done(err);

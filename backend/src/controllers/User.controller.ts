@@ -33,6 +33,9 @@ export class UserController {
 
         try {
             const result = await this.userService.create(token)
+
+
+
             result.status == "success" ? res.send(result)
                 : res.status(409).send(result)
         } catch (error) {

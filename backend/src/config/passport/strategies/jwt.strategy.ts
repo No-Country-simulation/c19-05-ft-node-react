@@ -1,14 +1,11 @@
 import { Strategy as JwtStrategy, ExtractJwt, StrategyOptions, VerifiedCallback } from 'passport-jwt';
 import { Request } from 'express';
 import { envs } from '../../envs/env.config';
-import { UserRepository } from '../../../repositories/User.repository';
 import UserModel from '../../../models/User.model';
 
 type TokenPayload = {
     id: string;
 };
-
-const userRepo = new UserRepository()
 
 const cookieExtractor = (req: Request): string | null => {
     const cookieHeader = req.headers.cookie;
@@ -31,7 +28,7 @@ const options: StrategyOptions = {
     secretOrKey: envs.JWT_SECRET
 }
 
-export const strategyJWT = new JwtStrategy(options, async (payload: TokenPayload, done: VerifiedCallback) => {
+const strategyJWT = new JwtStrategy(options, async (payload: TokenPayload, done: VerifiedCallback) => {
     try {
         const user = await UserModel.findById(payload.id).populate({
             path: 'specialties',
@@ -80,3 +77,5 @@ export const strategyJWT = new JwtStrategy(options, async (payload: TokenPayload
         return done(error, false);
     }
 });
+
+export default strategyJWT;

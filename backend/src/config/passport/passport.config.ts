@@ -1,6 +1,6 @@
 import passport from "passport";
-//finduserByID
-import { strategyJWT } from "./strategies/jwt.strategy";
+import strategyJWT  from "./strategies/jwt.strategy";
+import strategyGmail from "./strategies/gmail.startegy";
 import UserModel, { IUser } from "../../models/User.model";
 import { UserRepository } from "../../repositories/User.repository";
 
@@ -8,12 +8,13 @@ import { UserRepository } from "../../repositories/User.repository";
 const userRepo = new UserRepository()
 declare global {
 	namespace Express {
-		interface User extends IUser {}
+		interface User extends IUser { }
 	}
 }
 
 export const initializePassport = () => {
 	passport.use("jwt", strategyJWT);
+	passport.use("gmail", strategyGmail);
 
 	passport.serializeUser((user: IUser, done: (err: any, id?: string) => void) => {
 		done(null, user.id.toString());

@@ -4,6 +4,7 @@ import React, { useContext, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import Link from 'next/link';
 import { useAuth } from '@/context/session/sessionContext';
+import { Toaster, toast } from 'sonner'
 
 interface FormValues {
   name: string;
@@ -22,19 +23,27 @@ const RegisterForm: React.FC = () => {
   } = useForm<FormValues>();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    try {
-      console.log('NO ANDA UNA MIERDA ACA');
-      await registerContext(data);
-      console.log();
-    } catch (error) {
-      console.error('Registration error:', error);
-    }
+    const promise = async () => {
+      const response = await registerContext(data);
+      if (response.status !== "success") {
+        throw new Error('Registration failed');
+      }
+      return response;
+    };
+  
+    toast.promise(promise(), {
+      loading: 'Loading...',
+      success: () => 'An email has been sent, please verify it',
+      error: 'Registration error. Please try again.',
+    });
   };
 
   const password = watch('password');
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-grey-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+    
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-red-600- to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+      <Toaster position='top-right' richColors/>
       <div className="max-w-lg  w-full space-y-8 bg-white  rounded-3xl shadow-md">
         <div>
           <h2 className="mt-6 text-[1.6rem] text-center text-gray-900 font-arial">
@@ -124,7 +133,7 @@ const RegisterForm: React.FC = () => {
                 <input
                   id="repassword"
                   {...register('repassword', {
-                    required: 'La concha de tu madre',
+                    required: '',
                     validate: (value) =>
                       value === password ||
                       'The passwords dont match try again',

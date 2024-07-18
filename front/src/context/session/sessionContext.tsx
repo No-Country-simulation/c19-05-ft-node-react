@@ -31,7 +31,7 @@ type AuthContextType = {
   user: User | null;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
   isLoading: boolean;
-  login: (loginData: LoginData) => Promise<void>;
+  login: (loginData: LoginData) => Promise<Respuesta>;
   logout: () => Promise<ResponseMessage>;
   registerContext: (data: UserRegistrationForm) => Promise<ResponseMessage>;
   confirmEmail: (token: string) => Promise<void>;
@@ -59,10 +59,11 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     getSession();
   }, []);
 
-  const login = async (loginData: LoginData) => {
+  const login = async (loginData: LoginData): Promise <Respuesta> => {
     try {
       const { data } = await api.post<Respuesta>('/api/auth/login', loginData);
       setUser(data.payload);
+      return data
     } catch (error) {
       if (isAxiosError(error) && error.response) {
         console.error(error.response.data);

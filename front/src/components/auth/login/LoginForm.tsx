@@ -1,13 +1,15 @@
 'use client';
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import Link from 'next/link';
 import { useAuth } from '@/context/session/sessionContext';
-
+import { Toaster, toast } from 'sonner'
+import { Respuesta } from '@/types/user.type';
 interface FormValues {
   email: string;
   password: string;
 }
+
 
 const LoginForm: React.FC = () => {
   const {
@@ -17,16 +19,25 @@ const LoginForm: React.FC = () => {
   } = useForm<FormValues>();
   const { isLoading, login, user } = useAuth();
 
-  const onSubmit = async (data: FormValues) => {
-    try {
-      await login(data);
-    } catch (error) {
-      console.log(error);
-    }
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    const promise = async (): Promise <Respuesta>=> {
+      const response = await login(data);
+      if (response.status !== "success") {
+        throw new Error('Registration failed');
+      }
+      return response;
+    };
+  
+    toast.promise(promise(), {
+      loading: 'Loading...',
+      success: () => 'Login Succesfully',
+      error: 'Email or password incorrect ',
+    });
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-grey-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+      <Toaster position='top-right' richColors/>
       <div className="max-w-lg w-full space-y-8 bg-white rounded-3xl shadow-md">
         <div>
           <h2 className="mt-6 text-[1.3rem] m-6 text-gray-900 font-arial">

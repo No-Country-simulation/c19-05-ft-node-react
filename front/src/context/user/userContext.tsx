@@ -1,6 +1,6 @@
 'use client';
 
-import api from '@/lib/axios';
+import api, { errorHandler, errorResponseType } from '@/lib/axios';
 import {
   GetUser,
   GetUserById,
@@ -10,7 +10,6 @@ import {
   ResponseUpdate,
   UpdateData,
 } from '@/types/user.type';
-import { isAxiosError } from 'axios';
 import React, {
   createContext,
   useState,
@@ -21,10 +20,14 @@ import React, {
 
 type UserContextType = {
   users: GetUser[];
-  getUsers: (categoryId?: string) => Promise<void>;
   paginate: Paginate | null;
-  isError: { status: boolean; message: string };
-  getUserById: (userId: string) => Promise<ResponseGetUserById | undefined>;
+  getUsers: (categoryId?: string) => Promise<void | errorResponseType>;
+  getUserById: (
+    userId: string
+  ) => Promise<ResponseGetUserById | errorResponseType>;
+  updateUser: (
+    formData: UpdateData
+  ) => Promise<ResponseUpdate | errorResponseType>;
 };
 
 const UserContext = createContext<UserContextType | undefined>(
@@ -46,10 +49,6 @@ type UserProviderProps = {
 const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [users, setUsers] = useState<GetUser[]>([]);
   const [paginate, setPaginate] = useState<Paginate | null>(null);
-  const [isError, setIsError] = useState<{ status: boolean; message: string }>({
-    status: false,
-    message: '',
-  });
 
   useEffect(() => {
     getUsers();
@@ -75,15 +74,7 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       };
       setPaginate(paginate);
     } catch (error) {
-      console.log(error);
-
-      if (isAxiosError(error) && error.response) {
-        setIsError({ status: true, message: error.response.data.payload });
-      } else if (error instanceof Error) {
-        setIsError({ status: true, message: error.message });
-      } else {
-        setIsError({ status: true, message: String(error) });
-      }
+      return errorHandler(error);
     }
   };
 
@@ -94,13 +85,7 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       );
       return data;
     } catch (error) {
-      if (isAxiosError(error) && error.response) {
-        setIsError({ status: true, message: error.response.data.payload });
-      } else if (error instanceof Error) {
-        setIsError({ status: true, message: error.message });
-      } else {
-        setIsError({ status: true, message: String(error) });
-      }
+      return errorHandler(error);
     }
   };
 
@@ -112,22 +97,16 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       );
       return data;
     } catch (error) {
-      if (isAxiosError(error) && error.response) {
-        setIsError({ status: true, message: error.response.data.payload });
-      } else if (error instanceof Error) {
-        setIsError({ status: true, message: error.message });
-      } else {
-        setIsError({ status: true, message: String(error) });
-      }
+      return errorHandler(error);
     }
   };
 
   const contextValue: UserContextType = {
     users,
     getUsers,
-    isError,
     paginate,
     getUserById,
+    updateUser,
   };
 
   return (

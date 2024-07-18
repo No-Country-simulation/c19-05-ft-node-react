@@ -1,0 +1,59 @@
+/* font 404 */
+
+@font-face {
+  font-family: 'Lily Script One';
+  src: url('/front/src/components/Error/fonts/LilyScriptOne.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Abel';
+  src: url('/front/src/components/Error/fonts/Abel-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Estilo del h1 - 404!*/
+
+.text-9xl {
+  color: #51ab8a;
+  font-family: "Lily Script One", system-ui;
+  text-shadow: 4px 4px 2px rgba(0, 0, 0);
+}
+
+/* Parpadeo */
+
+@keyframes flashing {
+  0% {
+    color: #808080;
+  }
+
+  25% {
+    color: #51ab8a;
+  }
+
+  50% {
+    color: #808080;
+  }
+
+  75% {
+    color: #51ab8a;
+  }
+
+  100% {
+    color: #808080;
+  }
+}
+
+.flashing {
+  animation: flashing 6s forwards;
+  /* Duración y repetición de la animación */
+}
+
+/*Estilo palabra Error*/
+
+.text-5xl, .flex {
+  color: black;
+  font-family: "Abel", sans-serif;
+}

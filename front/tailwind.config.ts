@@ -13,6 +13,10 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      fontFamily: {
+        "Lily Script One": ["Lily Script One", "system-ui"],
+        "Abel": ["Abel", "sans-serif"],
+      }
     },
   },
   plugins: [],

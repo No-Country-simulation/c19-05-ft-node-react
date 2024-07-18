@@ -37,11 +37,15 @@ export class UserController {
           httpOnly: true,
           maxAge: 1000 * 60 * 60 * 24,
         });
-
-        return {
+        res.send({
           status: result.status,
           payload: result.payload,
-        };
+        });
+      } else {
+        res.status(400).send({
+          status: result.status,
+          payload: result.payload,
+        });
       }
     } catch (error) {
       console.log(error);

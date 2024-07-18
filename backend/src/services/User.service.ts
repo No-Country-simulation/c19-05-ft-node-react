@@ -294,8 +294,6 @@ export class UserService {
     }
     try {
       const users = await this.userRepository.find(query, options);
-      console.log(users);
-
       return {
         status: "success",
         payload: users,

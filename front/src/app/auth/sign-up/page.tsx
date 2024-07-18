@@ -9,7 +9,7 @@ type Props = {};
 
 const RegisterPage = (props: Props) => {
   const { user } = useAuth();
-  if (user) redirect('/users');
+  if (user) redirect('/connect');
   return (
     <>
       <div className="container my-10 py-3  min-h-screen  w-full mx-auto">

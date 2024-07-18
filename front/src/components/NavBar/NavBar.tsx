@@ -4,14 +4,14 @@ import { useAuth } from '@/context/session/sessionContext';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import { HiMenu, HiUserCircle } from 'react-icons/hi';
-
+import { HiMenu } from 'react-icons/hi';
+import { usePathname } from 'next/navigation';
 export default function NavBar() {
+  const path = usePathname();
   const [auth, setAuth] = useState(true);
   const { user, logout } = useAuth();
   const [navbarVisible, setNavbarVisible] = useState(false);
-
-  console.log(user?.avatar);
+  console.log(path);
 
   const toggleNavbar = () => {
     setNavbarVisible(!navbarVisible);
@@ -31,25 +31,28 @@ export default function NavBar() {
         </Link>
 
         <nav className="w-full hidden lg:flex lg:justify-center lg:gap-x-16">
-          <Link href={`/`} className={`cursor-pointer hover:text-gray-900`}>
+          <Link
+            href={`/`}
+            className={`cursor-pointer transition-all ${path === '/' ? ' text-green-500 hover:text-green-600 font-bold border-b-2 border-gray-300 hover:border-gray-400' : 'hover:text-gray-900'} `}
+          >
             Home
           </Link>
           <Link
             href={`/connect/`}
-            className={`cursor-pointer hover:text-gray-900`}
+            className={`cursor-pointer transition-all ${path === '/connect' ? ' text-green-500 hover:text-green-600 font-bold border-b-2 border-gray-300 hover:border-gray-400' : 'hover:text-gray-900'} `}
           >
             Connect
           </Link>
           <Link
             href={`/support/`}
-            className={`cursor-pointer hover:text-gray-900`}
+            className={`cursor-pointer transition-all ${path === '/support' ? ' text-green-500 hover:text-green-600 font-bold border-b-2 border-gray-300 hover:border-gray-400' : 'hover:text-gray-900'} `}
           >
             Support
           </Link>
           {auth && (
             <Link
               href={`/user/trades`}
-              className={`cursor-pointer text-green-500 hover:text-green-600 font-bold border-b-2 border-gray-300 hover:border-gray-400`}
+              className={`cursor-pointer transition-all ${path === '/user/trades' ? ' text-green-500 hover:text-green-600 font-bold border-b-2 border-gray-300 hover:border-gray-400' : 'hover:text-gray-900'} `}
             >
               Trades
             </Link>

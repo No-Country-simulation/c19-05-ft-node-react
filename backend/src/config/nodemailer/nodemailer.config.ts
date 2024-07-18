@@ -7,6 +7,7 @@ const config = () => {
   return {
     host: envs.SMTP_HOST,
     port: envs.SMTP_PORT,
+    secure: true,
     auth: {
       user: envs.SMTP_USER,
       pass: envs.SMTP_PASS,

@@ -1,7 +1,12 @@
-
-"use client"
-import React, { createContext, useState, useEffect, useContext, ReactNode } from 'react';
-import { isAxiosError } from 'axios';
+'use client';
+import React, {
+  createContext,
+  useState,
+  useEffect,
+  useContext,
+  ReactNode,
+} from 'react';
+import { AxiosError, isAxiosError } from 'axios';
 import api from '@/lib/axios';
 import { User, Respuesta } from '@/types/user.type';
 
@@ -10,7 +15,6 @@ export type UserRegistrationForm = {
   email: string;
   password: string;
   repassword: string;
-  phoneNumber: string;
 };
 
 interface ResponseMessage {
@@ -57,8 +61,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const login = async (loginData: LoginData) => {
     try {
-      const { data } = await api.post<Respuesta>("/api/auth/login", loginData);
-      setUser(data.payload)
+      const { data } = await api.post<Respuesta>('/api/auth/login', loginData);
+      setUser(data.payload);
     } catch (error) {
       if (isAxiosError(error) && error.response) {
         console.error(error.response.data);
@@ -66,13 +70,13 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         console.error('Login error', error);
       }
       throw error;
-    } 
+    }
   };
 
   const getSession = async () => {
     try {
       setIsLoading(true);
-      const { data } = await api<Respuesta>("/api/auth/user");
+      const { data } = await api.get<Respuesta>('/api/auth/user');
       setUser(data.payload as User);
     } catch (error) {
       console.error('Get session error', error);
@@ -83,7 +87,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const logout = async (): Promise<ResponseMessage> => {
     try {
-      const { data } = await api<ResponseMessage>("/api/auth/logout");
+      const { data } = await api.get<ResponseMessage>('/api/auth/logout');
       setUser(null);
       return data;
     } catch (error) {
@@ -92,10 +96,12 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const registerContext = async (data: UserRegistrationForm): Promise<ResponseMessage> => {
+  const registerContext = async (
+    data: UserRegistrationForm
+  ): Promise<ResponseMessage> => {
     try {
       setIsLoading(true);
-      const response = await api.post("/api/user", data);
+      const response = await api.post('/api/user', data);
       return response.data;
     } catch (error) {
       if (isAxiosError(error)) {
@@ -111,13 +117,15 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const confirmEmail = async (token: string): Promise<void> => {
     try {
-      const { data } = await api<Respuesta>(`/api/user/confirm-email/${token}`);
-      setUser(data.payload)
+      const { data } = await api.get<Respuesta>(
+        `/api/user/confirm-email/${token}`
+      );
+      setUser(data.payload);
     } catch (error) {
       if (isAxiosError(error) && error.response) {
-        throw new Error(error.response.data.payload);
+        throw new AxiosError(error.response.data.payload);
       }
-      throw new Error('Error confirming email');
+      throw new Error(String(error));
     }
   };
 
@@ -128,10 +136,12 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     login,
     logout,
     registerContext,
-    confirmEmail
+    confirmEmail,
   };
 
-  return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
+  );
 };
 
 export { AuthContext, AuthProvider };

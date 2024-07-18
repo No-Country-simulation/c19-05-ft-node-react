@@ -10,18 +10,16 @@ interface FormValues {
   email: string;
   password: string;
   repassword: string;
-  phoneNumber: string;
 }
 
 const RegisterForm: React.FC = () => {
-  const { registerContext, isLoading} = useAuth();
+  const { registerContext, isLoading } = useAuth();
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm<FormValues>();
-  
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
@@ -142,23 +140,7 @@ const RegisterForm: React.FC = () => {
               <span className="text-red-500">{errors.repassword.message}</span>
             )}
             <br />
-            <div className="flex justify-center">
-              <div className="flex justify-center rounded-md border border-grey-200">
-                <label htmlFor="phoneNumber" className="sr-only">
-                  Phone
-                </label>
-                <input
-                  id="phoneNumber"
-                  {...register('phoneNumber', { required: true })}
-                  className="block w-full px-2 py-2 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  placeholder="Phone"
-                  style={{ maxWidth: '240px' }}
-                />
-              </div>
-            </div>
-            {errors.phoneNumber && <span className="text-red-500"></span>}
           </div>
-
           <div>
             <p className="flex justify-center">
               <span className="mr-2 text-[0.9rem]">

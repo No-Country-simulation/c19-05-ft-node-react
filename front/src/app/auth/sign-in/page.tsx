@@ -10,7 +10,7 @@ type Props = {};
 const LoginPage = (props: Props) => {
   const { user } = useAuth();
 
-  if (user) redirect('/users');
+  if (user) redirect('/connect');
   return (
     <>
       <LoginForm />

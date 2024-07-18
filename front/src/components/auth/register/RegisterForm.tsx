@@ -14,30 +14,22 @@ interface FormValues {
 }
 
 const RegisterForm: React.FC = () => {
-  const { registerContext, isLoading, isResponse } = useAuth();
+  const { registerContext, isLoading} = useAuth();
   const {
     register,
     handleSubmit,
-    reset,
     watch,
     formState: { errors },
   } = useForm<FormValues>();
-  const [alert, setAlert] = useState<{
-    message: string;
-    type: 'success' | 'error';
-  } | null>(null);
+  
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
       console.log('NO ANDA UNA MIERDA ACA');
       await registerContext(data);
-      console.log(isResponse);
+      console.log();
     } catch (error) {
       console.error('Registration error:', error);
-      setAlert({
-        message: 'Failed to create account. Please try again.',
-        type: 'error',
-      });
     }
   };
 
@@ -53,7 +45,6 @@ const RegisterForm: React.FC = () => {
           </h2>
         </div>
         {isLoading && 'Cargando...'}
-        {isResponse && isResponse.message}
         <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
           <div>
             <div className="flex justify-center">

@@ -1,10 +1,9 @@
+
 "use client"
 import React, { createContext, useState, useEffect, useContext, ReactNode } from 'react';
 import { isAxiosError } from 'axios';
 import api from '@/lib/axios';
 import { User, Respuesta } from '@/types/user.type';
-
-
 
 export type UserRegistrationForm = {
   name: string;
@@ -14,17 +13,27 @@ export type UserRegistrationForm = {
   phoneNumber: string;
 };
 
+interface ResponseMessage {
+  status: string;
+  payload: string;
+}
+
+interface LoginData {
+  email: string;
+  password: string;
+}
+
 type AuthContextType = {
   user: User | null;
-  setUser: React.Dispatch<React.SetStateAction<User | null>>
-  isLoading: boolean
-  isResponse:{status: boolean, message: string}
-  login: (data:Pick<UserRegistrationForm,"email" | "password">) => Promise<void>;
-  logout: () => Promise<void>
-  registerContext: (data: UserRegistrationForm) => Promise<void>;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  isLoading: boolean;
+  login: (loginData: LoginData) => Promise<void>;
+  logout: () => Promise<ResponseMessage>;
+  registerContext: (data: UserRegistrationForm) => Promise<ResponseMessage>;
+  confirmEmail: (token: string) => Promise<void>;
 };
 
-const AuthContext = createContext<AuthContextType | undefined>({} as AuthContextType);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -41,106 +50,88 @@ type AuthProviderProps = {
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isResponse, setIsResponse] = useState<{status: boolean, message: string}>({status:false,message:""});
 
   useEffect(() => {
-      const checkLoginEffect = async () => {
-        try {
-          const data = await checkLogin();
-          if(!data) return
-          setUser(data.payload)
-        } catch (error) {
-          if(isAxiosError(error) && error.response){
-            return error.response.data
-          }else if(error instanceof Error){
-            return error.message
-          }
-        }
-      }
-      checkLoginEffect()
+    getSession();
   }, []);
 
-  const login = async (data:Pick<UserRegistrationForm,"email" | "password">) => {
+  const login = async (loginData: LoginData) => {
     try {
-      setIsLoading(true)
-      const response = await api.post<{status:string,payload:string}>("/api/auth/login", data);
-      const { status, payload } = response.data;
-      if (status === "success") {
-        setIsResponse({status:true,message:payload});
-        const data = await checkLogin()
-        setUser(data!.payload)
+      const { data } = await api.post<Respuesta>("/api/auth/login", loginData);
+      setUser(data.payload)
+    } catch (error) {
+      if (isAxiosError(error) && error.response) {
+        console.error(error.response.data);
+      } else if (error instanceof Error) {
+        console.error('Login error', error);
       }
-      return
-    }  catch (error) {
-      if(isAxiosError(error) && error.response){
-        console.log(error.response.data)
-       return setIsResponse({status: false, message: error.response!.data.payload})
-      } else if(error instanceof Error){
-       return setIsResponse({status: false, message: error.message})
-      }
-    console.error('Registration error', error);
-    return setIsResponse({status: false, message: String(error)})
-  }finally{setIsLoading(false)} 
+      throw error;
+    } 
   };
 
-  const checkLogin = async () => {
+  const getSession = async () => {
     try {
-      setIsLoading(true)
-      const {data} = await api<Respuesta>("/api/auth/user")
-      if(data) return data
-      return data
+      setIsLoading(true);
+      const { data } = await api<Respuesta>("/api/auth/user");
+      setUser(data.payload as User);
     } catch (error) {
-
-    }finally{
-      setIsLoading(false)
+      console.error('Get session error', error);
+    } finally {
+      setIsLoading(false);
     }
-  }
-
-  const logout = async () => {
-    try {
-      await api("/api/auth/logout")
-      setUser(null)
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  const registerContext = async (data:UserRegistrationForm) => {
-    try {
-      setIsLoading(true)
-      const response = await api.post(`/api/user`, data);
-      const { status, payload } = response.data;
-
-      if (status === "success"){ 
-        setIsResponse({status: true, message:payload})
-      } 
-      return
-      } catch (error) {
-        if(isAxiosError(error)){
-          console.log(error.response?.data)
-         return setIsResponse({status: false, message: error.response?.data})
-        } else if(error instanceof Error){
-         return setIsResponse({status: false, message: error.message})
-        }
-      console.error('Registration error', error);
-      return setIsResponse({status: false, message: String(error)})
-    }finally{setIsLoading(false)} 
   };
 
-  
+  const logout = async (): Promise<ResponseMessage> => {
+    try {
+      const { data } = await api<ResponseMessage>("/api/auth/logout");
+      setUser(null);
+      return data;
+    } catch (error) {
+      console.error('Logout error', error);
+      throw error;
+    }
+  };
+
+  const registerContext = async (data: UserRegistrationForm): Promise<ResponseMessage> => {
+    try {
+      setIsLoading(true);
+      const response = await api.post("/api/user", data);
+      return response.data;
+    } catch (error) {
+      if (isAxiosError(error)) {
+        console.error(error.response?.data);
+      } else if (error instanceof Error) {
+        console.error('Registration error', error);
+      }
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const confirmEmail = async (token: string): Promise<void> => {
+    try {
+      const { data } = await api<Respuesta>(`/api/user/confirm-email/${token}`);
+      setUser(data.payload)
+    } catch (error) {
+      if (isAxiosError(error) && error.response) {
+        throw new Error(error.response.data.payload);
+      }
+      throw new Error('Error confirming email');
+    }
+  };
 
   const contextValue: AuthContextType = {
     user,
     setUser,
+    isLoading,
     login,
     logout,
     registerContext,
-    isLoading,
-    isResponse
-
+    confirmEmail
   };
 
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
 };
 
-export {AuthContext, AuthProvider}
+export { AuthContext, AuthProvider };

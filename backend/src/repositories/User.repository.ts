@@ -112,19 +112,17 @@ export class UserRepository {
     }
   }
 
-  async findByEmail(email: string): Promise<IUser | null> {
-    try {
-      return await this.UserModel.findOne({ email }).select(
-        "_id name email provider description password phoneNumber specialties interests userRatings trades contacts"
-      );
-    } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
-      throw Error("Error al buscar un usuario por email");
-    }
-  }
+	async findByEmail(email: string): Promise<IUser | null> {
+		try {
+			return await this.UserModel.findOne({email}).select("_id name email description password phoneNumber specialties interests userRatings trades contacts provider");
+		} catch (error) {
+			console.log(error)
+            if(error instanceof Error) {
+                throw Error(error.message)
+            }
+			throw Error("Error al buscar un usuario por email")
+		}
+	}
 
   async update(
     id: string | Types.ObjectId,

@@ -15,11 +15,7 @@ const LoginForm: React.FC = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>();
-  const { isLoading, isResponse, login, user } = useAuth();
-  const [alert, setAlert] = useState<{
-    message: string;
-    type: 'success' | 'error';
-  } | null>(null);
+  const { isLoading, login, user } = useAuth();
 
   const onSubmit = async (data: FormValues) => {
     try {
@@ -40,7 +36,6 @@ const LoginForm: React.FC = () => {
         </div>
         {/* Mejorar mensaje */}
         {isLoading && 'Cargando...'}
-        {isResponse.status ? isResponse.message : isResponse.message}
         <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
           <div className="">
             <div className="flex justify-center">

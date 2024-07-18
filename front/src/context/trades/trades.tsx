@@ -1,35 +1,54 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
 import axios from 'axios';
+import api from '@/lib/axios';
+import { data } from 'autoprefixer';
 
 
-type Trade = {
-  id: string;
-  status: 'creacion' | 'aceptado' | 'detalles' | 'historial'; // Actualizamos los estados del trade
-};
 
-type Member = {
+
+type memberType = {
   id: string;
   specialty: string;
 };
 
+type membersType = {
+  memberOne: memberType;
+  memberTwo: memberType;
+};
+
+
+interface Trade {
+  _id: string;
+  members: membersType ;
+  duration: number;
+  expiresAt: Date | null;
+  status: 'PENDING' | 'ACCEPTED' | 'FINISHED';
+}
+
 type TradeRequest = {
-  members: {
-    memberOne: Member;
-    memberTwo: Member;
-  };
+  members: membersType 
   duration: number;
 };
 
-type AcceptTradeRequest = {
-  tradeId: string;
-};
+interface ResponseTrade{
+  status: string;
+  payload: Trade;
+}
+
+interface ResponseTradeArray{
+  status: string;
+  payload:Trade[]
+}
+
+
+
 
 type TradesContextType = {
   trades: Trade[];
-  acceptTrade: (acceptData: AcceptTradeRequest) => Promise<void>;
-  createTrade: (tradeData: TradeRequest) => Promise<void>;
-  detailsTrade: (tradeId: string, tradeData: TradeRequest) => Promise<void>; 
-  getAllTrades:(userTrades:string[])=> Promise<void>
+  acceptTrade: (tradeId: string) => Promise<ResponseTrade>;
+  createTrade: (tradeData: TradeRequest) => Promise<ResponseTrade>;
+  detailsTrade: (tradeId: string) => Promise<ResponseTrade>
+  getAllTrades:(userTrades:string[])=> Promise<ResponseTradeArray>
 };
 
 const TradesContext = createContext<TradesContextType | undefined>(undefined);
@@ -52,9 +71,9 @@ const TradesProvider: React.FC<TradesProviderProps> = ({ children }) => {
   const getAllTrades = async (userTrades:string[]) => {
     try {
       // Simulate API call
-      await axios.get(`/api/trade/`);
-      // Update trade status to 'Get all trades'
-    setTrades((prevTrades) => [...prevTrades, { id: '1', status: 'historial' }]);
+     const {data} = await api.get<ResponseTradeArray>(`/api/trade`);
+      setTrades(data.payload)
+      return data
     } catch (error) {
       console.error('Get trades error:', error);
       throw error;
@@ -64,25 +83,27 @@ const TradesProvider: React.FC<TradesProviderProps> = ({ children }) => {
   const createTrade = async (tradeData: TradeRequest) => {
     try {
       // Simulate API call
-      await axios.post(`/api/trade`, tradeData);
+      const {data} = await api.post<ResponseTrade>(`/api/trade`, tradeData);
       
       // Update trade status to 'creacion'
-      setTrades((prevTrades) => [...prevTrades, { id: '1', status: 'creacion' }]);
+      setTrades((prevTrades) => [...prevTrades, data.payload]);
+      return data
     } catch (error) {
       console.error('Create trade error:', error);
       throw error;
     }
   };
 
-  const acceptTrade = async (acceptData: AcceptTradeRequest) => {
+  const acceptTrade = async (tradeId: string) => {
     try {
-      await axios.post(`/api/trade/${acceptData.tradeId}`);
+    const {data} = await api.put<ResponseTrade>(`/api/trade/${tradeId}`);
       // Update trade status to 'detalles' after accepting
       setTrades((prevTrades) =>
         prevTrades.map((trade) =>
-          trade.id === acceptData.tradeId ? { ...trade, status: 'aceptado' } : trade
+          trade._id === data.payload._id ? { ...trade, status: 'ACCEPTED' } : trade
         )
       );
+      return data
     } catch (error) {
       console.error('Accept trade error:', error);
       throw error;
@@ -91,9 +112,8 @@ const TradesProvider: React.FC<TradesProviderProps> = ({ children }) => {
 
   const detailsTrade = async (tradeId: string) => {
     try {
-      await axios.get(`/api/find-one/${tradeId}`);
-      // Update trade status to 'detalles'
-      setTrades((prevTrades) => [...prevTrades, { id: tradeId, status: 'detalles' }]);
+     const {data} = await api.get<ResponseTrade>(`/api/find-one/${tradeId}`);
+     return data
     } catch (error) {
       console.error('Details trade error:', error);
       throw error;

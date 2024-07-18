@@ -13,10 +13,17 @@ const userRepository = new UserRepository();
 const authService = new AuthService(userRepository);
 const authController = new AuthController(authService);
 
-
-routerAuth.post("/auth/login",middlewareBody(LoginSchema),authController.login)
-routerAuth.post("/auth/google", authValidatePassportGoogle, authController.google)
-routerAuth.get("/auth/logout",authController.logout)
-routerAuth.get("/auth/user",authValidatePassport,authController.user)
+routerAuth.post(
+  "/auth/login",
+  middlewareBody(LoginSchema),
+  authController.login
+);
+routerAuth.post(
+  "/auth/google",
+  authValidatePassportGoogle,
+  authController.google
+);
+routerAuth.get("/auth/logout", authController.logout);
+routerAuth.get("/auth/user", authValidatePassport, authController.user);
 
 export default routerAuth;

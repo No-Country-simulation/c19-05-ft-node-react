@@ -3,136 +3,140 @@ import { AuthService } from "../services/Auth.service";
 import { LoginType } from "../utils/schema/auth.schema";
 
 export class AuthController {
-    private authService: AuthService
-    constructor(authService: AuthService) {
-        this.authService = authService;
+  private authService: AuthService;
+  constructor(authService: AuthService) {
+    this.authService = authService;
+  }
+
+  login = async (req: Request, res: Response) => {
+    const data: LoginType = req.body;
+
+    try {
+      const result = await this.authService.login(data);
+      if (result.status !== "success") {
+        res.status(400).send(result);
+      } else {
+        res.cookie("token", result.token, {
+          httpOnly: true,
+          maxAge: 1000 * 60 * 60 * 24,
+        });
+        res.status(200).send({
+          status: "success",
+          payload: result.payload,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      if (error instanceof Error) {
+        res.status(500).send(error.message);
+      } else {
+        res.status(500).send("Error interno");
+      }
     }
+  };
 
-    login = async (req: Request, res: Response) => {
-        const data: LoginType = req.body
+  logout = async (req: Request, res: Response) => {
+    console.log("first");
 
-        try {
-            const result = await this.authService.login(data)
-            if (result.status !== "success") {
-                res.status(400).send(result)
-            } else {
-                res.cookie("token", result.token, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 })
-                res.status(200).send({
-                    status: "success",
-                    payload: result.payload
-                })
-            }
-        } catch (error) {
-            console.log(error);
-            if (error instanceof Error) {
-                res.status(500).send(error.message)
-            } else {
-                res.status(500).send("Error interno")
-            }
-        }
+    try {
+      res.clearCookie("token");
+      res.status(200).send({
+        status: "success",
+        payload: "Login correcto.",
+      });
+    } catch (error) {
+      console.log(error);
+      if (error instanceof Error) {
+        res.status(500).send(error.message);
+      } else {
+        res.status(500).send("Error interno");
+      }
     }
+  };
 
-    logout = async (req: Request, res: Response) => {
-        console.log("first");
+  user = async (req: Request, res: Response) => {
+    const user = req.user;
+    try {
+      const populatedUser = await user!.populate([
+        {
+          path: "specialties",
+          populate: [
+            {
+              path: "categoryId",
+              select: "name",
+              model: "Category",
+            },
+            {
+              path: "specialtyId",
+              select: "name",
+              model: "Specialty",
+            },
+          ],
+        },
+        {
+          path: "interests",
+          populate: [
+            {
+              path: "categoryId",
+              select: "name",
+              model: "Category",
+            },
+            {
+              path: "specialtyId",
+              select: "name",
+              model: "Specialty",
+            },
+          ],
+        },
+        {
+          path: "userRatings",
+          populate: {
+            path: "userId",
+            select: "name avatar",
+          },
+        },
+      ]);
 
-        try {
-            res.clearCookie("token");
-            res.status(200).send({
-                status: "success",
-                payload: "Login correcto."
-            });
-        } catch (error) {
-            console.log(error);
-            if (error instanceof Error) {
-                res.status(500).send(error.message)
-            } else {
-                res.status(500).send("Error interno")
-            }
-        }
-    };
-
-    user = async (req: Request, res: Response) => {
-        const user = req.user;
-        try {
-            const populatedUser = await user!.populate([
-                {
-                    path: 'specialties',
-                    populate: [
-                        {
-                            path: 'categoryId',
-                            select: "name",
-                            model: 'Category',
-                        },
-                        {
-                            path: 'specialtyId',
-                            select: "name",
-                            model: 'Specialty',
-                        }
-                    ]
-                },
-                {
-                    path: 'interests',
-                    populate: [
-                        {
-                            path: 'categoryId',
-                            select: "name",
-                            model: 'Category',
-                        },
-                        {
-                            path: 'specialtyId',
-                            select: "name",
-                            model: 'Specialty',
-                        }
-                    ]
-                },
-                {
-                    path: 'userRatings',
-                    populate: {
-                        path: 'userId',
-                        select: 'name avatar'
-                    }
-                }
-            ])
-
-            res.status(200).send({
-                status: "success",
-                payload: populatedUser
-            })
-
-        } catch (error) {
-            if (error instanceof Error) {
-                res.status(500).send(error.message)
-            } else {
-                res.status(500).send("Error interno")
-            }
-        }
+      res.status(200).send({
+        status: "success",
+        payload: populatedUser,
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        res.status(500).send(error.message);
+      } else {
+        res.status(500).send("Error interno");
+      }
     }
+  };
 
-    google = async (req: Request, res: Response) => {
-        const user = req.user
+  google = async (req: Request, res: Response) => {
+    const user = req.user;
 
-        try {
-            if (!user || user.provider !== "google") {
-                return res.status(403).send({
-                    status: "error",
-                    payload: "Error con usuario de google"
-                })
-            }
+    try {
+      if (!user || user.provider !== "google") {
+        return res.status(403).send({
+          status: "error",
+          payload: "Error con usuario de google",
+        });
+      }
 
-            const result = await this.authService.loginGoogle(user.email);
+      const result = await this.authService.loginGoogle(user.email);
 
-            res.cookie("token", result.payload, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 });
-            res.send({
-                status: "success",
-                payload: "Login exitoso"
-            })
-
-        } catch (error) {
-            if (error instanceof Error) {
-                res.status(500).send(error.message)
-            } else {
-                res.status(500).send("Error interno")
-            }
-        }
+      res.cookie("token", result.payload, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24,
+      });
+      res.send({
+        status: "success",
+        payload: "Login exitoso",
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        res.status(500).send(error.message);
+      } else {
+        res.status(500).send("Error interno");
+      }
     }
+  };
 }

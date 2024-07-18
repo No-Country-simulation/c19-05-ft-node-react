@@ -9,22 +9,19 @@ import { TradeSchema } from "../utils/schema/trade.schema";
 import { middlewareParamsObjectId } from "../middlewares/validateParamObjectId";
 import router from "./index.routes";
 
-const userRepository = new UserRepository()
-const tradeRepository = new TradeRepository()
-const tradeService = new TradeService(tradeRepository,userRepository)
-const tradeController = new TradeController(tradeService)
+const userRepository = new UserRepository();
+const tradeRepository = new TradeRepository();
+const tradeService = new TradeService(tradeRepository, userRepository);
+const tradeController = new TradeController(tradeService);
 
 const routerTrade = Router();
 
-routerTrade.use(authValidatePassport)
-routerTrade.param(":tradeId",middlewareParamsObjectId("tradeId"))
+routerTrade.use(authValidatePassport);
+routerTrade.param(":tradeId", middlewareParamsObjectId("tradeId"));
 
-routerTrade.post("/trade",middlewareBody(TradeSchema) ,tradeController.create)
-routerTrade.put("/trade/:tradeId", tradeController.updateAccepted)
-routerTrade.get("/trade/find-one/:tradeId", tradeController.findOne)
-routerTrade.get("/trade/", tradeController.findTrades)
-
-
-
+routerTrade.post("/trade", middlewareBody(TradeSchema), tradeController.create);
+routerTrade.put("/trade/:tradeId", tradeController.updateAccepted);
+routerTrade.get("/trade/find-one/:tradeId", tradeController.findOne);
+routerTrade.get("/trade/", tradeController.findTrades);
 
 export default routerTrade;

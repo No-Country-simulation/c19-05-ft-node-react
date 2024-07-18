@@ -4,217 +4,197 @@ import { UserRepository } from "../repositories/User.repository";
 import { createRatingType } from "../models/Rating.model";
 
 export class RatingService {
-    private readonly ratingRepository: RatingRepository;
-    constructor(ratingRepository: RatingRepository) {
-        this.ratingRepository = ratingRepository
+  private readonly ratingRepository: RatingRepository;
+  constructor(ratingRepository: RatingRepository) {
+    this.ratingRepository = ratingRepository;
+  }
+
+  async create(rating: createRatingType) {
+    try {
+      const newRating = await this.ratingRepository.create(rating);
+
+      return {
+        status: "success",
+        payload: newRating,
+      };
+    } catch (error) {
+      console.log(error);
+      if (error instanceof Error) {
+        throw Error(error.message);
+      }
+
+      throw new Error(String(error));
     }
+  }
 
-    async create(rating: createRatingType) {
-        try {
-            const newRating = await this.ratingRepository.create(rating);
+  async find() {
+    try {
+      const ratings = await this.ratingRepository.find();
 
-            return {
-                status: "success",
-                payload: newRating
-            }
+      return {
+        status: "success",
+        payload: ratings,
+      };
+    } catch (error) {
+      console.log(error);
+      if (error instanceof Error) {
+        throw Error(error.message);
+      }
 
-        } catch (error) {
-            console.log(error)
-            if (error instanceof Error) {
-
-                throw Error(error.message)
-            }
-
-            throw new Error(String(error))
-
-        }
+      throw new Error(String(error));
     }
+  }
 
-    async find() {
-        try {
-            const ratings = await this.ratingRepository.find();
+  async findFeaturedRatings() {
+    try {
+      const featuredRatings = await this.ratingRepository.findFeaturedRatings();
+      return {
+        status: "success",
+        payload: featuredRatings,
+      };
+    } catch (error) {
+      console.log(error);
+      if (error instanceof Error) {
+        throw Error(error.message);
+      }
 
-            return {
-                status: "success",
-                payload: ratings
-            }
-
-        } catch (error) {
-            console.log(error)
-            if (error instanceof Error) {
-
-                throw Error(error.message)
-            }
-
-            throw new Error(String(error))
-
-        }
+      throw new Error(String(error));
     }
+  }
 
-    async findFeaturedRatings() {
-        try {
-            const featuredRatings = await this.ratingRepository.findFeaturedRatings();
-            return {
-                status: "success",
-                payload: featuredRatings
-            }
+  async findById(id: string) {
+    try {
+      const rating = await this.ratingRepository.findById(id);
 
-        } catch (error) {
-            console.log(error)
-            if (error instanceof Error) {
+      return {
+        status: "success",
+        payload: rating,
+      };
+    } catch (error) {
+      console.log(error);
+      if (error instanceof Error) {
+        throw Error(error.message);
+      }
 
-                throw Error(error.message)
-            }
-
-            throw new Error(String(error))
-
-        }
+      throw new Error(String(error));
     }
+  }
 
-    async findById(id: string) {
-        try {
-            const rating = await this.ratingRepository.findById(id);
+  async findByUserId(id: string) {
+    try {
+      const rating = await this.ratingRepository.findByUserId(id);
 
-            return {
-                status: "success",
-                payload: rating
-            }
+      return {
+        status: "success",
+        payload: rating,
+      };
+    } catch (error) {
+      console.log(error);
+      if (error instanceof Error) {
+        throw Error(error.message);
+      }
 
-        } catch (error) {
-            console.log(error)
-            if (error instanceof Error) {
-
-                throw Error(error.message)
-            }
-
-            throw new Error(String(error))
-
-        }
+      throw new Error(String(error));
     }
+  }
 
-    async findByUserId(id: string) {
-        try {
-            const rating = await this.ratingRepository.findByUserId(id);
+  async updateComment(userId: string, comment: string) {
+    try {
+      const rating = await this.ratingRepository.findByUserId(userId);
+      if (!rating) {
+        return {
+          status: "error",
+          payload: "El usuario no ha valorado.",
+        };
+      }
 
-            return {
-                status: "success",
-                payload: rating
-            }
+      const updatedRating = await this.ratingRepository.updateComment(
+        userId,
+        comment
+      );
 
-        } catch (error) {
-            console.log(error)
-            if (error instanceof Error) {
+      return {
+        status: "success",
+        payload: updatedRating,
+      };
+    } catch (error) {
+      console.log(error);
+      if (error instanceof Error) {
+        throw Error(error.message);
+      }
 
-                throw Error(error.message)
-            }
-
-            throw new Error(String(error))
-
-        }
+      throw new Error(String(error));
     }
+  }
 
-    async updateComment(userId: string, comment: string) {
-        try {
-            const rating = await this.ratingRepository.findByUserId(userId);
-            if (!rating) {
-                return {
-                    status: "error",
-                    payload: "El usuario no ha valorado."
-                }
-            }
+  async updateFeaturedRatings(ratingIds: string[]) {
+    try {
+      const ratings = await Promise.all(
+        ratingIds.map(async (id) => {
+          const rating = await this.ratingRepository.findById(id);
+          if (rating) {
+            return rating;
+          }
+        })
+      );
 
-            const updatedRating = await this.ratingRepository.updateComment(userId, comment);
+      if (ratings.length !== 5) {
+        return {
+          status: "error",
+          payload: "Debes proporcionar exactamente 5 ids válidos.",
+        };
+      }
 
-            return {
-                status: "success",
-                payload: updatedRating
-            }
+      const newFeaturedratings =
+        await this.ratingRepository.updateFeaturedRatings(ratingIds);
 
-        } catch (error) {
-            console.log(error)
-            if (error instanceof Error) {
+      return {
+        status: "success",
+        payload: newFeaturedratings,
+      };
+    } catch (error) {
+      console.log(error);
+      if (error instanceof Error) {
+        throw Error(error.message);
+      }
 
-                throw Error(error.message)
-            }
-
-            throw new Error(String(error))
-        }
+      throw new Error(String(error));
     }
+  }
 
-    async updateFeaturedRatings(ratingIds: string[]) {
+  async deleteById(id: string) {
+    try {
+      const deletedRating = await this.ratingRepository.deleteById(id);
 
-        try {
-            const ratings = await Promise.all(
-                ratingIds.map(async (id) => {
-                    const rating = await this.ratingRepository.findById(id);
-                    if (rating) {
-                        return rating;
-                    }
-                })
-            );
+      return {
+        status: "success",
+        payload: deletedRating,
+      };
+    } catch (error) {
+      console.log(error);
+      if (error instanceof Error) {
+        throw Error(error.message);
+      }
 
-            if (ratings.length !== 5) {
-                return {
-                    status: "error",
-                    payload: "Debes proporcionar exactamente 5 ids válidos."
-                };
-            }
-
-            const newFeaturedratings = await this.ratingRepository.updateFeaturedRatings(ratingIds);
-
-            return {
-                status: "success",
-                payload: newFeaturedratings
-            }
-
-        } catch (error) {
-            console.log(error)
-            if (error instanceof Error) {
-
-                throw Error(error.message)
-            }
-
-            throw new Error(String(error))
-        }
+      throw new Error(String(error));
     }
+  }
 
-    async deleteById(id: string) {
-        try {
-            const deletedRating = await this.ratingRepository.deleteById(id);
+  async deleteByUserId(userId: string) {
+    try {
+      const deletedRating = await this.ratingRepository.deleteByUserId(userId);
 
-            return {
-                status: "success",
-                payload: deletedRating
-            }
+      return {
+        status: "success",
+        payload: deletedRating,
+      };
+    } catch (error) {
+      console.log(error);
+      if (error instanceof Error) {
+        throw Error(error.message);
+      }
 
-        } catch (error) {
-            console.log(error)
-            if (error instanceof Error) {
-
-                throw Error(error.message)
-            }
-
-            throw new Error(String(error))
-        }
+      throw new Error(String(error));
     }
-
-    async deleteByUserId(userId: string) {
-        try {
-            const deletedRating = await this.ratingRepository.deleteByUserId(userId);
-
-            return {
-                status: "success",
-                payload: deletedRating
-            }
-
-        } catch (error) {
-            console.log(error)
-            if (error instanceof Error) {
-
-                throw Error(error.message)
-            }
-
-            throw new Error(String(error))
-        }
-    }
+  }
 }

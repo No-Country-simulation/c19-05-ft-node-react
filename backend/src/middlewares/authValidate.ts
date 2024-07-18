@@ -2,8 +2,12 @@ import { NextFunction, Request, Response } from "express";
 import { IUser } from "../models/User.model";
 import { dataJwt } from "../utils/jwt/jwt.config";
 import { UserRepository } from "../repositories/User.repository";
-import { JsonWebTokenError, NotBeforeError, TokenExpiredError } from "jsonwebtoken";
-import passport from 'passport';
+import {
+  JsonWebTokenError,
+  NotBeforeError,
+  TokenExpiredError,
+} from "jsonwebtoken";
+import passport from "passport";
 
 declare global {
   namespace Express {
@@ -13,7 +17,7 @@ declare global {
   }
 }
 
-const userRepository = new UserRepository()
+const userRepository = new UserRepository();
 
 export const authValidate = async (
   req: Request,
@@ -34,7 +38,7 @@ export const authValidate = async (
           .send({ error: "Hubo un error al autentificar el usuario." });
       }
       if (typeof userId === "object" && userId.id) {
-        const user = await userRepository.findOne(userId.id)
+        const user = await userRepository.findOne(userId.id);
 
         if (!user) {
           return res.status(500).json({ error: "Token no valido" });
@@ -62,19 +66,19 @@ export const authValidatePassport = async (
   res: Response,
   next: NextFunction
 ) => {
-  passport.authenticate('jwt', (error: any, user: IUser, info: any) => {
+  passport.authenticate("jwt", (error: any, user: IUser, info: any) => {
     if (error) {
       return res.status(401).send({
-        status: 'error',
-        message: 'Hubo un error al autenticar.',
-        error: error.message
+        status: "error",
+        message: "Hubo un error al autenticar.",
+        error: error.message,
       });
     }
 
     if (!user) {
       return res.status(401).send({
-        status: 'error',
-        message: 'No se ha podido autenticar al usuario.',
+        status: "error",
+        message: "No se ha podido autenticar al usuario.",
       });
     }
 
@@ -88,9 +92,9 @@ export const authValidatePassportOptional = async (
   res: Response,
   next: NextFunction
 ) => {
-  passport.authenticate('jwt', (error: any, user: IUser, info: any) => {
+  passport.authenticate("jwt", (error: any, user: IUser, info: any) => {
     if (error || !user) {
-      return next()
+      return next();
     }
 
     req.user = user as IUser;
@@ -103,9 +107,9 @@ export const authValidatePassportGoogle = async (
   res: Response,
   next: NextFunction
 ) => {
-  passport.authenticate('gmail', (error: any, user: IUser, info: any) => {
+  passport.authenticate("gmail", (error: any, user: IUser, info: any) => {
     if (error || !user) {
-      return next()
+      return next();
     }
 
     req.user = user as IUser;

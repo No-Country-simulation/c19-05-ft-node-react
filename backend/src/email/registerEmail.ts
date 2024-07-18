@@ -13,7 +13,7 @@ export class Emails {
         from: '"Talent Trade" <no-reply@talenttrade.com>',
         to: parametros.email,
         subject: "Confirma tu email - Talent Trade",
-        html:` 
+        html: ` 
           <div style="font-family: Arial, sans-serif; color: #333; background-color: #f7f7f7; padding: 20px;">
             <div style="max-width: 600px; margin: 0 auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
               <h2 style="color: #4CAF50; text-align: center;">¡Bienvenido a Talent Trade!</h2>
@@ -28,14 +28,13 @@ export class Emails {
               <p>Si no te has registrado en Talent Trade, por favor ignora este correo.</p>
               <p style="text-align: center; color: #888; font-size: 12px;">&copy; 2024 Talent Trade. Todos los derechos reservados.</p>
             </div>
-          </div>`
-        
+          </div>`,
       });
       console.log("Mensaje enviado: ", info.messageId);
     } catch (error) {
       throw new Error("Ocurrió un error al enviar el correo de confirmación");
     }
-  }
+  };
   static sendResetPasswordEmail = async (parametros: IEmail) => {
     try {
       const info = await transport.sendMail({
@@ -53,5 +52,5 @@ export class Emails {
     } catch (error) {
       throw new Error("Ocurrio un error al enviar el mail de confirmacion");
     }
-  }
+  };
 }

@@ -48,7 +48,6 @@ export const dataJwt = (token: string) => {
   }
 };
 
-
 export const dataRegisterJwt = (token: string) => {
   try {
     const data = jwt.verify(token, envs.JWT_SECRET) as RegisterType;

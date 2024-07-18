@@ -27,16 +27,16 @@ const LoginForm: React.FC = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-grey-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-lg w-full space-y-8 bg-white p-6 rounded-3xl shadow-md">
+      <div className="max-w-lg w-full space-y-8 bg-white rounded-3xl shadow-md">
         <div>
-          <h2 className="mt-6 text-[1.3rem] text-gray-900 font-arial">
+          <h2 className="mt-6 text-[1.3rem] m-6 text-gray-900 font-arial">
             Welcome Back! <br />
             Exchange knowledge with more people.
           </h2>
         </div>
         {/* Mejorar mensaje */}
         {isLoading && 'Cargando...'}
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
+        <form className="mt-8 space-y-12" onSubmit={handleSubmit(onSubmit)}>
           <div className="">
             <div className="flex justify-center">
               <div className="flex justify-center rounded-md border border-grey-200">
@@ -100,7 +100,7 @@ const LoginForm: React.FC = () => {
           <div className="static">
             <button
               type="submit"
-              className="w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-500 hover:bg-gray-600"
+              className="w-full flex justify-center py-5 px-4 border border-transparent text-sm font-medium rounded-md rounded-tr-none rounded-tl-none text-white bg-gray-500 hover:bg-gray-600"
             >
               LOG IN
             </button>

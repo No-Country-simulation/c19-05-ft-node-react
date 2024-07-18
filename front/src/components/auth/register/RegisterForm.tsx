@@ -35,9 +35,9 @@ const RegisterForm: React.FC = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-grey-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-lg  w-full space-y-8 bg-white p-6 rounded-3xl shadow-md">
+      <div className="max-w-lg  w-full space-y-8 bg-white  rounded-3xl shadow-md">
         <div>
-          <h2 className="mt-6 text-[1.6rem] text-gray-900 font-arial">
+          <h2 className="mt-6 text-[1.6rem] text-center text-gray-900 font-arial">
             Register. <br />
             it's quick and easy
           </h2>
@@ -157,7 +157,7 @@ const RegisterForm: React.FC = () => {
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-500 hover:bg-gray-600"
+              className="group relative w-full flex justify-center py-5 px-4 border border-transparent text-sm font-medium rounded-md rounded-tr-none rounded-tl-none text-white bg-gray-500 hover:bg-gray-600"
             >
               CREATE ACCOUNT
             </button>

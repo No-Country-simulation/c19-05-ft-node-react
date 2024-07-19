@@ -13,17 +13,21 @@ const userRepository = new UserRepository();
 const authService = new AuthService(userRepository);
 const authController = new AuthController(authService);
 
+// Already documented
 routerAuth.post(
   "/auth/login",
   middlewareBody(LoginSchema),
   authController.login
 );
+// TODO: Google authentication
 routerAuth.post(
   "/auth/google",
   authValidatePassportGoogle,
   authController.google
 );
+// Already documented
 routerAuth.get("/auth/logout", authController.logout);
+// Already documented
 routerAuth.get("/auth/user", authValidatePassport, authController.user);
 
 export default routerAuth;

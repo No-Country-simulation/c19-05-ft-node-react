@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { UserService } from "../services/User.service";
-import { enumType, specialty } from "../models/User.model";
+import UserModel, { enumType, specialty } from "../models/User.model";
 import { UserUpdateType } from "../utils/schema/user.schema";
 import { Types } from "mongoose";
 
@@ -217,34 +217,35 @@ export class UserController {
     }
   };
 
-  //   export interface IUser extends Document {
-  //   _id: Types.ObjectId;
-  //   provider: string;
-  //   name: string;
-  //   email: string;
-  //   password: string;
-  //   avatar: string;
-  //   specialties: specialty[];
-  //   interests: specialty[];
-  //   aboutme: { teach: string; learn: string };
-  //   userRatings: userRating[];
-  //   phoneNumber: string;
-  //   trades: Types.ObjectId[];
-  //   contacts: PopulatedDoc<Types.ObjectId & Document>[];
-  // }
-  getPotentialPairings = (req: Request, res: Response) => {
+  getPotentialPairings = async (req: Request, res: Response) => {
     // 1. Get interests from the requesting user
     const interests: specialty[] = req.user!.interests;
-    // 2. Extract the ids we need
+    // 2. Extract the ids we need in order to match users
     const interestsIds: Types.ObjectId[] = interests.map(
       (interest) => interest.specialtyId
     );
-    res.status(200).json({
-      status: "success",
-      payload: {
-        interests,
-        interestsIds,
-      },
-    });
+    try {
+      // 3. Find corresponding users
+      const potentialPairings = await UserModel.find({
+        // 3.1 We want to filter by the specialties array of each user
+        specialties: {
+          // 3.2 And every element in the array will need to meet a certain criteria
+          $elemMatch: {
+            // 3.3 That their specialtyId field MUST be INSIDE
+            //      our array of interests (from the user that made the request)
+            specialtyId: { $in: interestsIds },
+          },
+        },
+      });
+      res.status(200).json({
+        status: "success",
+        payload: {
+          interestsIds,
+          potentialPairings,
+        },
+      });
+    } catch (error) {
+      res.status(500).send("There was an error in the server");
+    }
   };
 }

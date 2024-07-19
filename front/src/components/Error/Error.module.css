@@ -1,24 +1,6 @@
-/* font 404 */
-
-@font-face {
-  font-family: 'Lily Script One';
-  src: url('/front/src/components/Error/fonts/LilyScriptOne.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Abel';
-  src: url('/front/src/components/Error/fonts/Abel-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-/* Estilo del h1 - 404!*/
-
 .error404 {
   color: #51ab8a;
-  font-family: "Lily Script One", system-ui;
+  font-family: var(--lily), system-ui;
   text-shadow: 4px 4px 2px rgba(0, 0, 0);
 }
 
@@ -53,7 +35,7 @@
 
 /*Estilo palabra Error*/
 
-.text{
+.text {
   color: black;
-  font-family: "Abel", sans-serif;
+  font-family: var(--abel), sans-serif;
 }

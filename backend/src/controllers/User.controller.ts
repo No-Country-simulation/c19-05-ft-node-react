@@ -220,9 +220,16 @@ export class UserController {
   getPotentialPairings = async (req: Request, res: Response) => {
     // 1. Get interests from the requesting user
     const interests: specialty[] = req.user!.interests;
-    // 2. Extract the ids we need in order to match users
+    // 1.1. Extract the ids we need in order to match users
     const interestsIds: Types.ObjectId[] = interests.map(
       (interest) => interest.specialtyId
+    );
+
+    // 2. Get specialties from the requesting user (for matching purposes)
+    const specialties: specialty[] = req.user!.specialties;
+    // 2.1 Extract the specialty ids we need in order to match users
+    const specialtiesIds: Types.ObjectId[] = specialties.map(
+      (specialty) => specialty.specialtyId
     );
     try {
       // 3. Find corresponding users
@@ -236,11 +243,21 @@ export class UserController {
             specialtyId: { $in: interestsIds },
           },
         },
-      });
+        // 4.1 And we also want to filter by the interests array of each user
+        interests: {
+          // 4.2 Every element in the interests array will need to meet certain criteria
+          $elemMatch: {
+            // 4.3 That their specialtyId field MUST be INSIDE
+            //     our array of specialties (from the user that made the request)
+            specialtyId: { $in: specialtiesIds },
+          },
+        },
+      }).select("_id name interests specialties");
       res.status(200).json({
         status: "success",
         payload: {
           interestsIds,
+          specialtiesIds,
           potentialPairings,
         },
       });

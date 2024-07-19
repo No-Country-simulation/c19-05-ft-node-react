@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { UserService } from "../services/User.service";
-import { enumType } from "../models/User.model";
+import { enumType, specialty } from "../models/User.model";
 import { UserUpdateType } from "../utils/schema/user.schema";
 
 export class UserController {
@@ -214,5 +214,27 @@ export class UserController {
       }
       res.status(500).send({ status: false, payload: "Error interno" });
     }
+  };
+
+  //   export interface IUser extends Document {
+  //   _id: Types.ObjectId;
+  //   provider: string;
+  //   name: string;
+  //   email: string;
+  //   password: string;
+  //   avatar: string;
+  //   specialties: specialty[];
+  //   interests: specialty[];
+  //   aboutme: { teach: string; learn: string };
+  //   userRatings: userRating[];
+  //   phoneNumber: string;
+  //   trades: Types.ObjectId[];
+  //   contacts: PopulatedDoc<Types.ObjectId & Document>[];
+  // }
+  getPotentialPairings = (req: Request, res: Response) => {
+    const interests: specialty[] = req.user!.interests;
+    res.status(200).json({
+      status: "success",
+    });
   };
 }

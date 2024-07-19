@@ -21,6 +21,7 @@ routerTrade.param(":tradeId", middlewareParamsObjectId("tradeId"));
 
 routerTrade.post("/trade", middlewareBody(TradeSchema), tradeController.create);
 routerTrade.put("/trade/:tradeId", tradeController.updateAccepted);
+routerTrade.delete("/trade/:tradeId", tradeController.delete);
 routerTrade.get("/trade/find-one/:tradeId", tradeController.findOne);
 routerTrade.get("/trade/", tradeController.findTrades);
 

@@ -1,18 +1,18 @@
 import React from 'react';
 import Image from "next/image";
-import './Error.css'
+import styles from "./Error.module.css"
 
 const Error404: React.FC = () => {
   
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white text-slate-900 font-sans">
+    <div className={`min-h-screen flex items-center justify-center bg-white text-slate-900 font-sans`}>
       <div className="text-center">
         <h2 className="text-5xl mb-4">error</h2>
-        <h1 className="text-9xl mb-4">40<span className="flashing">4</span>!</h1>
-        <p>
+        <h1 className={`text-9xl mb-4 ${styles.error404}`}>40<span className={`${styles.flashing}`}>4</span>!</h1>
+        <p className={`${styles.text}`}>
           Oops! You seem to have landed on a page that doesn't exist.
         </p>
-        <p>Or maybe you need to be logged in</p>
+        <p className={`${styles.text}`}>Or maybe you need to be logged in</p>
         <div className="flex justify-center items-center h-16 p-4 mt-10"><a
           href="/"
           

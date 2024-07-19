@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 import NavBar from "@/components/NavBar/NavBar";
 import Footer from "@/components/Footer/Footer";
-import Error404 from "./Error404";
+
 
 const CommonLayout: React.FC<{ children: React.ReactNode }> = ({
   children,

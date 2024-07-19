@@ -129,6 +129,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       throw new Error(String(error));
     }
   };
+  
+
 
   const contextValue: AuthContextType = {
     user,

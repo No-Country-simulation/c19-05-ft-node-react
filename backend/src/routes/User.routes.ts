@@ -78,4 +78,7 @@ routerUser.put(
   userController.updatePick
 );
 
+// TODO: endpoint for showing all users
+routerUser.get("/user/potential-trades", authValidatePassport);
+
 export default routerUser;

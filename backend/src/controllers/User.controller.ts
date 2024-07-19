@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { UserService } from "../services/User.service";
-import { enumType } from "../models/User.model";
+import UserModel, { enumType, IUser, specialty } from "../models/User.model";
 import { UserUpdateType } from "../utils/schema/user.schema";
+import { Document, Types } from "mongoose";
 
 export class UserController {
   userService: UserService;
@@ -213,6 +214,21 @@ export class UserController {
         res.status(400).send({ status: false, payload: error.message });
       }
       res.status(500).send({ status: false, payload: "Error interno" });
+    }
+  };
+
+  getPotentialPairings = async (req: Request, res: Response) => {
+    try {
+      const user = req.user as IUser;
+      const result = await this.userService.getSuggestions(user);
+      result!.status === "success"
+        ? res.status(200).send(result)
+        : res.status(500).send(result);
+    } catch (error) {
+      console.log(error);
+      if (error instanceof Error) {
+        res.status(400).send({ status: false, payload: error.message });
+      }
     }
   };
 }

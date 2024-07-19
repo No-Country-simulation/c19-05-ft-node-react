@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { UserService } from "../services/User.service";
 import UserModel, { enumType, specialty } from "../models/User.model";
 import { UserUpdateType } from "../utils/schema/user.schema";
-import { Types } from "mongoose";
+import { Document, Types } from "mongoose";
 
 export class UserController {
   userService: UserService;
@@ -218,37 +218,24 @@ export class UserController {
   };
 
   getPotentialPairings = async (req: Request, res: Response) => {
-    // 1. Get interests from the requesting user
     const interests: specialty[] = req.user!.interests;
-    // 1.1. Extract the ids we need in order to match users
     const interestsIds: Types.ObjectId[] = interests.map(
       (interest) => interest.specialtyId
     );
 
-    // 2. Get specialties from the requesting user (for matching purposes)
     const specialties: specialty[] = req.user!.specialties;
-    // 2.1 Extract the specialty ids we need in order to match users
     const specialtiesIds: Types.ObjectId[] = specialties.map(
       (specialty) => specialty.specialtyId
     );
     try {
-      // 3. Find corresponding users
       const potentialPairings = await UserModel.find({
-        // 3.1 We want to filter by the specialties array of each user
         specialties: {
-          // 3.2 And every element in the array will need to meet a certain criteria
           $elemMatch: {
-            // 3.3 That their specialtyId field MUST be INSIDE
-            //      our array of interests (from the user that made the request)
             specialtyId: { $in: interestsIds },
           },
         },
-        // 4.1 And we also want to filter by the interests array of each user
         interests: {
-          // 4.2 Every element in the interests array will need to meet certain criteria
           $elemMatch: {
-            // 4.3 That their specialtyId field MUST be INSIDE
-            //     our array of specialties (from the user that made the request)
             specialtyId: { $in: specialtiesIds },
           },
         },

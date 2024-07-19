@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { UserService } from "../services/User.service";
 import { enumType, specialty } from "../models/User.model";
 import { UserUpdateType } from "../utils/schema/user.schema";
+import { Types } from "mongoose";
 
 export class UserController {
   userService: UserService;
@@ -234,9 +235,16 @@ export class UserController {
   getPotentialPairings = (req: Request, res: Response) => {
     // 1. Get interests from the requesting user
     const interests: specialty[] = req.user!.interests;
+    // 2. Extract the ids we need
+    const interestsIds: Types.ObjectId[] = interests.map(
+      (interest) => interest.specialtyId
+    );
     res.status(200).json({
       status: "success",
-      payload: interests,
+      payload: {
+        interests,
+        interestsIds,
+      },
     });
   };
 }

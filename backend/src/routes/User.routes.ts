@@ -46,6 +46,9 @@ routerUser.put(
   userController.resetPassword
 );
 
+// TODO: endpoint for showing all users
+routerUser.get("/user/potential-trades", userController.getPotentialPairings);
+
 // Already documented
 routerUser.get("/user/:categoryId?", userController.getUsers);
 
@@ -77,8 +80,5 @@ routerUser.put(
   upload.single("profile-pick"),
   userController.updatePick
 );
-
-// TODO: endpoint for showing all users
-routerUser.get("/user/potential-trades", authValidatePassport);
 
 export default routerUser;

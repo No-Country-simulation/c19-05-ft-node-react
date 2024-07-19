@@ -232,7 +232,8 @@ export class UserController {
   //   contacts: PopulatedDoc<Types.ObjectId & Document>[];
   // }
   getPotentialPairings = (req: Request, res: Response) => {
-    const interests: specialty[] = req.user!.interests;
+    // const interests: specialty[] = req.user!.interests;
+    console.log("llegamos a getpotentialpairings");
     res.status(200).json({
       status: "success",
     });

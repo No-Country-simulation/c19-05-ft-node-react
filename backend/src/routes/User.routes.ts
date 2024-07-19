@@ -25,33 +25,40 @@ const userController = new UserController(userService);
 
 const routerUser = Router();
 
+// Already documented
 routerUser.post(
   "/user",
   middlewareBody(RegisterSchema),
   userController.createUser
 );
+// Already documented
 routerUser.get("/user/confirm-email/:token", userController.confirmRegister);
+// Already documented
 routerUser.post(
   "/user/reset-password",
   middlewareBody(UserEmailSchema),
   userController.sendResetPasswordToken
 );
+// Already documented
 routerUser.put(
   "/user/reset-password/:token",
   middlewareBody(ResetPasswordSchema),
   userController.resetPassword
 );
 
+// Already documented
 routerUser.get("/user/:categoryId?", userController.getUsers);
 
 // ! Middleware general
 routerUser.param("userId", middlewareParamsObjectId("userId"));
 
+// TODO: document endpoint for getting a single user
 routerUser.get(
   "/user/details/:userId",
   authValidatePassportOptional,
   userController.getUser
 );
+// TODO: document endpoint for user update. Be dead specific about it and include examples
 routerUser.put(
   "/user/",
   authValidatePassport,
@@ -60,8 +67,10 @@ routerUser.put(
   middlewareBody(UserUpdateSchema),
   userController.updateUser
 );
+// Already documented
 routerUser.delete("/user/:userId", userController.delete);
 
+// TODO: document this endpoint for photo update
 routerUser.put(
   "/user/profile-photo",
   authValidatePassport,

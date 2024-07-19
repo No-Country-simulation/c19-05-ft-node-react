@@ -2,9 +2,7 @@ import React, { createContext, useState, useContext, ReactNode } from 'react';
 import axios from 'axios';
 import api from '@/lib/axios';
 import { data } from 'autoprefixer';
-
-
-
+import { GetAllTrades, ResCRUDTrade, Trade } from '@/types/trade.type';
 
 type memberType = {
   id: string;
@@ -16,39 +14,19 @@ type membersType = {
   memberTwo: memberType;
 };
 
-
-interface Trade {
-  _id: string;
-  members: membersType ;
-  duration: number;
-  expiresAt: Date | null;
-  status: 'PENDING' | 'ACCEPTED' | 'FINISHED';
-}
-
 type TradeRequest = {
-  members: membersType 
+  members: memberType;
   duration: number;
 };
 
-interface ResponseTrade{
-  status: string;
-  payload: Trade;
-}
-
-interface ResponseTradeArray{
-  status: string;
-  payload:Trade[]
-}
-
-
-
-
 type TradesContextType = {
   trades: Trade[];
-  acceptTrade: (tradeId: string) => Promise<ResponseTrade>;
-  createTrade: (tradeData: TradeRequest) => Promise<ResponseTrade>;
-  detailsTrade: (tradeId: string) => Promise<ResponseTrade>
-  getAllTrades:(userTrades:string[])=> Promise<ResponseTradeArray>
+  trade: Trade | null;
+  acceptTrade: (tradeId: string) => Promise<void>;
+  createTrade: (tradeData: TradeRequest) => Promise<void>;
+  detailsTrade: (tradeId: string) => Promise<void>;
+  getAllTrades: (userTrades: string[]) => Promise<void>;
+  deleteTrade: (tradeId: string) => Promise<void>;
 };
 
 const TradesContext = createContext<TradesContextType | undefined>(undefined);
@@ -67,13 +45,13 @@ type TradesProviderProps = {
 
 const TradesProvider: React.FC<TradesProviderProps> = ({ children }) => {
   const [trades, setTrades] = useState<Trade[]>([]);
+  const [trade, setTrade] = useState<Trade | null>(null);
 
-  const getAllTrades = async (userTrades:string[]) => {
+  const getAllTrades = async () => {
     try {
       // Simulate API call
-     const {data} = await api.get<ResponseTradeArray>(`/api/trade`);
-      setTrades(data.payload)
-      return data
+      const { data } = await api.get<GetAllTrades>(`/api/trade`);
+      setTrades(data.payload);
     } catch (error) {
       console.error('Get trades error:', error);
       throw error;
@@ -83,11 +61,9 @@ const TradesProvider: React.FC<TradesProviderProps> = ({ children }) => {
   const createTrade = async (tradeData: TradeRequest) => {
     try {
       // Simulate API call
-      const {data} = await api.post<ResponseTrade>(`/api/trade`, tradeData);
-      
+      const { data } = await api.post<ResCRUDTrade>(`/api/trade`, tradeData);
       // Update trade status to 'creacion'
       setTrades((prevTrades) => [...prevTrades, data.payload]);
-      return data
     } catch (error) {
       console.error('Create trade error:', error);
       throw error;
@@ -96,14 +72,11 @@ const TradesProvider: React.FC<TradesProviderProps> = ({ children }) => {
 
   const acceptTrade = async (tradeId: string) => {
     try {
-    const {data} = await api.put<ResponseTrade>(`/api/trade/${tradeId}`);
+      const { data } = await api.put<ResCRUDTrade>(`/api/trade/${tradeId}`);
       // Update trade status to 'detalles' after accepting
-      setTrades((prevTrades) =>
-        prevTrades.map((trade) =>
-          trade._id === data.payload._id ? { ...trade, status: 'ACCEPTED' } : trade
-        )
-      );
-      return data
+      const newArray = trades.filter((trade) => trade._id !== data.payload._id);
+      newArray.push(data.payload);
+      setTrades(newArray);
     } catch (error) {
       console.error('Accept trade error:', error);
       throw error;
@@ -112,8 +85,21 @@ const TradesProvider: React.FC<TradesProviderProps> = ({ children }) => {
 
   const detailsTrade = async (tradeId: string) => {
     try {
-     const {data} = await api.get<ResponseTrade>(`/api/find-one/${tradeId}`);
-     return data
+      const { data } = await api.get<ResCRUDTrade>(
+        `/api/trade/find-one/${tradeId}`
+      );
+      setTrade(data.payload);
+    } catch (error) {
+      console.error('Details trade error:', error);
+      throw error;
+    }
+  };
+
+  const deleteTrade = async (tradeId: string) => {
+    try {
+      const { data } = await api.delete<ResCRUDTrade>(`/api/trade/${tradeId}`);
+      const newArray = trades.filter((trade) => trade._id !== data.payload._id);
+      setTrades(newArray);
     } catch (error) {
       console.error('Details trade error:', error);
       throw error;
@@ -122,13 +108,19 @@ const TradesProvider: React.FC<TradesProviderProps> = ({ children }) => {
 
   const contextValue: TradesContextType = {
     trades,
+    trade,
+    deleteTrade,
     acceptTrade,
     createTrade,
     detailsTrade,
-    getAllTrades
+    getAllTrades,
   };
 
-  return <TradesContext.Provider value={contextValue}>{children}</TradesContext.Provider>;
+  return (
+    <TradesContext.Provider value={contextValue}>
+      {children}
+    </TradesContext.Provider>
+  );
 };
 
 export { TradesContext, TradesProvider };

@@ -103,7 +103,7 @@ export class TradeRepository {
           { "members.memberOne.id": userId },
           { "members.memberTwo.id": userId },
         ],
-      }).select("members duration status");
+      }).select("members duration status expiresAt");
       return trade;
     } catch (error) {
       console.log(error);
@@ -199,18 +199,6 @@ export class TradeRepository {
         throw new Error(error.message);
       }
       throw new Error("Error al aceptar trade");
-    }
-  }
-
-  async delete(id: string) {
-    try {
-      return await this.TradeModel.findByIdAndDelete(id);
-    } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
-      throw Error("Error al eliminar trade");
     }
   }
 }

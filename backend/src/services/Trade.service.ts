@@ -146,6 +146,8 @@ export class TradeService {
   async findOne(user: IUser, tradeId: string) {
     try {
       const trade = await this.tradeRepository.findOne(user._id, tradeId);
+      console.log(trade);
+
       if (!trade) {
         return {
           status: "error",
@@ -213,7 +215,7 @@ export class TradeService {
       );
       if (tradeDelete[0].status === "PENDING") {
         await tradeDelete[0].deleteOne();
-        return { status: "succes", payload: "trade eliminado" };
+        return { status: "succes", payload: tradeDelete[0] };
       } else {
         return {
           status: "Error",

@@ -232,10 +232,11 @@ export class UserController {
   //   contacts: PopulatedDoc<Types.ObjectId & Document>[];
   // }
   getPotentialPairings = (req: Request, res: Response) => {
-    // const interests: specialty[] = req.user!.interests;
-    console.log("llegamos a getpotentialpairings");
+    // 1. Get interests from the requesting user
+    const interests: specialty[] = req.user!.interests;
     res.status(200).json({
       status: "success",
+      payload: interests,
     });
   };
 }

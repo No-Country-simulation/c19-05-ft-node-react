@@ -46,8 +46,12 @@ routerUser.put(
   userController.resetPassword
 );
 
-// TODO: endpoint for showing all users
-routerUser.get("/user/potential-trades", userController.getPotentialPairings);
+// TODO: endpoint for showing all potential users
+routerUser.get(
+  "/user/potential-trades",
+  authValidatePassport,
+  userController.getPotentialPairings
+);
 
 // Already documented
 routerUser.get("/user/:categoryId?", userController.getUsers);

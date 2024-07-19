@@ -225,20 +225,44 @@ export class UserRepository {
     specialtiesIds: Types.ObjectId[]
   ) {
     try {
-      const potentialPairings = await UserModel.find({
-        specialties: {
-          $elemMatch: {
-            specialtyId: { $in: interestsIds },
+      const getPotentialPairings = await this.UserModel.aggregate([
+        {
+          $match: {
+            specialties: {
+              $elemMatch: {
+                specialtyId: { $in: interestsIds },
+              },
+            },
+            interests: {
+              $elemMatch: {
+                specialtyId: { $in: specialtiesIds },
+              },
+            },
           },
         },
-        interests: {
-          $elemMatch: {
-            specialtyId: { $in: specialtiesIds },
+        {
+          $project: {
+            _id: 1,
+            name: 1,
+            matchingSpecialties: {
+              $filter: {
+                input: "$specialties",
+                as: "specialty",
+                cond: { $in: ["$$specialty.specialtyId", interestsIds] },
+              },
+            },
+            matchingInterests: {
+              $filter: {
+                input: "$interests",
+                as: "interest",
+                cond: { $in: ["$$interest.specialtyId", specialtiesIds] },
+              },
+            },
           },
         },
-      }).select("_id name interests specialties");
-      return potentialPairings;
-    } catch (error) {
+      ]);
+      return getPotentialPairings;
+    } catch (error: any) {
       console.log(error);
       if (error instanceof Error) {
         throw Error(error.message);

@@ -4,6 +4,7 @@ import { Types } from "mongoose";
 import User, { IUser, userRating } from "../models/User.model";
 import { RegisterType } from "../utils/schema/auth.schema";
 import { populate } from "dotenv";
+import UserModel from "../models/User.model";
 
 type OptionsType = {
   page: number;
@@ -112,17 +113,19 @@ export class UserRepository {
     }
   }
 
-	async findByEmail(email: string): Promise<IUser | null> {
-		try {
-			return await this.UserModel.findOne({email}).select("_id name email description password phoneNumber specialties interests userRatings trades contacts provider");
-		} catch (error) {
-			console.log(error)
-            if(error instanceof Error) {
-                throw Error(error.message)
-            }
-			throw Error("Error al buscar un usuario por email")
-		}
-	}
+  async findByEmail(email: string): Promise<IUser | null> {
+    try {
+      return await this.UserModel.findOne({ email }).select(
+        "_id name email description password phoneNumber specialties interests userRatings trades contacts provider"
+      );
+    } catch (error) {
+      console.log(error);
+      if (error instanceof Error) {
+        throw Error(error.message);
+      }
+      throw Error("Error al buscar un usuario por email");
+    }
+  }
 
   async update(
     id: string | Types.ObjectId,
@@ -214,6 +217,33 @@ export class UserRepository {
         throw Error(error.message);
       }
       throw Error("Error al eliminar un usuario");
+    }
+  }
+
+  async findSuggestions(
+    interestsIds: Types.ObjectId[],
+    specialtiesIds: Types.ObjectId[]
+  ) {
+    try {
+      const potentialPairings = await UserModel.find({
+        specialties: {
+          $elemMatch: {
+            specialtyId: { $in: interestsIds },
+          },
+        },
+        interests: {
+          $elemMatch: {
+            specialtyId: { $in: specialtiesIds },
+          },
+        },
+      }).select("_id name interests specialties");
+      return potentialPairings;
+    } catch (error) {
+      console.log(error);
+      if (error instanceof Error) {
+        throw Error(error.message);
+      }
+      throw Error("Error al hallar sugerencias para trades");
     }
   }
 }

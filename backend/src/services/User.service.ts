@@ -535,4 +535,35 @@ export class UserService {
       throw new Error(String(error));
     }
   }
+
+  async getSuggestions(user: IUser) {
+    const interests: specialty[] = user.interests;
+    const interestsIds: Types.ObjectId[] = interests.map(
+      (interest) => interest.specialtyId
+    );
+
+    const specialties: specialty[] = user.specialties;
+    const specialtiesIds: Types.ObjectId[] = specialties.map(
+      (specialty) => specialty.specialtyId
+    );
+
+    try {
+      const recommendations = await this.userRepository.findSuggestions(
+        interestsIds,
+        specialtiesIds
+      );
+      if (recommendations) {
+        return {
+          status: "success",
+          numberOfRecommendations: recommendations.length,
+          payload: recommendations,
+        };
+      }
+    } catch (error) {
+      console.log(error);
+      if (error instanceof Error) {
+        throw Error(error.message);
+      }
+    }
+  }
 }

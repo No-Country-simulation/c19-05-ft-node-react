@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { UserService } from "../services/User.service";
-import UserModel, { enumType, specialty } from "../models/User.model";
+import UserModel, { enumType, IUser, specialty } from "../models/User.model";
 import { UserUpdateType } from "../utils/schema/user.schema";
 import { Document, Types } from "mongoose";
 
@@ -218,38 +218,17 @@ export class UserController {
   };
 
   getPotentialPairings = async (req: Request, res: Response) => {
-    const interests: specialty[] = req.user!.interests;
-    const interestsIds: Types.ObjectId[] = interests.map(
-      (interest) => interest.specialtyId
-    );
-
-    const specialties: specialty[] = req.user!.specialties;
-    const specialtiesIds: Types.ObjectId[] = specialties.map(
-      (specialty) => specialty.specialtyId
-    );
     try {
-      const potentialPairings = await UserModel.find({
-        specialties: {
-          $elemMatch: {
-            specialtyId: { $in: interestsIds },
-          },
-        },
-        interests: {
-          $elemMatch: {
-            specialtyId: { $in: specialtiesIds },
-          },
-        },
-      }).select("_id name interests specialties");
-      res.status(200).json({
-        status: "success",
-        payload: {
-          interestsIds,
-          specialtiesIds,
-          potentialPairings,
-        },
-      });
+      const user = req.user as IUser;
+      const result = await this.userService.getSuggestions(user);
+      result!.status === "success"
+        ? res.status(200).send(result)
+        : res.status(500).send(result);
     } catch (error) {
-      res.status(500).send("There was an error in the server");
+      console.log(error);
+      if (error instanceof Error) {
+        res.status(400).send({ status: false, payload: error.message });
+      }
     }
   };
 }

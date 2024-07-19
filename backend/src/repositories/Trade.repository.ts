@@ -3,9 +3,7 @@ import Trade, {
   createTradeType,
   enumTradeStatus,
   ITrade,
-  membersType,
 } from "../models/Trade.model";
-import { UserRepository } from "./User.repository";
 
 export class TradeRepository {
   constructor(private readonly TradeModel = Trade) {}
@@ -22,9 +20,31 @@ export class TradeRepository {
     }
   }
 
-  async findOne(tradeId: string): Promise<ITrade | null> {
+  async findTradesByIdTwoMembers(
+    userOne: string | Types.ObjectId,
+    userTwo: string | Types.ObjectId,
+    status: { status: enumTradeStatus } | {}
+  ): Promise<ITrade[]> {
     try {
-      return await this.TradeModel.findById(tradeId);
+      const trades = await this.TradeModel.find({
+        $and: [
+          {
+            $or: [
+              {
+                "members.memberOne.id": userOne,
+                "members.memberTwo.id": userTwo,
+              },
+              {
+                "members.memberOne.id": userTwo,
+                "members.memberTwo.id": userOne,
+              },
+            ],
+          },
+          { status: status },
+        ],
+      });
+
+      return trades;
     } catch (error) {
       console.log(error);
       if (error instanceof Error) {
@@ -34,20 +54,15 @@ export class TradeRepository {
     }
   }
 
-  async findTradesById(
-    userId: string | Types.ObjectId,
-    status: { status: enumTradeStatus } | {}
-  ): Promise<ITrade[] | null> {
+  async findTradesById(userId: string | Types.ObjectId): Promise<ITrade[]> {
     try {
-      return await this.TradeModel.find(
-        {
-          $or: [
-            { "members.memberOne.id": userId },
-            { "members.memberTwo.id": userId },
-          ],
-        },
-        status
-      );
+      const trades = await this.TradeModel.find({
+        $or: [
+          { "members.memberOne.id": userId },
+          { "members.memberTwo.id": userId },
+        ],
+      });
+      return trades;
     } catch (error) {
       console.log(error);
       if (error instanceof Error) {
@@ -60,19 +75,35 @@ export class TradeRepository {
   async findOnePending(
     userId: string | Types.ObjectId,
     tradeId: string | Types.ObjectId,
-    status: { status: enumTradeStatus } | {}
+    status: enumTradeStatus | {}
   ): Promise<ITrade | null> {
     try {
-      const trade = await this.TradeModel.findOne(
-        {
-          _id: tradeId,
-          $or: [
-            { "members.memberOne.id": userId },
-            { "members.memberTwo.id": userId },
-          ],
-        },
-        status
-      );
+      const trade = await this.TradeModel.findOne({
+        _id: tradeId,
+        $or: [{ "members.memberTwo.id": userId, status: status }],
+      }).select("members duration status");
+      return trade;
+    } catch (error) {
+      console.log(error);
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+      throw Error("Error al buscar trade");
+    }
+  }
+
+  async findOne(
+    userId: string | Types.ObjectId,
+    tradeId: string | Types.ObjectId
+  ): Promise<ITrade | null> {
+    try {
+      const trade = await this.TradeModel.findOne({
+        _id: tradeId,
+        $or: [
+          { "members.memberOne.id": userId },
+          { "members.memberTwo.id": userId },
+        ],
+      }).select("members duration status");
       return trade;
     } catch (error) {
       console.log(error);

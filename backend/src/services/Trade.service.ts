@@ -28,28 +28,6 @@ export class TradeService {
           payload: "No podes crear un trade sin especialidades en tu perfil.",
         };
       }
-
-      const trades = await this.tradeRepository.findTradesById(
-        userOne._id,
-        "PENDING"
-      );
-      // console.log(trades);
-      // return
-
-      // chequeo en los dos members que no este el usuario que crea este trade.
-      const isPossible = trades!.findIndex(
-        (trade) =>
-          trade.members.memberOne.id.toString() === userOne._id.toString() ||
-          trade.members.memberTwo.id.toString() === userOne._id.toString()
-      );
-
-      if (isPossible !== -1) {
-        return {
-          status: "error",
-          payload:
-            "No podes crear un trade con este usuario. Hay un trade pendiente.",
-        };
-      }
       const userTwo = await this.userRepository.findOne(
         trade.members.memberTwo.id
       );
@@ -59,6 +37,21 @@ export class TradeService {
           payload: "Usuario no encontrado",
         };
       }
+
+      const trades = await this.tradeRepository.findTradesByIdTwoMembers(
+        userOne._id,
+        trade.members.memberTwo.id,
+        "PENDING"
+      );
+
+      if (trades?.length > 0) {
+        return {
+          status: "error",
+          payload:
+            "No podes crear un trade con este usuario. Hay un trade pendiente.",
+        };
+      }
+
       //chequear que los intereses sean correspondientes
       const findIndexOneSpecialty = userOne.specialties.findIndex(
         (specialty) =>
@@ -122,7 +115,7 @@ export class TradeService {
   //ta ok👍
   async findTrades(userId: string | Types.ObjectId) {
     try {
-      const trades = await this.tradeRepository.findTradesById(userId, {});
+      const trades = await this.tradeRepository.findTradesById(userId);
 
       if (!trades) {
         return { status: "error", payload: "No hay trades" };
@@ -150,17 +143,9 @@ export class TradeService {
     }
   }
 
-  async findOne(
-    user: IUser,
-    tradeId: string,
-    status: { status: enumTradeStatus } | {}
-  ) {
+  async findOne(user: IUser, tradeId: string) {
     try {
-      const trade = await this.tradeRepository.findOnePending(
-        user._id,
-        tradeId,
-        status
-      );
+      const trade = await this.tradeRepository.findOne(user._id, tradeId);
       if (!trade) {
         return {
           status: "error",
@@ -186,22 +171,12 @@ export class TradeService {
       const trade = await this.tradeRepository.findOnePending(
         user._id,
         tradeId,
-        { status: "PENDING" }
+        "PENDING"
       );
-
       if (!trade) return { status: "error", payload: "trade no encontrado" };
-
-      if (trade.members.memberTwo.id.toString() !== user._id.toString()) {
-        return {
-          status: "error",
-          payload:
-            "No te hagas el piola porque vos creaste el trade y no lo podes aceptar.",
-        };
-      }
       const duration = trade.duration;
       trade.expiresAt = new Date(new Date().getTime() + duration);
       trade.status = "ACCEPTED";
-      // const tradeUpdated = await this.tradeRepository.updateAccepted(tradeId,expiresAt)
       await trade.save();
       return { status: "success", payload: trade };
     } catch (error) {
@@ -226,15 +201,31 @@ export class TradeService {
     }
   }
 
-  async deleteTrade(tradeId: string) {
+  async deleteTrade(user: IUser, tradeId: string) {
     try {
-      const trade = await this.tradeRepository.findOne(tradeId);
-      if (!trade) return { status: "error", payload: "El trade no existe" };
+      const trade = await this.tradeRepository.findTradesById(user._id);
 
-      if (trade.status === "PENDING") {
-        await trade.deleteOne();
+      if (trade.length === 0)
+        return { status: "error", payload: "El trade no existe" };
+
+      const tradeDelete = trade.filter(
+        (tr) => tr.id.toString() === tradeId.toString()
+      );
+      if (tradeDelete[0].status === "PENDING") {
+        await tradeDelete[0].deleteOne();
         return { status: "succes", payload: "trade eliminado" };
+      } else {
+        return {
+          status: "Error",
+          payload: `No se encontro ningun trade con el id ${tradeId} en estado pendiendte.`,
+        };
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+      if (error instanceof Error) {
+        throw Error(error.message);
+      }
+      throw new Error(String(error));
+    }
   }
 }

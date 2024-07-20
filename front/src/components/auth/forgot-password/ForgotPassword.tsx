@@ -1,16 +1,36 @@
 'use client';
 
+import { ResponseMessage, useAuth } from '@/context/session/sessionContext';
 import { useState, FormEvent, useEffect } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { Toaster, toast } from 'sonner';
+interface FormValues{
+  email: string;
+}
 
 const ForgotPassword: React.FC = () => {
-  const [email, setEmail] = useState<string>('');
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>();
+  const { isLoading, forgotPassword2 } = useAuth();
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    const promise = async (): Promise <ResponseMessage>=> {
+      const response = await forgotPassword2(data);
+      if (response.status !== "success") {
+        throw new Error('The email that you enter is not correct');
+      }
+      return response;
+    };
+  
+    toast.promise(promise(), {
+      loading: 'Loading...',
+      success: () => 'An Email Have Been Send Check It',
+      error: 'The email that you enter is not correct',
+    });
   };
-
   
 
   return (
@@ -23,19 +43,17 @@ const ForgotPassword: React.FC = () => {
             the password
           </h2>
         </div>
-        <form className="mt-8 space-y-14" onSubmit={handleSubmit}>
+        <form className="mt-8 space-y-14" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex justify-center rounded-md ">
             <label htmlFor="email-address" className="sr-only">
               Email address
             </label>
             <input
               id="email-address"
-              name="email"
               type="email"
               autoComplete="email"
               required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              {...register('email', { required: true })}
               className=" w-8/12 px-4 py-4 rounded-md sm:text-sm border border-grey-200"
               placeholder="Email"
               style={{ maxWidth: '18rem' }}

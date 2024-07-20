@@ -3,6 +3,8 @@ import { ReactNode } from 'react';
 import { AuthProvider } from './session/sessionContext';
 import { TradesProvider } from './trades/trades';
 import { UserProvider } from './user/userContext';
+import {NextUIProvider} from '@nextui-org/react'
+
 
 
 interface ProvidersProps {
@@ -11,6 +13,7 @@ interface ProvidersProps {
 
 export function Providers({ children }: ProvidersProps) {
     return (
+        <NextUIProvider>
         <AuthProvider>
             <UserProvider>
                 <TradesProvider>
@@ -18,5 +21,6 @@ export function Providers({ children }: ProvidersProps) {
                 </TradesProvider>
             </UserProvider>
         </AuthProvider>
+        </NextUIProvider>
     );
 }

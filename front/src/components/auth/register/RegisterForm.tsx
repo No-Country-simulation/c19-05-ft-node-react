@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useContext, useState } from 'react';
+import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import Link from 'next/link';
 import { useAuth } from '@/context/session/sessionContext';

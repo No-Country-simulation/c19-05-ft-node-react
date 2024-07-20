@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { IoSend } from 'react-icons/io5';
 import './style.css';
 import ChatWin from './ChatWin';
@@ -11,6 +11,12 @@ export type Message = {
 export default function Chat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState<string>('');
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
@@ -30,7 +36,7 @@ export default function Chat() {
   };
   return (
     <div className="div-container-chat">
-      <div className="chat-container">
+      <div className="chat-container p-4">
         {messages.length > 0 &&
           messages.map((message) => <ChatWin message={message} />)}
       </div>

@@ -131,6 +131,8 @@ export class TradeService {
 
   async findOne(user: IUser, tradeId: string) {
     try {
+      console.log("en find one");
+
       const trade = await this.tradeRepository.findOne(user._id, tradeId);
 
       if (!trade) {

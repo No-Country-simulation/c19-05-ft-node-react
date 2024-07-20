@@ -10,7 +10,7 @@ export interface User {
   email: string;
   avatar: string;
   password: string;
-  aboutme: Aboutme;
+  aboutme: string;
   phoneNumber: string;
   trades: string[];
   contacts: string[];
@@ -92,7 +92,7 @@ export interface ResponseGetUserById {
 
 export interface GetUserById {
   name: string;
-  description: string;
+  aboutme: string;
   specialties: Interest[];
   interests: Interest[];
   userRatings: userRating[];
@@ -104,7 +104,7 @@ export interface GetUserById {
 
 export interface UpdateData {
   name: string;
-  aboutme: Aboutme;
+  aboutme: string;
   phoneNumber: string;
   specialties: Interest[];
   interests: Interest[];
@@ -129,7 +129,7 @@ export interface ResponseUpdate {
 }
 
 export interface PayloadUpdate {
-  aboutme: Aboutme;
+  aboutme: string;
   _id: string;
   name: string;
   email: string;

@@ -1,0 +1,109 @@
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-width: 600px; /* Ajusta según el diseño */
+  height: 400px; /* Ajusta según el diseño */
+  overflow-y: auto;
+  overflow-x: hidden; /* Esto previene el scroll horizontal */
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.chat-message {
+  background: grey;
+  display: inline-block;
+  /* Ajusta el comportamiento para que ocupe solo el espacio necesario */
+  max-width: 90%;
+  word-wrap: break-word; /* Esto previene que palabras largas generen scroll horizontal */
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.chat-message img {
+  max-width: 90%;
+  height: auto;
+  display: block;
+}
+
+.chat-input-container {
+  display: flex;
+  padding-top: 10px;
+  max-width: 600px; /* Ajusta según el diseño */
+  margin: 0 auto; /* Centrar el contenedor de entrada y botón */
+}
+
+.chat-input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px 0 0 5px; /* Bordes redondeados para la izquierda */
+  box-sizing: border-box;
+}
+
+.chat-send-button {
+  padding: 10px 20px;
+  border: 1px solid #ccc;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  border-radius: 0 5px 5px 0; /* Bordes redondeados para la derecha */
+  box-sizing: border-box;
+}
+
+.chat-send-button:hover {
+  background-color: #0056b3;
+}
+
+@media (width < 768px) {
+  .div-container-chat {
+    min-width: 390px;
+  }
+  .chat-container {
+    min-width: 390px;
+    width: 90%;
+    height: 500px;
+    margin: auto;
+  }
+
+  .chat-input-container {
+    width: 90%;
+    margin: auto;
+  }
+  .chat-send-button {
+    padding: 10px;
+  }
+}
+
+@media (width > 767px) {
+  .chat-container {
+    max-height: 100%;
+    height: 600px;
+    margin: auto;
+  }
+}
+
+@media (width > 1365px) {
+  .chat-container {
+    max-width: 600px;
+    height: 600px;
+    margin: 0;
+  }
+
+  .div-container-chat {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 8rem);
+  }
+
+  .chat-input-container {
+    flex: 1;
+    width: 100%;
+    max-height: 70px;
+  }
+}

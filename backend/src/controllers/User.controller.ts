@@ -81,6 +81,8 @@ export class UserController {
     try {
       const result = await this.userService.updatePassword({ token, password });
 
+      console.log(result)
+
       result.status == "success"
         ? res.send(result)
         : res.status(409).send(result);

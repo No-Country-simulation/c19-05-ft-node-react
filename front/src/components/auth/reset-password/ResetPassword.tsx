@@ -26,6 +26,7 @@ const ResetPassword: React.FC = () => {
 
       const onSubmit: SubmitHandler<FormValues> = async (data) => {
         const promise = async (): Promise <Respuesta>=> {
+            console.log(data)
           const response = await resetPassword(data, token);
           if (response.status !== "success") {
             throw new Error('Registration failed');
@@ -55,7 +56,6 @@ const ResetPassword: React.FC = () => {
                             <input
                                 id="password"
                                 type="password"
-                                autoComplete="current-password"
                                 {...register('password', {
                                     required: 'Passwod is required',
                                     minLength: {
@@ -82,9 +82,8 @@ const ResetPassword: React.FC = () => {
                             <input
                                id="repassword"
                                type="password"
-                               autoComplete="new-password"
-                               {...register('password', {
-                                required: 'Passwod is required',
+                               {...register('repassword', {
+                                required: 'Password is required',
                                 minLength: {
                                   value: 8,
                                   message: 'Password must be at least 8 characters',

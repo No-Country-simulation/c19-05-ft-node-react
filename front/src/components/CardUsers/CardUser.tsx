@@ -2,29 +2,7 @@ import { GetUser } from '@/types/user.type';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-/**
-          
-          name: string;
-	email: string;
-	password: string;
-	specialties: PopulatedDoc<specialty & Document>[];
-	interests: PopulatedDoc<specialty & Document>[];
-	description: string;
-	userRatings: userRating[];
-	phoneNumber: string;
-	trades: Types.ObjectId[];
-	contacts: PopulatedDoc<Types.ObjectId & Document>[];
-     avatar: "https://example.com/avatar1.jpg",
-    name: "John Doe",
-    specialties: ["Frontend Development", "UI/UX Design"],
-    interests: ["Technology", "Art", "Travel"],
-    userRatings: [4, 5, 4, 3], // Puntuaciones de usuario (por ejemplo, de 1 a 5)
-    description:
-      "Passionate about creating intuitive user interfaces and experiences.",
-    email: "john.doe@example.com",
-  },
-          
-           */
+
 interface User {
   // avatar: string;
   // name: string;

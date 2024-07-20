@@ -27,4 +27,5 @@ routerChat.post(
   chatController.createMessage
 );
 routerChat.get("/chat/:chatRoomId", chatController.findMessages);
-export { routerChat };
+
+export default routerChat;

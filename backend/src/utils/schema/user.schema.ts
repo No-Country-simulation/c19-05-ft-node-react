@@ -28,18 +28,11 @@ export const UserUpdateSchema = z.object({
       required_error: "El nombre es requerido",
     })
     .min(2, { message: "Minimo 2 caracteres" }),
-  aboutme: z.object({
-    teach: z
-      .string({ invalid_type_error: "La descripcion debe ser un string" })
-      .max(255, { message: "Maximo 255 caracteres" })
-      .optional()
-      .default(""),
-    learn: z
-      .string({ invalid_type_error: "La descripcion debe ser un string" })
-      .max(255, { message: "Maximo 255 caracteres" })
-      .optional()
-      .default(""),
-  }),
+  aboutme: z
+    .string({ invalid_type_error: "La descripcion debe ser un string" })
+    .max(255, { message: "Maximo 255 caracteres" })
+    .optional()
+    .default(""),
   phoneNumber: z
     .string({
       invalid_type_error: "El numero telefonico debe ser un string",
@@ -53,10 +46,7 @@ export const UserUpdateSchema = z.object({
 
 export type UserUpdateType = {
   name: string;
-  aboutme: {
-    teach: string;
-    learn: string;
-  };
+  aboutme: string;
   phoneNumber: string;
   specialties: {
     categoryId: Types.ObjectId;

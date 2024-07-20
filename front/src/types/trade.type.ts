@@ -1,6 +1,6 @@
 export interface ResCRUDTrade {
   status: string;
-  payload: Trade;
+  payload: TradeDetails;
 }
 
 export interface Trade {
@@ -26,5 +26,44 @@ export interface Member {
 
 export interface GetAllTrades {
   status: string;
-  payload: Trade[];
+  payload: TradeDetails[];
+}
+
+export interface ResTradeDetails {
+  status: string;
+  payload: TradeDetails;
+}
+
+export interface TradeDetails {
+  chatRoom: null;
+  _id: string;
+  members: MembersTradeDetails;
+  duration: number;
+  expiresAt: string;
+  status: string;
+  __v: number;
+}
+
+export interface MembersTradeDetails {
+  memberOne: MemberTradeDetails;
+  memberTwo: MemberTradeDetails;
+  _id: string;
+}
+
+export interface MemberTradeDetails {
+  id: UserInfoTradeDetails;
+  specialty: SpecialtyTradeDetails;
+  hasRated: boolean;
+}
+
+export interface UserInfoTradeDetails {
+  _id: string;
+  name: string;
+  email: string;
+  avatar: string;
+}
+
+export interface SpecialtyTradeDetails {
+  _id: string;
+  name: string;
 }

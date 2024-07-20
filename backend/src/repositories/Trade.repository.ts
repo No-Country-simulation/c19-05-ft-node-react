@@ -106,7 +106,23 @@ export class TradeRepository {
       const trade = await this.TradeModel.findOne({
         _id: tradeId,
         $or: [{ "members.memberTwo.id": userId, status: status }],
-      }).select("members duration status expiresAt chatRoom");
+      })
+        .populate({
+          path: "members.memberOne.id",
+          select: "name avatar email", // Selecciona los campos que quieres incluir
+        })
+        .populate({
+          path: "members.memberOne.specialty",
+          select: "name", // Selecciona los campos que quieres incluir
+        })
+        .populate({
+          path: "members.memberTwo.id",
+          select: "name avatar email", // Selecciona los campos que quieres incluir
+        })
+        .populate({
+          path: "members.memberTwo.specialty",
+          select: "name", // Selecciona los campos que quieres incluir
+        });
       return trade;
     } catch (error) {
       console.log(error);
@@ -128,7 +144,23 @@ export class TradeRepository {
           { "members.memberOne.id": userId },
           { "members.memberTwo.id": userId },
         ],
-      }).select("members duration status expiresAt chatRoom");
+      })
+        .populate({
+          path: "members.memberOne.id",
+          select: "name avatar email", // Selecciona los campos que quieres incluir
+        })
+        .populate({
+          path: "members.memberOne.specialty",
+          select: "name", // Selecciona los campos que quieres incluir
+        })
+        .populate({
+          path: "members.memberTwo.id",
+          select: "name avatar email", // Selecciona los campos que quieres incluir
+        })
+        .populate({
+          path: "members.memberTwo.specialty",
+          select: "name", // Selecciona los campos que quieres incluir
+        });
       return trade;
     } catch (error) {
       console.log(error);

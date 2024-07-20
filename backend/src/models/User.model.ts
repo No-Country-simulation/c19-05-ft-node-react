@@ -41,6 +41,7 @@ export interface IUser extends Document {
   specialties: specialty[];
   interests: specialty[];
   aboutme: { teach: string; learn: string };
+  chatRoom: Types.ObjectId[];
   userRatings: userRating[];
   phoneNumber: string;
   trades: Types.ObjectId[];
@@ -147,6 +148,12 @@ const UserSchema: Schema = new Schema({
     ],
     default: [],
   },
+  chatRoom: {
+    type: [Types.ObjectId],
+    ref: "Chat",
+    default: [],
+  },
+
   contacts: {
     type: [
       {

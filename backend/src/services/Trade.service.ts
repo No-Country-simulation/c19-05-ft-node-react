@@ -37,28 +37,24 @@ export class TradeService {
           payload: "Usuario no encontrado",
         };
       }
-
       const trades = await this.tradeRepository.findTradesByIdTwoMembers(
         userOne._id,
         trade.members.memberTwo.id,
         "PENDING"
       );
-
-      if (trades?.length > 0) {
-        return {
-          status: "error",
-          payload:
-            "No podes crear un trade con este usuario. Hay un trade pendiente.",
-        };
-      }
-
+      // if (trades?.length > 0) {
+      //   return {
+      //     status: "error",
+      //     payload:
+      //       "No podes crear un trade con este usuario. Hay un trade pendiente.",
+      //   };
+      // }
       //chequear que los intereses sean correspondientes
       const findIndexOneSpecialty = userOne.specialties.findIndex(
         (specialty) =>
           specialty.specialtyId._id.toString() ===
           trade.members.memberOne.specialty.toString()
       );
-
       const findIndexOneInterest = userOne.interests.findIndex(
         (interest) =>
           interest.specialtyId._id.toString() ===
@@ -80,19 +76,15 @@ export class TradeService {
           interest.specialtyId.toString() ===
           trade.members.memberOne.specialty.toString()
       );
-
       if (findIndexTwoSpecialty === -1 || findIndexTwoInterest === -1) {
         return {
           status: "error",
           payload: "Los intereses no corresponden con las especialidades.",
         };
       }
-
       const newTrade = await this.tradeRepository.create(trade);
-
       userOne.trades.push(newTrade.id);
       userTwo.trades.push(newTrade.id);
-
       const [uno, dos] = await Promise.allSettled([
         userTwo.save(),
         userOne.save(),
@@ -106,7 +98,6 @@ export class TradeService {
       if (error instanceof Error) {
         throw Error(error.message);
       }
-
       throw new Error(String(error));
     }
   }
@@ -115,12 +106,10 @@ export class TradeService {
   //ta ok👍
   async findTrades(userId: string | Types.ObjectId) {
     try {
-      const trades = await this.tradeRepository.findTradesById(userId);
-
+      const trades = await this.tradeRepository.find(userId);
       if (!trades) {
         return { status: "error", payload: "No hay trades" };
       }
-
       const updateTrade = trades.map((trade) => {
         if (trade.status === "ACCEPTED" && trade.expiresAt! < new Date()) {
           trade.status = "FINISHED";
@@ -129,16 +118,13 @@ export class TradeService {
           return trade;
         }
       });
-
       const update = await Promise.all(updateTrade);
-
       return { status: "success", payload: update };
     } catch (error) {
       console.log(error);
       if (error instanceof Error) {
         throw Error(error.message);
       }
-
       throw new Error(String(error));
     }
   }
@@ -146,7 +132,6 @@ export class TradeService {
   async findOne(user: IUser, tradeId: string) {
     try {
       const trade = await this.tradeRepository.findOne(user._id, tradeId);
-      console.log(trade);
 
       if (!trade) {
         return {
@@ -205,7 +190,7 @@ export class TradeService {
 
   async deleteTrade(user: IUser, tradeId: string) {
     try {
-      const trade = await this.tradeRepository.findTradesById(user._id);
+      const trade = await this.tradeRepository.find(user._id);
 
       if (trade.length === 0)
         return { status: "error", payload: "El trade no existe" };

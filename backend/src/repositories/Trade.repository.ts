@@ -1,4 +1,4 @@
-import { Types } from "mongoose";
+import { MongooseError, Types } from "mongoose";
 import Trade, {
   createTradeType,
   enumTradeStatus,
@@ -7,16 +7,41 @@ import Trade, {
 
 export class TradeRepository {
   constructor(private readonly TradeModel = Trade) {}
+
   async create(trade: createTradeType) {
     try {
-      const newTrade = await this.TradeModel.create(trade);
-      return newTrade;
+      const newTrade = new this.TradeModel(trade);
+      return await newTrade.save();
     } catch (error) {
       console.log(error);
       if (error instanceof Error) {
         throw new Error(error.message);
       }
       throw Error("Error al crear trade");
+    }
+  }
+
+  async find(id: Types.ObjectId | string): Promise<ITrade[]> {
+    try {
+      console.log(id);
+
+      const trades = await this.TradeModel.find({
+        $or: [{ "members.memberOne.id": id }, { "members.memberTwo.id": id }],
+      })
+        .populate({ path: "members.memberOne.id", select: "name email avatar" })
+        .populate({
+          path: "members.memberTwo.id",
+          select: "name email avatar",
+        });
+      return trades;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else if (error instanceof MongooseError) {
+        throw new Error(error.message);
+      } else {
+        throw new Error("Ocurrio un error al crear usuario");
+      }
     }
   }
 
@@ -42,7 +67,7 @@ export class TradeRepository {
           },
           { status: status },
         ],
-      });
+      }).select("members duration status expiresAt chatRoom");
 
       return trades;
     } catch (error) {
@@ -61,7 +86,7 @@ export class TradeRepository {
           { "members.memberOne.id": userId },
           { "members.memberTwo.id": userId },
         ],
-      });
+      }).select("members duration status expiresAt chatRoom");
       return trades;
     } catch (error) {
       console.log(error);
@@ -81,7 +106,7 @@ export class TradeRepository {
       const trade = await this.TradeModel.findOne({
         _id: tradeId,
         $or: [{ "members.memberTwo.id": userId, status: status }],
-      }).select("members duration status");
+      }).select("members duration status expiresAt chatRoom");
       return trade;
     } catch (error) {
       console.log(error);
@@ -103,7 +128,7 @@ export class TradeRepository {
           { "members.memberOne.id": userId },
           { "members.memberTwo.id": userId },
         ],
-      }).select("members duration status expiresAt");
+      }).select("members duration status expiresAt chatRoom");
       return trade;
     } catch (error) {
       console.log(error);

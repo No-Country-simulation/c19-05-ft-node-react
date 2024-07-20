@@ -5,6 +5,8 @@ export const middlewareBody =
   (schema: ZodSchema) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
+      console.log(req.body);
+
       await schema.parse(req.body);
       next();
     } catch (error) {

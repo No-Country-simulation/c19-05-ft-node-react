@@ -1,4 +1,4 @@
-export interface ResCRUTrade {
+export interface ResCRUDTrade {
   status: string;
   payload: Trade;
 }

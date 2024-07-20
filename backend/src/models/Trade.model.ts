@@ -1,13 +1,8 @@
 /** @format */
 
-import mongoose, {
-  Document,
-  PopulatedDoc,
-  Schema,
-  Types,
-  mongo,
-} from "mongoose";
+import mongoose, { Document, Schema, Types } from "mongoose";
 import UserModel from "./User.model";
+import Chat from "./ChatRoom";
 
 type memberType = {
   id: string;
@@ -34,6 +29,7 @@ export interface ITrade extends Document {
   duration: number;
   expiresAt: Date | null;
   status: enumTradeStatus;
+  chatRoom: Types.ObjectId[];
 }
 
 const TradeSchema: Schema = new Schema({
@@ -83,9 +79,12 @@ const TradeSchema: Schema = new Schema({
     enum: ["ACCEPTED", "PENDING", "FINISHED"],
     default: "PENDING",
   },
+  chatRoom: {
+    type: Types.ObjectId,
+    ref: "Chat",
+    default: null,
+  },
 });
-
-const Trade = mongoose.model<ITrade>("Trade", TradeSchema);
 
 TradeSchema.pre(
   "deleteOne",
@@ -112,5 +111,36 @@ TradeSchema.pre(
     }
   }
 );
+
+TradeSchema.pre("save", async function (next) {
+  try {
+    const trade = this as unknown as ITrade;
+
+    const chat = new Chat({
+      userOne: trade.members.memberOne.id,
+      userTwo: trade.members.memberTwo.id,
+      tradeId: trade.id,
+    });
+
+    const [userOne, userTwo] = await Promise.all([
+      UserModel.findById(trade.members.memberOne.id),
+      UserModel.findById(trade.members.memberTwo.id),
+    ]);
+    userOne!.chatRoom.push(chat.id);
+    userTwo!.chatRoom.push(chat.id);
+    userOne!.trades.push(trade.id);
+    userTwo!.trades.push(trade.id);
+    this.chatRoom = chat.id;
+    await Promise.all([chat.save(), userOne?.save(), userTwo?.save()]);
+    next();
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    throw new Error(String(error));
+  }
+});
+
+const Trade = mongoose.model<ITrade>("Trade", TradeSchema);
 
 export default Trade;

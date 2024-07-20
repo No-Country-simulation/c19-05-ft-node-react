@@ -17,7 +17,9 @@ export class TradeController {
         { members, duration },
         req.user!
       );
-      res.send(result);
+      result.status === "success"
+        ? res.send(result)
+        : res.status(400).send(result);
     } catch (error) {
       console.log(error);
     }
@@ -84,6 +86,7 @@ export class TradeController {
 
   findTrades = async (req: Request, res: Response) => {
     const user = req.user!;
+
     try {
       const result = await this.tradeService.findTrades(user._id);
       result.status === "success"

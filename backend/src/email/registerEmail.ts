@@ -23,7 +23,7 @@ export class Emails {
                 <a href="${envs.FRONTEND_URL}/auth/confirm-account/${parametros.token}" style="display: inline-block; padding: 10px 20px; color: #fff; background-color: #4CAF50; border-radius: 5px; text-decoration: none;">Confirmar Cuenta</a>
               </p>
               <p>O puedes copiar y pegar el siguiente enlace en tu navegador:</p>
-              <p><a href="http://localhost:${envs.PORT}/api/user/confirm-email/${parametros.token}" style="color: #4CAF50;">Click aca</a></p>
+              <p><a href="${envs.FRONTEND_URL}/auth/confirm-account/${parametros.token}" style="color: #4CAF50;">Click aca</a></p>
               <p style="color: #888;">Este token expira en 30 minutos.</p>
               <p>Si no te has registrado en Talent Trade, por favor ignora este correo.</p>
               <p style="text-align: center; color: #888; font-size: 12px;">&copy; 2024 Talent Trade. Todos los derechos reservados.</p>
@@ -42,11 +42,22 @@ export class Emails {
         to: parametros.email,
         subject: "Confirma tu email",
         text: "Confirma tu email clickeando el enlace",
-        html: `<p>Hola: ${parametros.name} Ingresa en el siguiente Link para continuar el reset de tu contraseña.</p>
-        <p>Visita el siguiente enlace</p>
-        <a href="http://localhost:${envs.PORT}/api/user/reset-password/${parametros.token}">Reset</a>
-        <p>Este token expira en 30 minutos</p>
-        `,
+        html: ` 
+          <div style="font-family: Arial, sans-serif; color: #333; background-color: #f7f7f7; padding: 20px;">
+            <div style="max-width: 600px; margin: 0 auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+              <h2 style="color: #4CAF50; text-align: center;">Recuperación contraseña</h2>
+              <p>Hola, <strong>${parametros.name}</strong>,</p>
+              <p>Para elegir una contraseña nueva, ingresa en el siguiente enlace.</p>
+              <p style="text-align: center;">
+                <a href="${envs.FRONTEND_URL}/auth/reset-password/${parametros.token}" style="display: inline-block; padding: 10px 20px; color: #fff; background-color: #4CAF50; border-radius: 5px; text-decoration: none;">Confirmar Cuenta</a>
+              </p>
+              <p>O puedes copiar y pegar el siguiente enlace en tu navegador:</p>
+              <p><a href="${envs.FRONTEND_URL}/auth/reset-password/${parametros.token}" style="color: #4CAF50;">Click aca</a></p>
+              <p style="color: #888;">Este token expira en 30 minutos.</p>
+              <p>Si no has pedido un cambio de contraseña, ignora este mensaje.</p>
+              <p style="text-align: center; color: #888; font-size: 12px;">&copy; 2024 Talent Trade. Todos los derechos reservados.</p>
+            </div>
+          </div>`,
       });
       console.log("mensaje enviado: ", info.messageId);
     } catch (error) {

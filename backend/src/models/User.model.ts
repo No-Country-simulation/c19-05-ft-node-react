@@ -34,13 +34,14 @@ export type userRating = {
 export interface IUser extends Document {
   _id: Types.ObjectId;
   provider: string;
+  role: string;
   name: string;
   email: string;
   password: string;
   avatar: string;
   specialties: specialty[];
   interests: specialty[];
-  aboutme: { teach: string; learn: string };
+  aboutme: string;
   chatRoom: Types.ObjectId[];
   userRatings: userRating[];
   phoneNumber: string;
@@ -57,6 +58,10 @@ const UserSchema: Schema = new Schema({
   provider: {
     type: String,
     default: "local",
+  },
+  role: {
+    type: String,
+    default: "user",
   },
   email: {
     type: String,
@@ -103,14 +108,8 @@ const UserSchema: Schema = new Schema({
     default: [],
   },
   aboutme: {
-    teach: {
-      type: String,
-      default: "",
-    },
-    learn: {
-      type: String,
-      default: "",
-    },
+    type: String,
+    default: "",
   },
   userRatings: {
     type: [

@@ -68,7 +68,7 @@ type TradesProviderProps = {
 const TradesProvider: React.FC<TradesProviderProps> = ({ children }) => {
   const [trades, setTrades] = useState<Trade[]>([]);
 
-  const getAllTrades = async (userTrades:string[]) => {
+  const getAllTrades = async () => {
     try {
       // Simulate API call
      const {data} = await api.get<ResponseTradeArray>(`/api/trade`);

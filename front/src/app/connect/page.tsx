@@ -5,6 +5,8 @@ import { useUser } from '@/context/user/userContext';
 import FilterSidebar from '@/components/FilterSideBar/FilterSideBar';
 import { Pagination } from '@nextui-org/react';
 import { Button } from '@nextui-org/button';
+import ModalConnect from '@/components/Modal/ModalConnect';
+import { GetUser } from '@/types/user.type';
 
 interface User {
   avatar: string;
@@ -16,6 +18,10 @@ interface User {
 const UsersPage = () => {
   const { users } = useUser();
   const [showSidebar, setShowSidebar] = useState(false);
+  const [showModal, setShowModal] = useState<{
+    open: boolean;
+    user?: GetUser;
+  }>({ open: false });
 
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
@@ -52,7 +58,12 @@ const UsersPage = () => {
         <div className={`w-full md:w-3/4 ${showSidebar ? 'ml-0' : 'mx-auto'}`}>
           <div className="flex flex-wrap justify-center gap-4">
             {users.map((user, index) => (
-              <CardUser key={index} user={user} />
+              <CardUser
+                key={index}
+                user={user}
+                setShowModal={setShowModal}
+                showModal={showModal}
+              />
             ))}
           </div>
         </div>
@@ -67,6 +78,7 @@ const UsersPage = () => {
           }}
         />
       </div>
+      <ModalConnect setShowModal={setShowModal} showModal={showModal} />
     </div>
   );
 };

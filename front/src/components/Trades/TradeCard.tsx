@@ -10,7 +10,7 @@ const TradeCard = ({ trade }: TradeCardProps) => {
   const router = useRouter();
   return (
     <div
-      className={`shadow ${trade.status === 'Pending' ? 'bg-yellow-300' : trade.status === 'In Progress' ? 'bg-green-300' : 'bg-red-300'} w-fit pt-10 pb-7 px-10 rounded-lg text-sm`}
+      className={`shadow ${trade.status === 'PENDING' ? 'bg-yellow-300' : trade.status === 'ACCEPTED' ? 'bg-green-300' : 'bg-red-300'} w-fit pt-10 pb-7 px-10 rounded-lg text-sm`}
     >
       {/* user photos and names */}
       <div className="flex gap-x-4 justify-center items-center mb-6">

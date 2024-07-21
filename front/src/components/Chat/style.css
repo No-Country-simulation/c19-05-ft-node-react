@@ -95,18 +95,17 @@
 }
 
 @media (width > 1365px) {
-  .chat-container {
-    max-width: 600px;
-    height: 600px;
-    margin: 0;
-  }
-
   .div-container-chat {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: calc(100vh - 20rem);
+    height: calc(100vh - 12rem);
+  }
+  .chat-container {
+    max-width: 600px;
+    height: 500px;
+    margin: 0;
   }
 
   .chat-input-container {

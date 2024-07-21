@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { IoSend } from 'react-icons/io5';
 import './style.css';
 import ChatWin from './ChatWin';
 import { TradeDetails } from '@/types/trade.type';
@@ -49,7 +48,7 @@ export default function Chat({
   const handleSubmit = async () => {
     if (!newMessage) return;
     const formData = {
-      senderId: user?._id,
+      senderId: user!._id,
       receiverId,
       message: newMessage,
       chatRoomId: trade.chatRoom,

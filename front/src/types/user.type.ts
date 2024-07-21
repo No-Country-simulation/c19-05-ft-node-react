@@ -77,7 +77,13 @@ export interface Paginate {
 
 export type GetUser = Pick<
   User,
-  'aboutme' | 'avatar' | 'name' | 'userRatings'
+  | 'aboutme'
+  | 'avatar'
+  | 'name'
+  | 'userRatings'
+  | 'specialties'
+  | 'interests'
+  | '_id'
 > & {
   specialties: InterestPopulated[];
   interests: InterestPopulated[];

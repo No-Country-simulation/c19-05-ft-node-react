@@ -9,7 +9,7 @@ export default function Hero() {
         <div className='container flex flex-wrap px-6 items-center justify-center mx-auto my-10 md:my-5 md:flex-row'> 
             {/* hero text */}
             <div className='mb-14 lg:mb-0 lg:w-1/2'>
-                <h1 className='max-w-xl text-[2.9rem] leading-none text-gray-800 font-extrabold font-sans text-center lg:text-5xl lg:text-left lg:leading-tight mb-5'>
+                <h1 className='max-w-xl text-[2.9rem] leading-none text-gray-800 font-extrabold text-center lg:text-5xl lg:text-left lg:leading-tight mb-5'>
                     Find experts, share your skills, and grow together.
                 </h1>
                 <p className='max-w-xl text-center text-gray-600 lg:text-left lg:max-w-md'>

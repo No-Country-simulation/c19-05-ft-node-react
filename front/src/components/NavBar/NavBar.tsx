@@ -69,13 +69,13 @@ export default function NavBar() {
           <div>
             <Link
               href="/auth/sign-up"
-              className="border border-gray-600 text-sm lg:text-base py-2 px-3 rounded-l-xl hover:bg-green-400"
+              className="border border-gray-600 text-sm lg:text-base py-2 px-3 rounded-l-xl hover:bg-green-400 hover:text-white"
             >
               <span className="whitespace-nowrap font-medium">Sign Up</span>
             </Link>
             <Link
               href="/auth/sign-in"
-              className="border-t border-r border-b border-gray-600 text-sm lg:text-base py-2 px-3 rounded-r-xl hover:bg-gray-200"
+              className="border-t border-r border-b border-gray-600 text-sm lg:text-base py-2 px-3 rounded-r-xl hover:bg-green-400 hover:text-white"
             >
               <span className="whitespace-nowrap font-medium">Sign In</span>
             </Link>

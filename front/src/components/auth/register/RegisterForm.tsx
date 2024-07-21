@@ -4,7 +4,8 @@ import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import Link from 'next/link';
 import { useAuth } from '@/context/session/sessionContext';
-import { Toaster, toast } from 'sonner'
+import { Toaster, toast } from 'sonner';
+import '../AuthCustom.css';
 
 interface FormValues {
   name: string;
@@ -30,7 +31,7 @@ const RegisterForm: React.FC = () => {
       }
       return response;
     };
-  
+
     toast.promise(promise(), {
       loading: 'Loading...',
       success: () => 'An email has been sent, please verify it',
@@ -41,10 +42,12 @@ const RegisterForm: React.FC = () => {
   const password = watch('password');
 
   return (
-    
+
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-red-600- to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-      <Toaster position='top-right' richColors/>
-      <div className="max-w-lg  w-full space-y-8 bg-white  rounded-3xl shadow-md">
+
+      <Toaster position='top-right' richColors />
+      
+      <div className="max-w-lg  w-full space-y-8 bg-white rounded-lg shadow-md">
         <div>
           <h2 className="mt-6 text-[1.6rem] text-center text-gray-900 font-arial">
             Register. <br />
@@ -53,18 +56,18 @@ const RegisterForm: React.FC = () => {
         </div>
         {isLoading && 'Cargando...'}
         <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
-          <div>
-            <div className="flex justify-center">
-              <div className="flex justify-center rounded-md border border-grey-200">
+          <div className="auth-form-fields">
+            <div className="d-flex justify-center">
+              <div className="d-flex justify-center rounded-md border border-grey-200">
                 <label htmlFor="name" className="sr-only">
                   Name
                 </label>
                 <input
                   id="name"
                   {...register('name', { required: true })}
-                  className="block w-full px-2 py-2 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="block w-full px-4 py-4 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   placeholder="Name"
-                  style={{ maxWidth: '240px' }}
+                  style={{ width: '100%' }}
                 />
               </div>
             </div>
@@ -72,18 +75,18 @@ const RegisterForm: React.FC = () => {
               <span className="text-red-500">Name is required</span>
             )}
             <br />
-            <div className="flex justify-center">
-              <div className="flex justify-center rounded-md border border-grey-200">
+            <div className="d-flex justify-center">
+              <div className="d-flex justify-center rounded-md border border-grey-200">
                 <label htmlFor="email-address" className="sr-only">
                   Email address
                 </label>
                 <input
                   id="email-address"
                   {...register('email', { required: true })}
-                  className="block w-full px-2 py-2 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="block w-full px-4 py-4 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   placeholder="Email address"
                   type="email"
-                  style={{ maxWidth: '240px' }}
+                  style={{ width: '100%' }}
                 />
               </div>
             </div>
@@ -91,8 +94,8 @@ const RegisterForm: React.FC = () => {
               <span className="text-red-500">Email address is required</span>
             )}
             <br />
-            <div className="flex justify-center">
-              <div className="flex justify-center rounded-md border border-grey-200">
+            <div className="d-flex justify-center">
+              <div className="d-flex justify-center rounded-md border border-grey-200">
                 <label htmlFor="password" className="sr-only">
                   Password
                 </label>
@@ -111,10 +114,10 @@ const RegisterForm: React.FC = () => {
                         'Password must include at least one uppercase letter, one lowercase letter, one number, and one special character',
                     },
                   })}
-                  className="block w-full px-2 py-2 rounded-md sm:text-sm"
+                  className="block w-full px-4 py-4 rounded-md sm:text-sm"
                   placeholder="Password"
                   type="password"
-                  style={{ maxWidth: '240px' }}
+                  style={{ width: '100%' }}
                 />
               </div>
             </div>
@@ -125,8 +128,8 @@ const RegisterForm: React.FC = () => {
               </span>
             )}
             <br />
-            <div className="flex justify-center">
-              <div className="flex justify-center rounded-md border border-grey-200">
+            <div className="d-flex justify-center">
+              <div className="d-flex justify-center rounded-md border border-grey-200">
                 <label htmlFor="re-password" className="sr-only">
                   Re-enter Password
                 </label>
@@ -138,10 +141,10 @@ const RegisterForm: React.FC = () => {
                       value === password ||
                       'The passwords dont match try again',
                   })}
-                  className="block w-full px-2 py-2 rounded-md sm:text-sm"
+                  className="block w-full px-4 py-4 rounded-md sm:text-sm"
                   placeholder="Re-enter Password"
                   type="password"
-                  style={{ maxWidth: '240px' }}
+                  style={{ width: '100%' }}
                 />
               </div>
             </div>
@@ -166,7 +169,7 @@ const RegisterForm: React.FC = () => {
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-5 px-4 border border-transparent text-sm font-medium rounded-md rounded-tr-none rounded-tl-none text-white bg-gray-500 hover:bg-gray-600"
+              className="group relative w-full flex justify-center py-5 px-4 border border-transparent text-sm font-medium rounded-md rounded-tr-none rounded-tl-none text-white bg-green-400 hover:bg-green-500"
             >
               CREATE ACCOUNT
             </button>

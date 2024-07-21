@@ -1,4 +1,4 @@
-import { Lily_Script_One, Abel } from 'next/font/google';
+import { Lily_Script_One, Abel, Ubuntu } from 'next/font/google';
 
 export const lily = Lily_Script_One({
   subsets: ['latin'],
@@ -11,3 +11,9 @@ export const abel = Abel({
   weight: '400',
   variable: '--abel',
 });
+
+export const ubuntu = Ubuntu({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--ubuntu',
+})

@@ -1,14 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Lily+Script+One&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Abel&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --fontFamilyLily: var(--lily);
+  --fontFamilyAbel: var(--abel);
+  --fontFamilyUbuntu: var(--ubuntu);
+}
 
 html,
 body {
   @apply bg-gray-100;
 
-  --fontFamilyLily: var(--lily);
-  --fontFamilyLily: var(--abel);
+  font-family: var(--fontFamilyUbuntu) !important;
 }

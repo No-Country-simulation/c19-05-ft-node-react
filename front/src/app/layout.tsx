@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import CommonLayout from '@/components/CommonLayout';
 import { Providers } from '@/context/providers';
-import { lily, abel } from '@/utils/fonts';
+import { lily, abel, ubuntu } from '@/utils/fonts';
 
 interface RootLayoutProps {
   children: React.ReactNode; // Define el tipo de children como React.ReactNode
@@ -22,7 +22,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
   return (
     <html
       lang="es"
-      className={`${lily.variable} ${abel.variable} h-screen w-full m-0 p-0`}
+      className={`${lily.variable} ${abel.variable} ${ubuntu.variable} h-screen w-full m-0 p-0`}
     >
       <body className={`${inter.className} bg-gray-100`}>
         <Providers>

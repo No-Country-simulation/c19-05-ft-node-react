@@ -5,7 +5,7 @@ import styles from "./Error.module.css"
 const Error404: React.FC = () => {
   
   return (
-    <div className={`min-h-screen flex items-center justify-center bg-white text-slate-900 font-sans`}>
+    <div className={`min-h-screen flex items-center justify-center bg-white text-slate-900`}>
       <div className="text-center">
         <h2 className="text-5xl mb-4">error</h2>
         <h1 className={`text-9xl mb-4 ${styles.error404}`}>40<span className={`${styles.flashing}`}>4</span>!</h1>

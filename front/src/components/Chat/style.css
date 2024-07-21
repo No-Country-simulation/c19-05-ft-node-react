@@ -62,11 +62,13 @@
   .div-container-chat {
     margin-top: 5rem;
     min-width: 390px;
+    height: 350px;
+    margin-top: 0;
   }
   .chat-container {
     min-width: 390px;
     width: 90%;
-    height: 500px;
+    height: 320px;
     margin: auto;
   }
 
@@ -104,7 +106,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: calc(100vh - 8rem);
+    height: calc(100vh - 20rem);
   }
 
   .chat-input-container {

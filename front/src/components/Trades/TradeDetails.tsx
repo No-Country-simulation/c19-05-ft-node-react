@@ -53,7 +53,7 @@ export default function TradeDetails({
 }: TradeDetailsProps) {
   return (
     <div
-      className={`w-full flex flex-col justify-evenly  items-center h-[calc(100vh-12rem)]  bg-gray-500 sm:bg-transparent sm:relative sm:left-0 absolute ${show ? 'left-0' : 'left-[-100%]'} sm:h-[600px]  transition-all`}
+      className={`w-full flex z-20 flex-col justify-evenly  items-center h-[calc(100vh-4rem)]  bg-gray-500 sm:bg-transparent sm:relative sm:left-0 absolute ${show ? 'left-0' : 'left-[-100%]'} sm:h-[600px]  transition-all`}
     >
       <button
         className=" p-2 text-6xl  rounded-full absolute top-2 right-3 sm:hidden "

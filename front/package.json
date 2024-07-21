@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@nextui-org/react": "^2.4.6",
+    "@supabase/supabase-js": "^2.44.4",
     "autoprefixer": "^10.4.19",
     "axios": "^1.7.2",
     "framer-motion": "^11.3.8",
@@ -22,7 +23,8 @@
     "react-multi-carousel": "^2.8.5",
     "react-slick": "^0.30.2",
     "slick-carousel": "^1.8.1",
-    "sonner": "^1.5.0"
+    "sonner": "^1.5.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.6",

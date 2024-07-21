@@ -35,7 +35,7 @@ export interface ResTradeDetails {
 }
 
 export interface TradeDetails {
-  chatRoom: null;
+  chatRoom: string;
   _id: string;
   members: MembersTradeDetails;
   duration: number;

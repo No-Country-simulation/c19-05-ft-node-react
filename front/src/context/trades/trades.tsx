@@ -56,7 +56,7 @@ const TradesProvider: React.FC<TradesProviderProps> = ({ children }) => {
   const getAllTrades = async () => {
     try {
       // Simulate API call
-      const { data } = await api.get<GetAllTrades>(`/api/trade`);
+      const { data } = await api.get<GetAllTrades>(`api/trade`);
 
       setTrades(data.payload);
     } catch (error) {
@@ -68,7 +68,7 @@ const TradesProvider: React.FC<TradesProviderProps> = ({ children }) => {
   const createTrade = async (tradeData: TradeRequest) => {
     try {
       // Simulate API call
-      const { data } = await api.post<ResCRUDTrade>(`/api/trade`, tradeData);
+      const { data } = await api.post<ResCRUDTrade>(`api/trade`, tradeData);
       // Update trade status to 'creacion'
       return data;
     } catch (error) {
@@ -79,7 +79,7 @@ const TradesProvider: React.FC<TradesProviderProps> = ({ children }) => {
 
   const acceptTrade = async (tradeId: string) => {
     try {
-      const { data } = await api.put<ResCRUDTrade>(`/api/trade/${tradeId}`);
+      const { data } = await api.put<ResCRUDTrade>(`api/trade/${tradeId}`);
       // Update trade status to 'detalles' after accepting
       const newArray = trades.filter((trade) => trade._id !== data.payload._id);
       newArray.push(data.payload);
@@ -93,8 +93,9 @@ const TradesProvider: React.FC<TradesProviderProps> = ({ children }) => {
   const detailsTrade = async (tradeId: string) => {
     try {
       const { data } = await api.get<ResTradeDetails>(
-        `/api/trade/find-one/${tradeId}`
+        `api/trade/find-one/${tradeId}`
       );
+      console.log(trade);
 
       setTrade(data.payload);
     } catch (error) {
@@ -105,7 +106,7 @@ const TradesProvider: React.FC<TradesProviderProps> = ({ children }) => {
 
   const deleteTrade = async (tradeId: string) => {
     try {
-      const { data } = await api.delete<ResCRUDTrade>(`/api/trade/${tradeId}`);
+      const { data } = await api.delete<ResCRUDTrade>(`api/trade/${tradeId}`);
       const newArray = trades.filter((trade) => trade._id !== data.payload._id);
       setTrades(newArray);
     } catch (error) {

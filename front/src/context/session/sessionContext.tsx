@@ -19,12 +19,12 @@ export type UserRegistrationForm = {
 
 export type UserForgotPassword = {
   email: string;
-}
+};
 
 export type UserResetPassword = {
   password: string;
   repassword: string;
-}
+};
 
 export interface ResponseMessage {
   status: string;
@@ -45,7 +45,7 @@ type AuthContextType = {
   registerContext: (data: UserRegistrationForm) => Promise<ResponseMessage>;
   confirmEmail: (token: string) => Promise<void>;
   forgotPassword2: (data: UserForgotPassword) => Promise<ResponseMessage>;
-  resetPassword: (data: UserResetPassword, token: string ) => Promise<Respuesta>;
+  resetPassword: (data: UserResetPassword, token: string) => Promise<Respuesta>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -70,11 +70,11 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     getSession();
   }, []);
 
-  const login = async (loginData: LoginData): Promise <Respuesta> => {
+  const login = async (loginData: LoginData): Promise<Respuesta> => {
     try {
-      const { data } = await api.post<Respuesta>('/api/auth/login', loginData);
+      const { data } = await api.post<Respuesta>('api/auth/login', loginData);
       setUser(data.payload);
-      return data
+      return data;
     } catch (error) {
       if (isAxiosError(error) && error.response) {
         console.error(error.response.data);
@@ -88,7 +88,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const getSession = async () => {
     try {
       setIsLoading(true);
-      const { data } = await api.get<Respuesta>('/api/auth/user');
+      const { data } = await api.get<Respuesta>('api/auth/user');
       setUser(data.payload as User);
     } catch (error) {
       console.error('Get session error', error);
@@ -99,7 +99,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const logout = async (): Promise<ResponseMessage> => {
     try {
-      const { data } = await api.get<ResponseMessage>('/api/auth/logout');
+      const { data } = await api.get<ResponseMessage>('api/auth/logout');
       setUser(null);
       return data;
     } catch (error) {
@@ -113,7 +113,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   ): Promise<ResponseMessage> => {
     try {
       setIsLoading(true);
-      const response = await api.post('/api/user', data);
+      const response = await api.post('api/user', data);
       return response.data;
     } catch (error) {
       if (isAxiosError(error)) {
@@ -141,11 +141,16 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const forgotPassword2 = async (data: UserForgotPassword): Promise<ResponseMessage> => {
+  const forgotPassword2 = async (
+    data: UserForgotPassword
+  ): Promise<ResponseMessage> => {
     try {
       setIsLoading(true);
-      const response = await api.post<ResponseMessage>(`api/user/reset-password`, data);
-      return response.data
+      const response = await api.post<ResponseMessage>(
+        `api/user/reset-password`,
+        data
+      );
+      return response.data;
     } catch (error) {
       if (isAxiosError(error) && error.response) {
         throw new AxiosError(error.response.data.payload);
@@ -153,21 +158,25 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       throw new Error(String(error));
     }
   };
-  
-  const resetPassword = async (data: UserResetPassword, token: string): Promise<Respuesta> => {
-    try {
-      setIsLoading(true);
-      const response = await api.put<Respuesta>(`api/user/reset-password/${token}`, data);
-      return response.data
-    } catch (error) {
-      if (isAxiosError(error) && error.response) {
-        throw new AxiosError(error.response.data.payload);
-      }
-      throw new Error(String(error));
-    }
-  };
-  
 
+  const resetPassword = async (
+    data: UserResetPassword,
+    token: string
+  ): Promise<Respuesta> => {
+    try {
+      setIsLoading(true);
+      const response = await api.put<Respuesta>(
+        `api/user/reset-password/${token}`,
+        data
+      );
+      return response.data;
+    } catch (error) {
+      if (isAxiosError(error) && error.response) {
+        throw new AxiosError(error.response.data.payload);
+      }
+      throw new Error(String(error));
+    }
+  };
 
   const contextValue: AuthContextType = {
     user,
@@ -178,7 +187,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     registerContext,
     confirmEmail,
     forgotPassword2,
-    resetPassword
+    resetPassword,
   };
 
   return (

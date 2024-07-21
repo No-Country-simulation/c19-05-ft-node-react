@@ -57,13 +57,19 @@ export default function NavBar() {
               Trades
             </Link>
           )}
+          <Link
+            href={`/about-us/`}
+            className={`cursor-pointer hover:text-gray-900`}
+          >
+            About us
+          </Link>
         </nav>
 
         {!user ? (
           <div>
             <Link
               href="/auth/sign-up"
-              className="border border-gray-600 text-sm lg:text-base py-2 px-3 rounded-l-xl hover:bg-gray-200"
+              className="border border-gray-600 text-sm lg:text-base py-2 px-3 rounded-l-xl hover:bg-green-400"
             >
               <span className="whitespace-nowrap font-medium">Sign Up</span>
             </Link>
@@ -134,6 +140,12 @@ export default function NavBar() {
             Trades
           </Link>
         )}
+        <Link
+            href={`/about-us/`}
+            className={`cursor-pointer hover:text-gray-900`}
+          >
+            About us
+          </Link>
       </nav>
     </header>
   );

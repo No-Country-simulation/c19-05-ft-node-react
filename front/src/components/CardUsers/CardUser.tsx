@@ -1,8 +1,9 @@
 import { GetUser } from '@/types/user.type';
+import { Button } from '@nextui-org/button';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-
+import { Chip } from "@nextui-org/chip";
 interface User {
   // avatar: string;
   // name: string;
@@ -12,7 +13,7 @@ interface User {
 
 const CardUser: React.FC<User> = ({ user }: User) => {
   return (
-    <div className="container w-full max-w-xs overflow-hidden bg-white hover:scale-105 transition-all rounded-lg shadow-lg px-4">
+    <div className="container flex flex-col justify-around w-full max-w-xs overflow-hidden bg-white hover:scale-105 transition-all rounded-lg shadow-lg px-4">
       <div className="flex justify-center items-center p-6">
         <Image
           className="object-cover object-center w-24 h-24 rounded-full"
@@ -23,45 +24,60 @@ const CardUser: React.FC<User> = ({ user }: User) => {
         />
       </div>
 
-      <div className="flex flex-wrap justify-center items-center text-center w-full">
+      <div className=" flex flex-wrap justify-center items-center text-center w-full">
         {user.specialties.map((specialty, index) => {
           if (index < 3) {
             return (
               <div
                 key={specialty.specialtyId._id}
-                className="border border-gray-400 rounded-2xl p-2 text-center text-xs m-1"
+
               >
-                {specialty.specialtyId.name}
+                <Chip
+                  variant="shadow"
+                  classNames={{
+                    base: "bg-[#FFF]  shadow-[#E8E8E8]  m-1 border border-[#F2F2F2]",
+                    content: "text-[#363636]",
+                  }}
+                >
+                  {specialty.specialtyId.name}
+                </Chip>
+
               </div>
             );
           }
           return null;
         })}
         {user.specialties.length > 3 && (
-          <div className="bg-slate-800 text-white rounded-2xl p-2 text-center text-xs m-1">
+          <Chip
+            variant="shadow"
+            classNames={{
+              base: "bg-gradient-to-tl from-[#1FD68E] to-[#89EEC6]  shadow-[#D9D9D9]",
+              content: "drop-shadow shadow-black text-white",
+            }}
+          >
             +{user.specialties.length - 3}
-          </div>
+          </Chip>
         )}
       </div>
 
-      <div className="mt-3 text-center">
+      <div className="mt-3 pb-3 text-center">
         <h1 className="text-lg font-medium text-gray-800">{user.name}</h1>
         {/* 
         <p className="py-1 text-sm text-gray-800">
           {user.location}
         </p> */}
 
-        <div className="flex justify-between my-2 py-2">
+        <div className="flex justify-center gap-4 my-2 py-2">
           <Link href="#">
-            <button className="bg-slate-800 hover:bg-gray-900 text-white rounded-lg px-3 py-1">
-              <span>View Profile</span>
-            </button>
+            <Button className="bg-[#1FD68E]   hover:bg-[#18A16A] text-white rounded-lg px-3 py-1">
+              <span>Connect</span>
+            </Button>
           </Link>
 
           <Link href="#">
-            <button className="border border-gray-400 hover:bg-gray-200 rounded-lg px-3 py-1">
-              <span>Connect</span>
-            </button>
+            <Button className=" bg-transparent border border-[#1FD68E] text-[#1FD68E] hover:bg-gray-200 rounded-lg px-3 py-1">
+              <span>View Profile</span>
+            </Button>
           </Link>
         </div>
       </div>

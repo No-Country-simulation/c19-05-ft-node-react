@@ -32,7 +32,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ isOpen, toggleSidebar }) 
             <div className="flex justify-between items-center mb-3">
                 <h3 className="text-lg font-bold">Filters</h3>
                 <button
-                    className="bg-[#4ADE80] text-white py-2 px-4 rounded-full shadow-md"
+                    className="bg-[#1FD68E] text-white py-2 px-4 rounded-md shadow-md"
                     onClick={toggleSidebar}
                 >
                     Close

@@ -24,13 +24,13 @@ const UsersPage = () => {
   return (
     <div className="container mx-auto py-5 px-5">
       <div className="p-8"></div>
-      <div className="position bottom ">
+      <div className="">
         {!showSidebar && (
           <Button
-            className="bg-[#4ADE80] text-white py-2 px-4 rounded-full shadow-md"
+            className="bg-[#1FD68E] text-white py-2 px-4 rounded-md shadow-md"
             onClick={toggleSidebar}
           >
-            Open Filters
+            Open 
           </Button>
         )}
       </div>
@@ -50,7 +50,8 @@ const UsersPage = () => {
         </div>
       </div>
       <div className="w-full flex justify-center mt-5">
-        <Pagination total={10} initialPage={1} />
+        <Pagination  total={10} initialPage={1} classNames={{ cursor:
+          "bg-gradient-to-b shadow-lg from-[#1FD68E] to-[#18A16A]  dark:from-default-300 dark:to-default-100 text-white font-bold"}}/>
       </div>
     </div>
   );

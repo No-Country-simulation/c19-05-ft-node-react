@@ -3,7 +3,7 @@ import { Button } from '@nextui-org/button';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-import { Chip } from "@nextui-org/chip";
+import { Chip } from '@nextui-org/chip';
 interface User {
   // avatar: string;
   // name: string;
@@ -13,7 +13,7 @@ interface User {
 
 const CardUser: React.FC<User> = ({ user }: User) => {
   return (
-    <div className="container flex flex-col justify-around w-full max-w-xs overflow-hidden bg-white hover:scale-105 transition-all rounded-lg shadow-lg px-4">
+    <div className="container flex flex-col justify-around w-full h-[340px] max-w-xs overflow-hidden bg-white hover:scale-105 transition-all rounded-lg shadow-lg ">
       <div className="flex justify-center items-center p-6">
         <Image
           className="object-cover object-center w-24 h-24 rounded-full"
@@ -28,20 +28,16 @@ const CardUser: React.FC<User> = ({ user }: User) => {
         {user.specialties.map((specialty, index) => {
           if (index < 3) {
             return (
-              <div
-                key={specialty.specialtyId._id}
-
-              >
+              <div key={specialty.specialtyId._id}>
                 <Chip
                   variant="shadow"
                   classNames={{
-                    base: "bg-[#FFF]  shadow-[#E8E8E8]  m-1 border border-[#F2F2F2]",
-                    content: "text-[#363636]",
+                    base: 'bg-[#FFF]  shadow-[#E8E8E8]  m-1 border border-[#F2F2F2]',
+                    content: 'text-[#363636]',
                   }}
                 >
                   {specialty.specialtyId.name}
                 </Chip>
-
               </div>
             );
           }
@@ -51,8 +47,8 @@ const CardUser: React.FC<User> = ({ user }: User) => {
           <Chip
             variant="shadow"
             classNames={{
-              base: "bg-gradient-to-tl from-[#1FD68E] to-[#89EEC6]  shadow-[#D9D9D9]",
-              content: "drop-shadow shadow-black text-white",
+              base: 'bg-gradient-to-tl from-[#1FD68E] to-[#89EEC6]  shadow-[#D9D9D9]',
+              content: 'drop-shadow shadow-black text-white',
             }}
           >
             +{user.specialties.length - 3}

@@ -24,25 +24,33 @@ const UsersPage = () => {
   return (
     <div className="container mx-auto py-5 px-5">
       <div className="p-8"></div>
-      <div className="">
+      <div className="mt-10">
         {!showSidebar && (
           <Button
             className="bg-[#1FD68E] text-white py-2 px-4 rounded-md shadow-md"
             onClick={toggleSidebar}
           >
-            Open 
+            Open
           </Button>
         )}
+        {/* {
+          <Button
+            className="bg-[#1FD68E] text-white py-2 mt-10 px-4 rounded-md shadow-md"
+            onClick={toggleSidebar}
+          >
+            {showSidebar ? 'Close' : 'Open'}
+          </Button>
+        } */}
       </div>
 
       <div className="flex flex-wrap">
         <div className={`w-full md:w-1/4 ${showSidebar ? '' : 'hidden'}`}>
-          <div className="sticky top-0">
+          <div className="sticky top-36">
             <FilterSidebar isOpen={showSidebar} toggleSidebar={toggleSidebar} />
           </div>
         </div>
         <div className={`w-full md:w-3/4 ${showSidebar ? 'ml-0' : 'mx-auto'}`}>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="flex flex-wrap justify-center gap-4">
             {users.map((user, index) => (
               <CardUser key={index} user={user} />
             ))}
@@ -50,8 +58,14 @@ const UsersPage = () => {
         </div>
       </div>
       <div className="w-full flex justify-center mt-5">
-        <Pagination  total={10} initialPage={1} classNames={{ cursor:
-          "bg-gradient-to-b shadow-lg from-[#1FD68E] to-[#18A16A]  dark:from-default-300 dark:to-default-100 text-white font-bold"}}/>
+        <Pagination
+          total={10}
+          initialPage={1}
+          classNames={{
+            cursor:
+              'bg-gradient-to-b shadow-lg from-[#1FD68E] to-[#18A16A]  dark:from-default-300 dark:to-default-100 text-white font-bold',
+          }}
+        />
       </div>
     </div>
   );

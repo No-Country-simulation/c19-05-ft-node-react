@@ -57,7 +57,7 @@ const RegisterForm: React.FC = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-grey-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-lg  w-full space-y-8 bg-white p-6 rounded-3xl shadow-md">
+      <div className="max-w-lg  w-full space-y-8 bg-white p-6 rounded-lg shadow-md">
         {/*contenedor del form de login*/}
         <div className="">
           {" "}
@@ -76,8 +76,8 @@ const RegisterForm: React.FC = () => {
         )}
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="">
-            <div className="flex justify-center">
-              <div className="flex justify-center rounded-md border border-grey-200">
+            <div className="d-flex justify-center">
+              <div className="d-flex justify-center rounded-md border border-grey-200">
                 {" "}
                 {/* Container for Name input */}
                 <label htmlFor="name" className="sr-only">
@@ -91,15 +91,15 @@ const RegisterForm: React.FC = () => {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="block w-full px-2 py-2 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="block w-full px-4 py-4 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-md"
                   placeholder="Name"
-                  style={{ maxWidth: "240px" }}
+                  style={{ maxWidth: "100%" }}
                 />
               </div>
             </div>
             <br />
-            <div className="flex justify-center">
-              <div className="flex justify-center rounded-md border border-grey-200">
+            <div className="d-flex justify-center">
+              <div className="d-flex justify-center rounded-md border border-grey-200">
                 {/*contenedor del input de mail */}
                 <label htmlFor="email-address" className="sr-only">
                   Email address
@@ -112,16 +112,16 @@ const RegisterForm: React.FC = () => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full px-2 py-2  rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="block w-full px-4 py-4  rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-md"
                   placeholder="Email"
-                  style={{ maxWidth: "240px" }}
+                  style={{ maxWidth: "100%" }}
                 />
               </div>
             </div>
             <br />
-            <div className="flex justify-center">
+            <div className="d-flex justify-center">
               {/*contenedor del input de contraseña */}
-              <div className="flex justify-center rounded-md border border-grey-200">
+              <div className="d-flex justify-center rounded-md border border-grey-200">
                 <label htmlFor="password" className="sr-only">
                   Password
                 </label>
@@ -133,15 +133,15 @@ const RegisterForm: React.FC = () => {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full px-2 py-2 rounded-md sm:text-sm"
+                  className="block w-full px-4 py-4 rounded-md sm:text-md"
                   placeholder="Password"
-                  style={{ maxWidth: "240px" }}
+                  style={{ maxWidth: "100%" }}
                 />
               </div>
             </div>
             <br />
-            <div className="flex justify-center">
-              <div className="flex justify-center rounded-md border border-grey-200">
+            <div className="d-flex justify-center">
+              <div className="d-flex justify-center rounded-md border border-grey-200">
                 {" "}
                 {/*Contenedor del input Re-password*/}
                 <label htmlFor="name" className="sr-only">
@@ -155,15 +155,15 @@ const RegisterForm: React.FC = () => {
                   required
                   value={rePassword}
                   onChange={(e) => setRePassword(e.target.value)}
-                  className="block w-full px-2 py-2 rounded-md sm:text-sm"
+                  className="block w-full px-4 py-4 rounded-md sm:text-md"
                   placeholder="Re-password"
-                  style={{ maxWidth: "240px" }}
+                  style={{ maxWidth: "100%" }}
                 />
               </div>
             </div>
             <br />
-            <div className="flex justify-center">
-              <div className="flex justify-center rounded-md border border-grey-200">
+            <div className="d-flex justify-center">
+              <div className="d-flex justify-center rounded-md border border-grey-200">
                 {" "}
                 {/*Contenedor del input Telefono*/}
                 <label htmlFor="phone" className="sr-only">
@@ -177,9 +177,9 @@ const RegisterForm: React.FC = () => {
                   required
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="block w-full px-2 py-2 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="block w-full px-4 py-4 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-md"
                   placeholder="Phone"
-                  style={{ maxWidth: "240px" }}
+                  style={{ maxWidth: "100%" }}
                 />
               </div>
             </div>
@@ -202,7 +202,7 @@ const RegisterForm: React.FC = () => {
             {/*contenedor del Boton de Crear cuenta*/}
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-500 hover:bg-gray-600"
+              className="group relative w-full flex justify-center py-4 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-400 bg-gray-500 hover:bg-green-500 hover:drop-shadow-md"
             >
               CREATE ACCOUNT
             </button>

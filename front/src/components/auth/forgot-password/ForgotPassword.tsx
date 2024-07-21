@@ -48,7 +48,7 @@ const ForgotPassword: React.FC = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-grey-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-lg w-full space-y-8 bg-white p-6 rounded-3xl shadow-md">
+      <div className="max-w-lg w-full space-y-8 bg-white p-6 rounded-lg shadow-md">
         <div className="">
           <h2 className="mt-6 text-[1.7rem] text-center text-gray-900 font-arial">
             Enter the email to recover <br />
@@ -64,8 +64,8 @@ const ForgotPassword: React.FC = () => {
         )}
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="">
-            <div className="flex justify-center">
-              <div className="flex justify-center rounded-md border border-grey-200">
+            <div className="d-flex justify-center">
+              <div className="d-flex justify-center rounded-md border border-grey-200">
                 <label htmlFor="email-address" className="sr-only">
                   Email address
                 </label>
@@ -77,9 +77,9 @@ const ForgotPassword: React.FC = () => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full px-4 py-4 rounded-md sm:text-sm"
+                  className="block w-full px-4 py-4 rounded-md sm:text-md"
                   placeholder="Email"
-                  style={{ maxWidth: "18rem" }}
+                  style={{ maxWidth: "100%" }}
                 />
               </div>
             </div>
@@ -87,7 +87,7 @@ const ForgotPassword: React.FC = () => {
           <div className="static">
             <button
               type="submit"
-              className="w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-500 hover:bg-gray-600"
+              className="w-full flex justify-center py-4 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-400 bg-gray-500 hover:bg-green-500 hover:drop-shadow-md"
             >
               SEND
             </button>

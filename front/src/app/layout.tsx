@@ -22,6 +22,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className="min-h-screen min-w-full m-0 p-0">
+      <head>
+        <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet" />
+      </head>
       <body className={`${inter.className} bg-gray-100`}>
         <TradeProvider>
           <CommonLayout>{children}</CommonLayout>

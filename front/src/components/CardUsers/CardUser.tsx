@@ -2,16 +2,31 @@ import { GetUser } from '@/types/user.type';
 import { Button } from '@nextui-org/button';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 import { Chip } from '@nextui-org/chip';
-interface User {
+interface CardUserProp {
   // avatar: string;
   // name: string;
   // specialties: string[];
   user: GetUser;
+  setShowModal: React.Dispatch<
+    React.SetStateAction<{
+      open: boolean;
+      user?: GetUser;
+    }>
+  >;
+  showModal: {
+    open: boolean;
+    user?: GetUser;
+  };
 }
 
-const CardUser: React.FC<User> = ({ user }: User) => {
+const CardUser: React.FC<CardUserProp> = ({
+  user,
+  setShowModal,
+  showModal,
+}: CardUserProp) => {
+  const [selectUser, setSelectUser] = useState<GetUser>();
   return (
     <div className="container flex flex-col justify-around w-full h-[340px] max-w-xs overflow-hidden bg-white hover:scale-105 transition-all rounded-lg shadow-lg ">
       <div className="flex justify-center items-center p-6">
@@ -65,8 +80,13 @@ const CardUser: React.FC<User> = ({ user }: User) => {
 
         <div className="flex justify-center gap-4 my-2 py-2">
           <Link href="#">
-            <Button className="bg-[#1FD68E]   hover:bg-[#18A16A] text-white rounded-lg px-3 py-1">
-              <span>Connect</span>
+            <Button
+              className="bg-[#1FD68E]   hover:bg-[#18A16A] text-white rounded-lg px-3 py-1"
+              onClick={() =>
+                setShowModal({ open: !showModal.open, user: user })
+              }
+            >
+              Conectar
             </Button>
           </Link>
 

@@ -91,7 +91,7 @@ export default function NavBar() {
                 <nav>
                   <ul className="flex flex-col gap-3 text-xs font-semibold">
                     <li>
-                      <Link href={'/user/profile'}>My profile</Link>
+                      <Link href={'/user/profile/userid'}>My profile</Link>
                     </li>
                     <li>
                       <Link href={'/user/trades'}>My trades</Link>

@@ -11,7 +11,7 @@ interface RootLayoutProps {
 
 const inter = Inter({ subsets: ['latin'] });
 
-const metadata: Metadata = {
+export const metadata: Metadata = {
   title: 'Talent Trade - Exchange and Expand Your Knowledge',
   description:
     'Talent Trade is an innovative platform for knowledge exchange. Connect with experts in various fields and expand your skills collaboratively.',

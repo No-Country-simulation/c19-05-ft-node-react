@@ -33,7 +33,7 @@ const About= () => {
             <h1 className="py-5 text-5xl lg:text-5xl">About us</h1>
 
             <div className="container mx-auto about-first my-5 p-2">
-                <p className="fs-1">Talent Trade is a platform to facilitate the connection and collaboration between people of diverse talents and skills, creating oportunities for joint development and the realization of innovative projects.</p>
+                <p className="fs-1">Talent Trade is a platform that facilitates the connection and collaboration between people of diverse talents and skills, creating opportunities for joint development and the realization of innovative projects.</p>
                 <p>We want to become the leading global platform that inspires and empowers talented individuals, facilitating collaborative networks that promote personal personal and professional growth in an incresingly interconnected world.</p>
             </div>
 
@@ -88,7 +88,7 @@ const About= () => {
 
             <div className="container mx-auto about-second my-5 p-2">
                 <p>... a group of people passionate about technology and programming who met randomly in the No-Country organization.</p>
-                <p>We embarked on this project together with the determination to levarage our skills to create innovative solutions and positively impact our environment.</p>
+                <p>We embarked on this project together with the determination to leverage our skills to create innovative solutions and positively impact our environment.</p>
             </div>
         </div>
     );

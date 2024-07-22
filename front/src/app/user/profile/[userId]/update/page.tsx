@@ -1,15 +1,15 @@
-'use client'
-import React, { useState } from 'react';
+'use client';
+import { useState, ChangeEvent, FormEvent } from 'react';
 
 const EditProfile = () => {
-  const [profileImage, setProfileImage] = useState(null);
-  const [bannerImage, setBannerImage] = useState(null);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [aboutMe, setAboutMe] = useState('');
-  const [specialty, setSpecialty] = useState('');
-  const [interest, setInterest] = useState('');
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [bannerImage, setBannerImage] = useState<string | null>(null);
+  const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [phone, setPhone] = useState<string>('');
+  const [aboutMe, setAboutMe] = useState<string>('');
+  const [specialty, setSpecialty] = useState<string>('');
+  const [interest, setInterest] = useState<string>('');
 
   const specialties = [
     'Web Development',
@@ -25,23 +25,40 @@ const EditProfile = () => {
     'Cloud Computing',
   ];
 
-  const handleImageChange = (e, setImage) => {
-    const file = e.target.files[0];
+  const handleImageChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    setImage: (image: string | null) => void
+  ) => {
+    const file = e.target.files?.[0];
     if (file) {
       setImage(URL.createObjectURL(file));
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     // Handle form submission logic here
-    console.log({ profileImage, bannerImage, name, email, phone, aboutMe, specialty, interest });
+    console.log({
+      profileImage,
+      bannerImage,
+      name,
+      email,
+      phone,
+      aboutMe,
+      specialty,
+      interest,
+    });
   };
 
   return (
     <div className="mt-32 sm:mt-24 mb-20 px-6">
-      <h1 className="text-2xl md:text-4xl text-center font-medium mb-5 sm:mb-8 text-gray-800">Update Profile</h1>
-      <form onSubmit={handleSubmit} className='max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg px-6'>
+      <h1 className="text-2xl md:text-4xl text-center font-medium mb-5 sm:mb-8 text-gray-800">
+        Update Profile
+      </h1>
+      <form
+        onSubmit={handleSubmit}
+        className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg px-6"
+      >
         <div className="mb-4">
           <label className="block text-gray-700">Profile Photo</label>
           <input
@@ -50,7 +67,13 @@ const EditProfile = () => {
             onChange={(e) => handleImageChange(e, setProfileImage)}
             className="mt-2"
           />
-          {profileImage && <img src={profileImage} alt="Profile Preview" className="mt-2 w-24 h-24 rounded-full object-cover" />}
+          {profileImage && (
+            <img
+              src={profileImage}
+              alt="Profile Preview"
+              className="mt-2 w-24 h-24 rounded-full object-cover"
+            />
+          )}
         </div>
 
         <div className="mb-4">
@@ -61,7 +84,13 @@ const EditProfile = () => {
             onChange={(e) => handleImageChange(e, setBannerImage)}
             className="mt-2"
           />
-          {bannerImage && <img src={bannerImage} alt="Banner Preview" className="mt-2 w-full h-32 object-cover" />}
+          {bannerImage && (
+            <img
+              src={bannerImage}
+              alt="Banner Preview"
+              className="mt-2 w-full h-32 object-cover"
+            />
+          )}
         </div>
 
         <div className="mb-4">
@@ -110,9 +139,13 @@ const EditProfile = () => {
             onChange={(e) => setSpecialty(e.target.value)}
             className="mt-2 p-2 border rounded w-full"
           >
-            <option value="" disabled>Select your specialty</option>
+            <option value="" disabled>
+              Select your specialty
+            </option>
             {specialties.map((specialty, index) => (
-              <option key={index} value={specialty}>{specialty}</option>
+              <option key={index} value={specialty}>
+                {specialty}
+              </option>
             ))}
           </select>
         </div>
@@ -124,14 +157,23 @@ const EditProfile = () => {
             onChange={(e) => setInterest(e.target.value)}
             className="mt-2 p-2 border rounded w-full"
           >
-            <option value="" disabled>Select your interest</option>
+            <option value="" disabled>
+              Select your interest
+            </option>
             {interests.map((interest, index) => (
-              <option key={index} value={interest}>{interest}</option>
+              <option key={index} value={interest}>
+                {interest}
+              </option>
             ))}
           </select>
         </div>
 
-        <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Save Changes</button>
+        <button
+          type="submit"
+          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+        >
+          Save Changes
+        </button>
       </form>
     </div>
   );

@@ -1,4 +1,4 @@
-import TalentTradeLogo from '@/assets/Talent_Trade_Logo.png';
+import LogoTitleSVG from '@/assets/logos/LogoTitleSVG';
 import { useAuth } from '@/context/session/sessionContext';
 
 import Image from 'next/image';
@@ -21,13 +21,7 @@ export default function NavBar() {
     <header className="fixed top-0 left-0 shadow-md py-2 w-full bg-white z-40">
       <div className="container mx-auto px-6 flex items-center justify-between gap-x-4">
         <Link href={'/'}>
-          <Image
-            src={TalentTradeLogo}
-            alt="Picture of testimonial"
-            width="250"
-            height="50"
-            className="w-36 lg:w-60"
-          />
+          <LogoTitleSVG width={'200'} />
         </Link>
 
         <nav className="w-full hidden lg:flex lg:justify-center lg:gap-x-16">
@@ -141,11 +135,11 @@ export default function NavBar() {
           </Link>
         )}
         <Link
-            href={`/about-us/`}
-            className={`cursor-pointer hover:text-gray-900`}
-          >
-            About us
-          </Link>
+          href={`/about-us/`}
+          className={`cursor-pointer hover:text-gray-900`}
+        >
+          About us
+        </Link>
       </nav>
     </header>
   );

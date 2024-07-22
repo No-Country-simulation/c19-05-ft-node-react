@@ -1,6 +1,4 @@
 import Image from 'next/image';
-import BannerImage from '@/assets/BannerImage.jpg';
-import Avatar from '@/assets/avatar.jpeg';
 import { FaPhoneAlt, FaStar } from 'react-icons/fa';
 import { IoMail } from 'react-icons/io5';
 
@@ -40,14 +38,14 @@ export default function Page() {
       <div className="shadow rounded-xl bg-white pb-6 mb-6">
         <div className="relative">
           <Image
-            src={BannerImage}
+            src={'/userBannerDefault.jpg'}
             alt="Picture"
             width="160"
             height="90"
             className="object-cover rounded-t-xl mb-8 w-full max-h-52"
           />
           <Image
-            src={Avatar}
+            src={'/avatar.jpeg'}
             alt="Picture"
             width="130"
             height="130"

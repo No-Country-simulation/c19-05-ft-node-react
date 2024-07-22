@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
-import axios from 'axios';
+import axios, { isAxiosError } from 'axios';
 import api from '@/lib/axios';
 import { data } from 'autoprefixer';
 import {
@@ -21,18 +21,20 @@ type membersType = {
 };
 
 type TradeRequest = {
-  members: memberType;
+  members: membersType;
   duration: number;
 };
 
 type TradesContextType = {
   trades: TradeDetails[];
   trade: TradeDetails | null;
-  acceptTrade: (tradeId: string) => Promise<void>;
-  createTrade: (tradeData: TradeRequest) => Promise<ResCRUDTrade>;
-  detailsTrade: (tradeId: string) => Promise<void>;
+  acceptTrade: (tradeId: string) => Promise<boolean>;
+  createTrade: (tradeData: TradeRequest) => Promise<ResCRUDTrade | undefined>;
+  detailsTrade: (tradeId: string) => Promise<boolean>;
   getAllTrades: () => Promise<void>;
-  deleteTrade: (tradeId: string) => Promise<void>;
+  deleteTrade: (tradeId: string) => Promise<boolean>;
+  error: string;
+  setError: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const TradesContext = createContext<TradesContextType | undefined>(undefined);
@@ -52,7 +54,7 @@ type TradesProviderProps = {
 const TradesProvider: React.FC<TradesProviderProps> = ({ children }) => {
   const [trades, setTrades] = useState<TradeDetails[]>([]);
   const [trade, setTrade] = useState<TradeDetails | null>(null);
-
+  const [error, setError] = useState<string>('');
   const getAllTrades = async () => {
     try {
       // Simulate API call
@@ -60,7 +62,8 @@ const TradesProvider: React.FC<TradesProviderProps> = ({ children }) => {
 
       setTrades(data.payload);
     } catch (error) {
-      console.error('Get trades error:', error);
+      if (isAxiosError(error)) {
+      }
       throw error;
     }
   };
@@ -70,23 +73,41 @@ const TradesProvider: React.FC<TradesProviderProps> = ({ children }) => {
       // Simulate API call
       const { data } = await api.post<ResCRUDTrade>(`api/trade`, tradeData);
       // Update trade status to 'creacion'
+      setTrades([...trades, data.payload]);
       return data;
     } catch (error) {
-      console.error('Create trade error:', error);
-      throw error;
+      if (isAxiosError(error) && error.response) {
+        const errorInfo = error.response.data as {
+          status: string;
+          payload: string;
+        };
+        throw new Error(errorInfo.payload);
+      } else if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+      throw new Error('ERROR INNESPERADO');
     }
   };
 
-  const acceptTrade = async (tradeId: string) => {
+  const acceptTrade = async (tradeId: string): Promise<boolean> => {
     try {
       const { data } = await api.put<ResCRUDTrade>(`api/trade/${tradeId}`);
       // Update trade status to 'detalles' after accepting
       const newArray = trades.filter((trade) => trade._id !== data.payload._id);
       newArray.push(data.payload);
       setTrades(newArray);
+      return true;
     } catch (error) {
-      console.error('Accept trade error:', error);
-      throw error;
+      if (isAxiosError(error) && error.response) {
+        const errorInfo = error.response.data as {
+          status: string;
+          payload: string;
+        };
+        throw new Error(errorInfo.payload);
+      } else if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+      throw new Error('ERROR INNESPERADO');
     }
   };
 
@@ -95,34 +116,52 @@ const TradesProvider: React.FC<TradesProviderProps> = ({ children }) => {
       const { data } = await api.get<ResTradeDetails>(
         `api/trade/find-one/${tradeId}`
       );
-      console.log(trade);
-
       setTrade(data.payload);
+      return true;
     } catch (error) {
-      console.error('Details trade error:', error);
-      throw error;
+      if (isAxiosError(error) && error.response) {
+        const errorInfo = error.response.data as {
+          status: string;
+          payload: string;
+        };
+        throw new Error(errorInfo.payload);
+      } else if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+      throw new Error('ERROR INNESPERADO');
     }
   };
 
-  const deleteTrade = async (tradeId: string) => {
+  const deleteTrade = async (tradeId: string): Promise<boolean> => {
     try {
       const { data } = await api.delete<ResCRUDTrade>(`api/trade/${tradeId}`);
       const newArray = trades.filter((trade) => trade._id !== data.payload._id);
       setTrades(newArray);
+      return true;
     } catch (error) {
-      console.error('Details trade error:', error);
-      throw error;
+      if (isAxiosError(error) && error.response) {
+        const errorInfo = error.response.data as {
+          status: string;
+          payload: string;
+        };
+        throw new Error(errorInfo.payload);
+      } else if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+      throw new Error('ERROR INNESPERADO');
     }
   };
 
   const contextValue: TradesContextType = {
     trades,
     trade,
+    error,
     deleteTrade,
     acceptTrade,
     createTrade,
     detailsTrade,
     getAllTrades,
+    setError,
   };
 
   return (

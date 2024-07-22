@@ -91,7 +91,6 @@ TradeSchema.pre(
   { document: true, query: false },
   async function (next) {
     try {
-      console.log(this);
       const trade = await Trade.findOne({ id: this.id });
       const [memberOne, memberTwo] = await Promise.all([
         UserModel.findById(trade!.members.memberOne),

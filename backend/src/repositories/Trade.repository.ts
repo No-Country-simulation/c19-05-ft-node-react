@@ -23,8 +23,6 @@ export class TradeRepository {
 
   async find(id: Types.ObjectId | string): Promise<ITrade[]> {
     try {
-      console.log(id);
-
       const trades = await this.TradeModel.find({
         $or: [{ "members.memberOne.id": id }, { "members.memberTwo.id": id }],
       })
@@ -105,7 +103,10 @@ export class TradeRepository {
     try {
       const trade = await this.TradeModel.findOne({
         _id: tradeId,
-        $or: [{ "members.memberTwo.id": userId, status: status }],
+        $or: [
+          { "members.memberTwo.id": userId, status: status },
+          { "members.memberOne.id": userId, status: status },
+        ],
       })
         .populate({
           path: "members.memberOne.id",
@@ -123,6 +124,30 @@ export class TradeRepository {
           path: "members.memberTwo.specialty",
           select: "name", // Selecciona los campos que quieres incluir
         });
+      return trade;
+    } catch (error) {
+      console.log(error);
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+      throw Error("Error al buscar trade");
+    }
+  }
+
+  async findOnePendingNoPopulate(
+    userId: string | Types.ObjectId,
+    tradeId: string | Types.ObjectId,
+    status: enumTradeStatus | {}
+  ): Promise<ITrade | null> {
+    try {
+      const trade = await this.TradeModel.findOne({
+        _id: tradeId,
+        $or: [
+          { "members.memberTwo.id": userId, status: status },
+          { "members.memberOne.id": userId, status: status },
+        ],
+      });
+
       return trade;
     } catch (error) {
       console.log(error);
@@ -171,7 +196,9 @@ export class TradeRepository {
     }
   }
 
-  async findTradesByIdPopulated(userId: string): Promise<ITrade[]> {
+  async findTradesByIdPopulated(
+    userId: string | Types.ObjectId
+  ): Promise<ITrade[]> {
     try {
       const userObjectId = new Types.ObjectId(userId);
 
@@ -183,11 +210,11 @@ export class TradeRepository {
       })
         .populate({
           path: "members.memberOne.id",
-          select: "name email",
+          select: "name email avatar",
         })
         .populate({
           path: "members.memberTwo.id",
-          select: "name email",
+          select: "name email avatar",
         })
         .populate("members.memberOne.specialty")
         .populate("members.memberTwo.specialty");

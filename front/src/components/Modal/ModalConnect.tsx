@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   Modal,
   ModalContent,
@@ -30,8 +30,8 @@ export default function ModalConnect({
   showModal,
   setShowModal,
 }: ModalConnectProps) {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const { user } = useAuth();
+  const { createTrade } = useTrades();
   const [specialtyOne, setSpecialtyOne] = useState<string>('');
   const [specialtyTwo, setSpecialtyTwo] = useState<string>('');
   const [duration, setDuration] = useState<
@@ -70,7 +70,7 @@ export default function ModalConnect({
     ['One week']: 7,
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!specialtyOne || !specialtyTwo || !duration) {
       return alert('Faltan datos');
     }
@@ -83,20 +83,30 @@ export default function ModalConnect({
     const tradeData = {
       members: {
         memberOne: {
-          id: user?._id,
-          specialty: specialtyOneData?.specialtyId._id,
+          id: user!._id,
+          specialty: specialtyOneData!.specialtyId._id,
         },
         memberTwo: {
-          id: showModal.user?._id,
-          specialty: specialtyTwoData?.specialtyId._id,
+          id: showModal.user!._id,
+          specialty: specialtyTwoData!.specialtyId._id,
         },
       },
       duration: durationObject[duration],
     };
+
+    try {
+      const result = await createTrade(tradeData);
+      if (result && result.status === 'success') {
+        alert('trade creado');
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        alert(error.message);
+      }
+    }
   };
 
   const isValid = specialtiesOne.length > 0 && specialtiesTwo.length > 0;
-  console.log(isValid);
 
   return (
     <>
@@ -143,7 +153,7 @@ export default function ModalConnect({
                   Close
                 </Button>
                 <Button
-                  {...(isValid && <>color={isValid && 'primary'}</>)}
+                  color={'primary'}
                   className={isValid ? 'bg-blue-600 text-white' : 'hidden'}
                   disabled={isValid}
                   onPress={handleSubmit}

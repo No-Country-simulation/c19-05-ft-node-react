@@ -22,17 +22,20 @@ export class TradeController {
         : res.status(400).send(result);
     } catch (error) {
       console.log(error);
+      if (error instanceof Error) {
+        res.status(500).send(error.message);
+      } else {
+        res.status(500).send("Error interno");
+      }
     }
   };
 
   updateAccepted = async (req: Request, res: Response) => {
     const { tradeId } = req.params;
     const user = req.user!;
-    console.log(tradeId);
 
     try {
       const result = await this.tradeService.updateAccepted(user, tradeId);
-      console.log(result);
       result.status === "success"
         ? res.send(result)
         : res.status(400).send(result);

@@ -2,12 +2,44 @@ import { Trade } from '@/lib/data';
 import { TradeDetails } from '@/types/trade.type';
 import { FaExchangeAlt } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
+import { useTrades } from '@/context/trades/trades';
+import { useEffect } from 'react';
 type TradeCardProps = {
   trade: TradeDetails;
 };
 
 const TradeCard = ({ trade }: TradeCardProps) => {
   const router = useRouter();
+  const { deleteTrade, acceptTrade } = useTrades();
+  console.log(trade);
+
+  const handleReject = async () => {
+    try {
+      const result = await deleteTrade(trade._id);
+
+      if (result) {
+        alert('Trade rejected');
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        alert(error.message);
+      }
+    }
+  };
+
+  const handleAccept = async () => {
+    try {
+      const result = await acceptTrade(trade._id);
+
+      if (result) {
+        alert('Trade Accepted');
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        alert(error.message);
+      }
+    }
+  };
   return (
     <div
       className={`shadow ${trade.status === 'PENDING' ? 'bg-yellow-300' : trade.status === 'ACCEPTED' ? 'bg-green-300' : 'bg-red-300'} w-fit pt-10 pb-7 px-10 rounded-lg text-sm`}
@@ -48,10 +80,16 @@ const TradeCard = ({ trade }: TradeCardProps) => {
       {/* conditional action buttons */}
       {trade.status === 'PENDING' && (
         <div className="flex justify-center gap-x-4">
-          <button className="bg-gray-800 hover:bg-gray-900 text-white py-2 px-4 rounded-lg transition-all border border-white">
+          <button
+            className="bg-gray-800 hover:bg-gray-900 text-white py-2 px-4 rounded-lg transition-all border border-white"
+            onClick={handleAccept}
+          >
             Accept
           </button>
-          <button className="bg-white hover:bg-gray-100 text-gray-800 border border-gray-500 py-2 px-4 rounded-lg transition-all">
+          <button
+            className="bg-white hover:bg-gray-100 text-gray-800 border border-gray-500 py-2 px-4 rounded-lg transition-all"
+            onClick={handleReject}
+          >
             Reject
           </button>
         </div>

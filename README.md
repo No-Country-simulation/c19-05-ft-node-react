@@ -53,9 +53,9 @@ The technologies used to build this project are the following:
 Before you begin, make sure you have the following installed:
 <h3>Prerrequisites</h3>
 <ul>
-  <li><b>Node.js</b> (version 20 or higher)</li>
-  <li><b>Git</b></li>
-  <li><b>MongoDB installed locally or a MongoDB Atlas cluster</b></li>
+  <li><b><a href="https://nodejs.org/en/download/package-manager">Node.js</a></b> (version 20 or higher)</li>
+  <li><b><a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git">Git</a></b></li>
+  <li><b><a href="https://www.youtube.com/watch?v=gB6WLkSrtJk">MongoDB installed locally</a> or a <a href="https://www.mongodb.com/docs/atlas/getting-started/">MongoDB Atlas cluster</a> (Atlas UI) </b></li>
 </ul>
 <h3>Installation</h3>
 <p>1. Clone the repository:</p>

@@ -48,3 +48,27 @@ The technologies used to build this project are the following:
 <h3>Database</h3>
 <p>For persistent data storage, we opted for MongoDB with MongoDB Atlas, which allows us to store data in the form of documents; pretty flexible for data schemas.</p>
 <img height="100" alt="Mongoose" src="https://cdn.iconscout.com/icon/free/png-256/free-mongodb-3521676-2945120.png?f=webp"/>
+
+<h2>Getting started</h2>
+Before you begin, make sure you have the following installed:
+<h3>Prerrequisites</h3>
+<ul>
+  <li><b>Node.js</b> (version 20 or higher)</li>
+  <li><b>Git</b></li>
+  <li><b>MongoDB installed locally or a MongoDB Atlas cluster</b></li>
+</ul>
+<h3>Installation</h3>
+<p>1. Clone the repository:</p>
+
+```
+git clone https://github.com/No-Country-simulation/c19-05-ft-node-react.git
+```
+
+<p>2. Go to backend directory and install dependencies (you can also use Yarn or Pnpm if you wish)</p>
+
+```
+cd backend
+npm install
+```
+
+<p></p>

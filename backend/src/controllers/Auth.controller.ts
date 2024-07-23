@@ -3,6 +3,7 @@ import { AuthService } from "../services/Auth.service";
 import { LoginType } from "../utils/schema/auth.schema";
 
 import { InternalServerError } from "../utils/errors/InternalServerError";
+import { AuthorizationError } from "../utils/errors/AuthorizationError";
 
 export class AuthController {
   private authService: AuthService;
@@ -37,13 +38,11 @@ export class AuthController {
   };
 
   logout = async (req: Request, res: Response, next: NextFunction) => {
-    console.log("first");
-
     try {
       res.clearCookie("token");
       res.status(200).send({
         status: "success",
-        payload: "Login correcto.",
+        payload: "Logout success.",
       });
     } catch (error) {
       if (error instanceof Error) {
@@ -115,10 +114,7 @@ export class AuthController {
 
     try {
       if (!user || user.provider !== "google") {
-        return res.status(403).send({
-          status: "error",
-          payload: "Error con usuario de google",
-        });
+        throw new AuthorizationError("Error with google user");
       }
 
       const result = await this.authService.loginGoogle(user.email);

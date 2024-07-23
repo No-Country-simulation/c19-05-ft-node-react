@@ -86,4 +86,17 @@ export const UserEmailSchema = z.object({
     .email({ message: "Email no valido" }),
 });
 
+export const UpdateUserRating = z.object({
+  comment: z
+    .string({ invalid_type_error: "the 'comment' must be of type string" })
+    .max(255, { message: "maximum length is 255 characters" })
+    .optional(),
+  rating: z.union([
+    z.literal(1),
+    z.literal(2),
+    z.literal(3),
+    z.literal(4),
+    z.literal(5),
+  ]),
+});
 // Esquema para verificar los ids de categoría y especialidad

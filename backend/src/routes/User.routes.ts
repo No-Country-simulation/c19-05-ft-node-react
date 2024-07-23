@@ -58,6 +58,7 @@ routerUser.get("/user/:categoryId?", userController.getUsers);
 
 // ! Middleware general
 routerUser.param("userId", middlewareParamsObjectId("userId"));
+routerUser.param("tradeId", middlewareParamsObjectId("tradeId"));
 
 // TODO: document endpoint for getting a single user
 routerUser.get(
@@ -83,6 +84,12 @@ routerUser.put(
   authValidatePassport,
   upload.single("profile-pick"),
   userController.updatePick
+);
+
+routerUser.put(
+  "/user/:userId/update-rating/:tradeId",
+  authValidatePassport,
+  userController.updateUserRating
 );
 
 export default routerUser;

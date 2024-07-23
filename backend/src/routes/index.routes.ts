@@ -8,6 +8,7 @@ import routerChat from "./Chat.routes";
 import { Request, Response, NextFunction } from "express";
 import { NotFoundError } from "../utils/errors/NotFoundError";
 import { errorHandler } from "../middlewares/errorHandler";
+import { routerSpecialty } from "./Specialty.routes";
 
 const router = Router();
 
@@ -16,6 +17,7 @@ router.use("/api", routerAuth);
 router.use("/api", routerTrade);
 router.use("/api", routerRating);
 router.use("/api", routerChat);
+router.use("/api", routerSpecialty);
 router.use("/", routerSeed);
 
 //404

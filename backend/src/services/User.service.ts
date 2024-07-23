@@ -391,27 +391,25 @@ export class UserService {
     }
   }
 
-  async updateRating(data: userRating, user: IUser) {
+  async updateRating(data: userRating, user: IUser, userTwoId: string) {
     try {
-      const userFound = await this.userRepository.findOnePopulated(user._id);
+      const userFound = await this.userRepository.findOne(userTwoId);
+
+      // if user not found
       if (!userFound) {
         throw new AuthenticationError("The user does not exist.");
       }
-
-      const trade = await this.tradeRepository.findOnePending(
+      const tradeFound = await this.tradeRepository.findOneNoPopulated(
         user._id,
-        data.tradeId,
-        {}
+        data.tradeId
       );
+      console.log(tradeFound);
 
-      if (!trade) {
+      // if trade not found
+      if (!tradeFound) {
         throw new BadRequestError("The trade does not exist.");
       }
-
-      if (trade.status !== "FINISHED") {
-        throw new AuthorizationError("The trade has not yet finished.");
-      }
-
+      // if the user already has a rating
       if (userFound.userRatings.length > 0) {
         const findIndex = userFound.userRatings.findIndex(
           (rating) => rating.tradeId === data.tradeId
@@ -420,21 +418,40 @@ export class UserService {
         if (findIndex !== -1) {
           throw new AuthorizationError("You have already rated this trade.");
         }
-
-        userFound.userRatings.push(data);
-
-        const [resultUser, resultTrade] = await Promise.allSettled([
-          userFound.save(),
-          this.tradeRepository.updateStatusHasRated(trade.id, data.userId),
-        ]);
-
-        console.log(resultTrade);
-
-        return {
-          status: "success",
-          payload: resultUser,
-        };
       }
+
+      // if the trade is not yet finished
+      if (tradeFound.status !== "FINISHED") {
+        throw new AuthorizationError("The trade has not yet finished.");
+      }
+
+      //check that the user who sent the comment has not done it before.
+      const isUserMemberOne =
+        tradeFound.members.memberOne.id.toString() === user._id.toString();
+      const isUserMemberTwo =
+        tradeFound.members.memberTwo.id.toString() === user._id.toString();
+      if (
+        (!isUserMemberOne && !isUserMemberTwo) ||
+        (isUserMemberOne && tradeFound.members.memberOne.hasRated) ||
+        (isUserMemberTwo && tradeFound.members.memberTwo.hasRated)
+      ) {
+        throw new BadRequestError("You have already rated this trade.");
+      }
+      userFound.userRatings.push(data);
+      if (isUserMemberOne) {
+        tradeFound.members.memberOne.hasRated = true;
+      } else if (isUserMemberTwo) {
+        tradeFound.members.memberTwo.hasRated = true;
+      }
+
+      const [resultUser, resultTrade] = await Promise.all([
+        userFound.save(),
+        tradeFound.save(),
+      ]);
+      return {
+        status: "success",
+        payload: resultUser,
+      };
     } catch (error) {
       throw error;
     }

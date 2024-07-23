@@ -165,6 +165,24 @@ export class TradeRepository {
       throw error;
     }
   }
+  async findOneNoPopulated(
+    userId: string | Types.ObjectId,
+    tradeId: string | Types.ObjectId
+  ): Promise<ITrade | null> {
+    try {
+      const trade = await this.TradeModel.findOne({
+        _id: tradeId,
+        $or: [
+          { "members.memberOne.id": userId },
+          { "members.memberTwo.id": userId },
+        ],
+      });
+
+      return trade;
+    } catch (error) {
+      throw error;
+    }
+  }
 
   async findTradesByIdPopulated(
     userId: string | Types.ObjectId
@@ -209,32 +227,6 @@ export class TradeRepository {
         status: "FINISHED",
       });
       return trade;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async updateStatusHasRated(
-    tradeId: Types.ObjectId,
-    memberId: Types.ObjectId
-  ) {
-    try {
-      const updatedTrade = await this.TradeModel.findOneAndUpdate(
-        {
-          _id: tradeId,
-        },
-        {
-          $set: {
-            "members.$[elem].hasRated": true,
-          },
-        },
-        {
-          new: true,
-          arrayFilters: [{ "elem.id": memberId }],
-        }
-      );
-
-      return updatedTrade;
     } catch (error) {
       throw error;
     }

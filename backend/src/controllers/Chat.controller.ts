@@ -15,10 +15,7 @@ export class ChatController {
     const message: MessageCreateType = req.body;
     try {
       const { status, payload } = await this.chatService.createMessage(message);
-
-      status
-        ? res.send({ status, payload })
-        : res.status(403).send({ status, payload });
+      res.send({ status, payload });
     } catch (error) {
       if (error instanceof Error) {
         return next(error);
@@ -34,9 +31,7 @@ export class ChatController {
       const { status, payload } = await this.chatService.findMessages(
         chatRoomId
       );
-      status
-        ? res.send({ status, payload })
-        : res.status(404).send({ status, payload });
+      res.send({ status, payload });
     } catch (error) {
       if (error instanceof Error) {
         return next(error);

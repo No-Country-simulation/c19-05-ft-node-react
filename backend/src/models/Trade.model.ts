@@ -7,6 +7,7 @@ import Chat from "./ChatRoom";
 type memberType = {
   id: string;
   specialty: string;
+  hasRated: boolean;
 };
 
 export type membersType = {

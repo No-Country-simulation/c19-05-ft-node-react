@@ -165,14 +165,6 @@ export class TradeService {
     }
   }
 
-  async updateHasRated(tradeId: Types.ObjectId, userId: Types.ObjectId) {
-    try {
-      return await this.tradeRepository.updateStatusHasRated(tradeId, userId);
-    } catch (error) {
-      throw error;
-    }
-  }
-
   async deleteTrade(user: IUser, tradeId: string) {
     try {
       const trade = await this.tradeRepository.find(user._id);

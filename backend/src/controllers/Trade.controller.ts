@@ -18,9 +18,7 @@ export class TradeController {
         { members, duration },
         req.user!
       );
-      result.status === "success"
-        ? res.send(result)
-        : res.status(400).send(result);
+      res.send(result);
     } catch (error) {
       if (error instanceof Error) {
         return next(error);
@@ -36,9 +34,7 @@ export class TradeController {
 
     try {
       const result = await this.tradeService.updateAccepted(user, tradeId);
-      result.status === "success"
-        ? res.send(result)
-        : res.status(400).send(result);
+      res.send(result);
     } catch (error) {
       if (error instanceof Error) {
         return next(error);
@@ -51,13 +47,9 @@ export class TradeController {
   delete = async (req: Request, res: Response, next: NextFunction) => {
     const { tradeId } = req.params;
     const user = req.user!;
-
     try {
       const result = await this.tradeService.deleteTrade(user, tradeId);
-      console.log("Eliminado", result);
-      result.status === "success"
-        ? res.send(result)
-        : res.status(400).send(result);
+      res.send(result);
     } catch (error) {
       if (error instanceof Error) {
         return next(error);
@@ -72,14 +64,11 @@ export class TradeController {
     const user = req.user!;
     try {
       const result = await this.tradeService.findOne(user, tradeId);
-      result.status === "success"
-        ? res.send(result)
-        : res.status(400).send(result);
+      res.send(result);
     } catch (error) {
       if (error instanceof Error) {
         return next(error);
       }
-
       return next(new InternalServerError());
     }
   };
@@ -89,9 +78,7 @@ export class TradeController {
 
     try {
       const result = await this.tradeService.findTrades(user._id);
-      result.status === "success"
-        ? res.send(result)
-        : res.status(400).send(result);
+      res.send(result);
     } catch (error) {
       if (error instanceof Error) {
         return next(error);

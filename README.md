@@ -40,8 +40,9 @@ The technologies used to build this project are the following:
 <h3>Backend</h3>
 <p>For the backend side, we opted for Express.js (a lightweight framework good enough to get the work done) and TypeScript for enforcing correct type matching and custom interfaces for our database models. Mongoose came in handy for querying data to the database with built-in functions.</p>
 <div>
+  <img height="100" alt="Express.js" src="/assets/express.png"/>
   <img height="100" alt="TypeScript" src="https://cdn.iconscout.com/icon/free/png-256/free-typescript-1174965.png?f=webp&w=256"/>
-<img height="100" width="150" alt="Mongoose" src="https://thecodebarbarian.com/images/mongoose5.png"/>
+  <img height="100" width="150" alt="Mongoose" src="https://thecodebarbarian.com/images/mongoose5.png"/>
 </div>
 
 <h3>Database</h3>

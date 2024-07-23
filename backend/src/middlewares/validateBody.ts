@@ -1,25 +1,19 @@
 import { NextFunction, Request, Response } from "express";
-import { ZodError, ZodSchema } from "zod";
+import { ZodSchema } from "zod";
+import { InternalServerError } from "../utils/errors/InternalServerError";
 
 export const middlewareBody =
   (schema: ZodSchema) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      console.log(req.body);
+      const result = await schema.parse(req.body);
 
-      await schema.parse(req.body);
-      next();
+      if (result) return next();
     } catch (error) {
-      console.log("hola");
-      if (error instanceof ZodError) {
-        const errorDetails = error.errors.map((error) => ({
-          path: error.path.join("."),
-          error: error.message,
-        }));
-
-        return res.status(400).send(errorDetails);
-      } else if (error instanceof Error) {
-        return res.status(400).send({ error: error.message });
+      if (error instanceof Error) {
+        return next(error);
       }
+
+      return next(new InternalServerError());
     }
   };

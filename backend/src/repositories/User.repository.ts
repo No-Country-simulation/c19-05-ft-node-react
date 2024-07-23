@@ -29,11 +29,7 @@ export class UserRepository {
       const user = await this.UserModel.create(data);
       return user;
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-      throw Error("Error al crear usuario");
+      throw error;
     }
   }
 
@@ -41,10 +37,7 @@ export class UserRepository {
     try {
       return await this.UserModel.paginate(query, options);
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
+      throw error;
     }
   }
 
@@ -90,11 +83,7 @@ export class UserRepository {
         .lean();
       return result;
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
-      throw Error("Error al buscar un usuario");
+      throw error;
     }
   }
   async findOne(id: string | Types.ObjectId): Promise<IUser> {
@@ -105,11 +94,7 @@ export class UserRepository {
       }
       return result;
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
-      throw Error("Error al buscar un usuario");
+      throw error;
     }
   }
 
@@ -119,11 +104,7 @@ export class UserRepository {
         "_id name email description password phoneNumber specialties interests userRatings trades contacts provider"
       );
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
-      throw Error("Error al buscar un usuario por email");
+      throw error;
     }
   }
 
@@ -134,11 +115,7 @@ export class UserRepository {
     try {
       return await this.UserModel.findByIdAndUpdate(id, data, { new: true });
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
-      throw Error("Error al actualizar un usuario");
+      throw error;
     }
   }
 
@@ -152,11 +129,7 @@ export class UserRepository {
       user.trades.push(tradeId);
       return await user.save();
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
-      throw Error("Error al actualizar un usuario");
+      throw error;
     }
   }
 
@@ -169,11 +142,7 @@ export class UserRepository {
         new: true,
       });
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
-      throw Error("Error al actualizar un usuario");
+      throw error;
     }
   }
 
@@ -183,11 +152,7 @@ export class UserRepository {
     try {
       return await this.UserModel.findByIdAndDelete(id);
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
-      throw Error("Error al eliminar un usuario");
+      throw error;
     }
   }
 
@@ -212,11 +177,7 @@ export class UserRepository {
 
       return userUpdated;
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
-      throw Error("Error al eliminar un usuario");
+      throw error;
     }
   }
 
@@ -263,11 +224,7 @@ export class UserRepository {
       ]);
       return getPotentialPairings;
     } catch (error: any) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
-      throw Error("Error al hallar sugerencias para trades");
+      throw error;
     }
   }
 }

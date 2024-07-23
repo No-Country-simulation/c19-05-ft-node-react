@@ -1,15 +1,22 @@
 import { NextFunction, Request, Response } from "express";
 import { Types } from "mongoose";
+import { BadRequestError } from "../utils/errors/BadRequestError";
+import { InternalServerError } from "../utils/errors/InternalServerError";
 
 export const middlewareParamsObjectId =
   (nombreId: string) =>
   async (req: Request, res: Response, next: NextFunction) => {
-    const result = Types.ObjectId.isValid(req.params[nombreId]);
+    try {
+      const result = Types.ObjectId.isValid(req.params[nombreId]);
 
-    if (result) return next();
+      if (result) return next();
 
-    res.status(400).send({
-      status: "error",
-      message: "Id invalido",
-    });
+      return next(new BadRequestError("Invalid Id"));
+    } catch (error) {
+      if (error instanceof Error) {
+        return next(error);
+      }
+
+      return next(new InternalServerError());
+    }
   };

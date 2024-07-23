@@ -6,7 +6,7 @@ export class AuthenticationError extends CustomError {
     super(message);
     Object.setPrototypeOf(this, AuthenticationError.prototype);
   }
-  serialize(): { status: string; message: string } {
-    return { status: "error", message: this.message };
+  serialize(): { status: string; payload: string } {
+    return { status: "error", payload: this.message };
   }
 }

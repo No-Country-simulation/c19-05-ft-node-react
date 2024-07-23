@@ -6,6 +6,8 @@ import { UserRepository } from "../repositories/User.repository";
 import { createTradeType, enumTradeStatus } from "../models/Trade.model";
 import { IUser } from "../models/User.model";
 
+import { BadRequestError } from "../utils/errors/BadRequestError";
+
 export class TradeService {
   private readonly tradeRepository: TradeRepository;
   private readonly userRepository: UserRepository;
@@ -23,19 +25,15 @@ export class TradeService {
       // TODO: verificar que la especialidad del miembro que propone el trade coincida con el interés del que recibe la propuesta del trade
       // y viceversa.
       if (userOne.specialties.length === 0) {
-        return {
-          status: "error",
-          payload: "No podes crear un trade sin especialidades en tu perfil.",
-        };
+        throw new BadRequestError(
+          "You cannot create a trade without specialties in your profile."
+        );
       }
       const userTwo = await this.userRepository.findOne(
         trade.members.memberTwo.id
       );
       if (!userTwo) {
-        return {
-          status: "error",
-          payload: "Usuario no encontrado",
-        };
+        throw new BadRequestError("The user does not exist.");
       }
       const trades = await this.tradeRepository.findTradesByIdTwoMembers(
         userOne._id,
@@ -43,11 +41,9 @@ export class TradeService {
         "PENDING"
       );
       if (trades?.length > 0) {
-        return {
-          status: "error",
-          payload:
-            "No podes crear un trade con este usuario. Hay un trade pendiente.",
-        };
+        throw new BadRequestError(
+          "The interests do not match the specialties."
+        );
       }
       // chequear que los intereses sean correspondientes
       const findIndexOneSpecialty = userOne.specialties.findIndex(
@@ -61,10 +57,9 @@ export class TradeService {
           trade.members.memberTwo.specialty.toString()
       );
       if (findIndexOneSpecialty === -1 || findIndexOneInterest === -1) {
-        return {
-          status: "error",
-          payload: "Los intereses no corresponden con las especialidades.",
-        };
+        throw new BadRequestError(
+          "The interests do not match the specialties."
+        );
       }
       const findIndexTwoSpecialty = userTwo.specialties.findIndex(
         (specialty) =>
@@ -77,10 +72,9 @@ export class TradeService {
           trade.members.memberOne.specialty.toString()
       );
       if (findIndexTwoSpecialty === -1 || findIndexTwoInterest === -1) {
-        return {
-          status: "error",
-          payload: "Los intereses no corresponden con las especialidades.",
-        };
+        throw new BadRequestError(
+          "The interests do not match the specialties."
+        );
       }
       const newTrade = await this.tradeRepository.create(trade);
       userOne.trades.push(newTrade.id);
@@ -94,11 +88,7 @@ export class TradeService {
         payload: newTrade,
       };
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
-      throw new Error(String(error));
+      throw error;
     }
   }
 
@@ -119,15 +109,10 @@ export class TradeService {
         }
       });
       const update = await Promise.all(updateTrade);
-      console.log(update);
 
       return { status: "success", payload: update };
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
-      throw new Error(String(error));
+      throw error;
     }
   }
 
@@ -136,21 +121,14 @@ export class TradeService {
       const trade = await this.tradeRepository.findOne(user._id, tradeId);
 
       if (!trade) {
-        return {
-          status: "error",
-          payload: "No existe el trade",
-        };
+        throw new BadRequestError("The trade does not exist.");
       }
       return {
         status: "success",
         payload: trade,
       };
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        // throw Error(error.message)
-      }
-      throw new Error(String(error));
+      throw error;
     }
   }
 
@@ -163,14 +141,14 @@ export class TradeService {
         "PENDING"
       );
 
-      if (!tradeFound)
-        return { status: "error", payload: "trade no encontrado" };
+      if (!tradeFound) {
+        throw new BadRequestError("The trade does not exist.");
+      }
 
       if (tradeFound.members.memberOne.id.toString() === user._id.toString()) {
-        return {
-          status: "error",
-          payload: "No podes aceptar un trade que vos mismo creaste",
-        };
+        throw new BadRequestError(
+          "You cannot accept a trade that you created yourself."
+        );
       }
       const trade = await this.tradeRepository.findOnePending(
         user._id,
@@ -183,12 +161,7 @@ export class TradeService {
       await trade!.save();
       return { status: "success", payload: trade };
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
-
-      throw new Error(String(error));
+      throw error;
     }
   }
 
@@ -196,11 +169,7 @@ export class TradeService {
     try {
       return await this.tradeRepository.updateStatusHasRated(tradeId, userId);
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
-      throw new Error(String(error));
+      throw error;
     }
   }
 
@@ -208,8 +177,9 @@ export class TradeService {
     try {
       const trade = await this.tradeRepository.find(user._id);
 
-      if (trade.length === 0)
-        return { status: "error", payload: "El trade no existe" };
+      if (trade.length === 0) {
+        throw new BadRequestError("The trade does not exist.");
+      }
 
       const tradeDelete = trade.filter(
         (tr) => tr.id.toString() === tradeId.toString()
@@ -217,18 +187,12 @@ export class TradeService {
       if (tradeDelete[0].status === "PENDING") {
         await tradeDelete[0].deleteOne();
         return { status: "success", payload: tradeDelete[0] };
-      } else {
-        return {
-          status: "Error",
-          payload: `No se encontro ningun trade con el id ${tradeId} en estado pendiendte.`,
-        };
       }
+      throw new BadRequestError(
+        `No trade with ID ${tradeId} found in pending status.`
+      );
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
-      throw new Error(String(error));
+      throw error;
     }
   }
 }

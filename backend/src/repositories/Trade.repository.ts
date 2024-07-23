@@ -13,11 +13,7 @@ export class TradeRepository {
       const newTrade = new this.TradeModel(trade);
       return await newTrade.save();
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-      throw Error("Error al crear trade");
+      throw error;
     }
   }
 
@@ -33,13 +29,7 @@ export class TradeRepository {
         });
       return trades;
     } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      } else if (error instanceof MongooseError) {
-        throw new Error(error.message);
-      } else {
-        throw new Error("Ocurrio un error al crear usuario");
-      }
+      throw error;
     }
   }
 
@@ -69,11 +59,7 @@ export class TradeRepository {
 
       return trades;
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-      throw Error("Error al buscar trade");
+      throw error;
     }
   }
 
@@ -87,11 +73,7 @@ export class TradeRepository {
       }).select("members duration status expiresAt chatRoom");
       return trades;
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-      throw Error("Error al buscar trade");
+      throw error;
     }
   }
 
@@ -126,11 +108,7 @@ export class TradeRepository {
         });
       return trade;
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-      throw Error("Error al buscar trade");
+      throw error;
     }
   }
 
@@ -150,11 +128,7 @@ export class TradeRepository {
 
       return trade;
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-      throw Error("Error al buscar trade");
+      throw error;
     }
   }
 
@@ -188,11 +162,7 @@ export class TradeRepository {
         });
       return trade;
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-      throw Error("Error al buscar trade");
+      throw error;
     }
   }
 
@@ -219,11 +189,7 @@ export class TradeRepository {
         .populate("members.memberOne.specialty")
         .populate("members.memberTwo.specialty");
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-      throw new Error("Error al buscar trades");
+      throw error;
     }
   }
   async updateAccepted(id: string, date: Date) {
@@ -234,11 +200,7 @@ export class TradeRepository {
       });
       return trade;
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-      throw Error("Error al aceptar trade");
+      throw error;
     }
   }
   async updateFinished(id: string) {
@@ -248,11 +210,7 @@ export class TradeRepository {
       });
       return trade;
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-      throw Error("Error al aceptar trade");
+      throw error;
     }
   }
 
@@ -278,11 +236,7 @@ export class TradeRepository {
 
       return updatedTrade;
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-      throw new Error("Error al aceptar trade");
+      throw error;
     }
   }
 }

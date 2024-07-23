@@ -14,36 +14,42 @@ export const errorHandler: ErrorRequestHandler = (
   }
 
   if (error instanceof ZodError) {
-    const message = error.message || "Validation Error";
-    return res
-      .status(400)
-      .json({ status: "error", message: message, error: error.errors });
+    const zodErrorMessage = error.message || "Validation Error";
+    const zodErrors =
+      error.errors.length > 0 ? error.errors : [{ message: zodErrorMessage }];
+
+    return res.status(400).json({
+      status: "error",
+      payload: zodErrorMessage,
+      errors: zodErrors,
+    });
   }
 
   if (error instanceof MongooseError) {
     if (error.name === "ValidationError") {
       return res.status(400).json({
         status: "error",
-        message: "Validation error in database",
+        payload: "Validation error in database",
         errors: (error as any).errors,
       });
     } else if (error.name === "CastError") {
       return res.status(400).json({
         status: "error",
-        message: "Invalid data type",
+        payload: "Invalid data type",
         error: error,
       });
     } else {
       return res.status(500).json({
         status: "error",
-        message: error.message || "Database error occurred",
+        payload: error.message || "Database error occurred",
         error: error,
       });
     }
   }
+  const genericErrorMessage = error.message || "Internal Server Error";
 
   console.log(error.stack);
   return res
     .status(500)
-    .json({ status: "error", message: "Internal Server Error" });
+    .json({ status: "error", payload: genericErrorMessage });
 };

@@ -1,8 +1,9 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { UserService } from "../services/User.service";
 import UserModel, { enumType, IUser, specialty } from "../models/User.model";
 import { UserUpdateType } from "../utils/schema/user.schema";
 import { Document, Types } from "mongoose";
+import { InternalServerError } from "../utils/errors/InternalServerError";
 
 export class UserController {
   userService: UserService;
@@ -10,7 +11,7 @@ export class UserController {
     this.userService = userService;
   }
 
-  createUser = async (req: Request, res: Response) => {
+  createUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const result = await this.userService.verifyEmail(req.body);
 
@@ -18,16 +19,15 @@ export class UserController {
         ? res.send(result)
         : res.status(404).send(result);
     } catch (error) {
-      console.log(error);
       if (error instanceof Error) {
-        res.status(500).send(error.message);
-      } else {
-        res.status(500).send("Error interno");
+        return next(error);
       }
+
+      return next(new InternalServerError());
     }
   };
 
-  confirmRegister = async (req: Request, res: Response) => {
+  confirmRegister = async (req: Request, res: Response, next: NextFunction) => {
     const { token } = req.params;
 
     try {
@@ -49,16 +49,19 @@ export class UserController {
         });
       }
     } catch (error) {
-      console.log(error);
       if (error instanceof Error) {
-        res.status(500).send(error.message);
-      } else {
-        res.status(500).send("Error interno");
+        return next(error);
       }
+
+      return next(new InternalServerError());
     }
   };
 
-  sendResetPasswordToken = async (req: Request, res: Response) => {
+  sendResetPasswordToken = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const { email } = req.body;
     try {
       const result = await this.userService.resetEmail(email);
@@ -66,37 +69,35 @@ export class UserController {
         ? res.send(result)
         : res.status(400).send(result);
     } catch (error) {
-      console.log(error);
       if (error instanceof Error) {
-        res.status(500).send(error.message);
-      } else {
-        res.status(500).send("Error interno");
+        return next(error);
       }
+
+      return next(new InternalServerError());
     }
   };
 
-  resetPassword = async (req: Request, res: Response) => {
+  resetPassword = async (req: Request, res: Response, next: NextFunction) => {
     const { token } = req.params;
     const { password } = req.body;
     try {
       const result = await this.userService.updatePassword({ token, password });
 
-      console.log(result)
+      console.log(result);
 
       result.status == "success"
         ? res.send(result)
         : res.status(409).send(result);
     } catch (error) {
-      console.log(error);
       if (error instanceof Error) {
-        res.status(500).send(error.message);
-      } else {
-        res.status(500).send("Error interno");
+        return next(error);
       }
+
+      return next(new InternalServerError());
     }
   };
 
-  getUsers = async (req: Request, res: Response) => {
+  getUsers = async (req: Request, res: Response, next: NextFunction) => {
     const { categoryId = null } = req.params;
     let page: string | null =
       typeof req.query.page === "string" ? req.query.page : null;
@@ -109,16 +110,15 @@ export class UserController {
         ? res.send(result)
         : res.status(500).send(result);
     } catch (error: any) {
-      console.log(error);
       if (error instanceof Error) {
-        res.status(500).send(error.message);
-      } else {
-        res.status(500).send("Error interno");
+        return next(error);
       }
+
+      return next(new InternalServerError());
     }
   };
 
-  getUser = async (req: Request, res: Response) => {
+  getUser = async (req: Request, res: Response, next: NextFunction) => {
     const { userId } = req.params;
     const user = req.user;
     try {
@@ -129,17 +129,16 @@ export class UserController {
         ? res.send(result)
         : res.status(400).send(result);
     } catch (error) {
-      console.log("hola error");
       if (error instanceof Error) {
-        res.status(500).send(error.message);
-      } else {
-        res.status(500).send("Error interno");
+        return next(error);
       }
+
+      return next(new InternalServerError());
     }
   };
 
   // Nombre descripcion numero
-  updateUser = async (req: Request, res: Response) => {
+  updateUser = async (req: Request, res: Response, next: NextFunction) => {
     const data: UserUpdateType = req.body;
     try {
       const result = await this.userService.update(req.user!._id, data);
@@ -148,16 +147,19 @@ export class UserController {
         ? res.send(result)
         : res.status(400).send(result);
     } catch (error) {
-      console.log(error);
       if (error instanceof Error) {
-        res.status(500).send(error.message);
-      } else {
-        res.status(500).send("Error interno");
+        return next(error);
       }
+
+      return next(new InternalServerError());
     }
   };
 
-  updateUserRating = async (req: Request, res: Response) => {
+  updateUserRating = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const { userId: CarlosID, tradeId } = req.params;
     const {
       comment = "",
@@ -170,16 +172,15 @@ export class UserController {
         req.user!
       );
     } catch (error) {
-      console.log(error);
       if (error instanceof Error) {
-        res.status(500).send(error.message);
-      } else {
-        res.status(500).send("Error interno");
+        return next(error);
       }
+
+      return next(new InternalServerError());
     }
   };
 
-  delete = async (req: Request, res: Response) => {
+  delete = async (req: Request, res: Response, next: NextFunction) => {
     const { userId } = req.params;
     try {
       const result = await this.userService.delete(userId);
@@ -188,16 +189,15 @@ export class UserController {
         ? res.send(result)
         : res.status(400).send(result);
     } catch (error) {
-      console.log(error);
       if (error instanceof Error) {
-        res.status(500).send(error.message);
-      } else {
-        res.status(500).send("Error interno");
+        return next(error);
       }
+
+      return next(new InternalServerError());
     }
   };
 
-  updatePick = async (req: Request, res: Response) => {
+  updatePick = async (req: Request, res: Response, next: NextFunction) => {
     const photo = req.file;
     try {
       if (!photo || photo === undefined) {
@@ -211,15 +211,19 @@ export class UserController {
       );
       res.send({ status, payload: "Perfil actualizado" });
     } catch (error) {
-      console.log(error);
       if (error instanceof Error) {
-        res.status(400).send({ status: false, payload: error.message });
+        return next(error);
       }
-      res.status(500).send({ status: false, payload: "Error interno" });
+
+      return next(new InternalServerError());
     }
   };
 
-  getPotentialPairings = async (req: Request, res: Response) => {
+  getPotentialPairings = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
       const user = req.user as IUser;
       const result = await this.userService.getSuggestions(user);
@@ -227,10 +231,11 @@ export class UserController {
         ? res.status(200).send(result)
         : res.status(500).send(result);
     } catch (error) {
-      console.log(error);
       if (error instanceof Error) {
-        res.status(400).send({ status: false, payload: error.message });
+        return next(error);
       }
+
+      return next(new InternalServerError());
     }
   };
 }

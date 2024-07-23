@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 import { RatingRepository } from "../repositories/Rating.repository";
-import { UserRepository } from "../repositories/User.repository";
 import { createRatingType } from "../models/Rating.model";
+import { BadRequestError } from "../utils/errors/BadRequestError";
 
 export class RatingService {
   private readonly ratingRepository: RatingRepository;
@@ -18,12 +18,7 @@ export class RatingService {
         payload: newRating,
       };
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
-
-      throw new Error(String(error));
+      throw error;
     }
   }
 
@@ -36,12 +31,7 @@ export class RatingService {
         payload: ratings,
       };
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
-
-      throw new Error(String(error));
+      throw error;
     }
   }
 
@@ -53,12 +43,7 @@ export class RatingService {
         payload: featuredRatings,
       };
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
-
-      throw new Error(String(error));
+      throw error;
     }
   }
 
@@ -71,12 +56,7 @@ export class RatingService {
         payload: rating,
       };
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
-
-      throw new Error(String(error));
+      throw error;
     }
   }
 
@@ -89,12 +69,7 @@ export class RatingService {
         payload: rating,
       };
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
-
-      throw new Error(String(error));
+      throw error;
     }
   }
 
@@ -102,10 +77,7 @@ export class RatingService {
     try {
       const rating = await this.ratingRepository.findByUserId(userId);
       if (!rating) {
-        return {
-          status: "error",
-          payload: "El usuario no ha valorado.",
-        };
+        throw new BadRequestError("The user has not rated.");
       }
 
       const updatedRating = await this.ratingRepository.updateComment(
@@ -118,12 +90,7 @@ export class RatingService {
         payload: updatedRating,
       };
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
-
-      throw new Error(String(error));
+      throw error;
     }
   }
 
@@ -139,10 +106,7 @@ export class RatingService {
       );
 
       if (ratings.length !== 5) {
-        return {
-          status: "error",
-          payload: "Debes proporcionar exactamente 5 ids válidos.",
-        };
+        throw new BadRequestError("You must assign five valid Ids.");
       }
 
       const newFeaturedratings =
@@ -153,12 +117,7 @@ export class RatingService {
         payload: newFeaturedratings,
       };
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
-
-      throw new Error(String(error));
+      throw error;
     }
   }
 
@@ -171,12 +130,7 @@ export class RatingService {
         payload: deletedRating,
       };
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
-
-      throw new Error(String(error));
+      throw error;
     }
   }
 
@@ -189,12 +143,7 @@ export class RatingService {
         payload: deletedRating,
       };
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
-
-      throw new Error(String(error));
+      throw error;
     }
   }
 }

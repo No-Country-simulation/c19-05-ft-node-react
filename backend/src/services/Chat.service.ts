@@ -1,8 +1,11 @@
-import { MongooseError, Types } from "mongoose";
+import { Types } from "mongoose";
 
 import { ChatRepository } from "../repositories/Chat.repository";
 import { UserRepository } from "../repositories/User.repository";
 import { MessageCreateType } from "../utils/schema/chat.schema";
+
+import { BadRequestError } from "../utils/errors/BadRequestError";
+import { DatabaseError } from "../utils/errors/DatabaseError";
 
 export class ChatService {
   private readonly chatRepository: ChatRepository;
@@ -21,30 +24,20 @@ export class ChatService {
       ]);
 
       if (!chatRoom || !receiver) {
-        return {
-          status: "error",
-          payload: "Los datos ingresados no son validos.",
-        };
-      } else {
-        const newMessage = await this.chatRepository.createMessage(message);
+        throw new BadRequestError("The information provided is incorrect.");
+      }
 
-        if (!newMessage) {
-          return {
-            status: "error",
-            payload: "No se pudo crear el mensaje",
-          };
-        } else {
-          return {
-            status: "sucess",
-            payload: newMessage,
-          };
-        }
+      const newMessage = await this.chatRepository.createMessage(message);
+      if (!newMessage) {
+        throw new DatabaseError();
       }
+
+      return {
+        status: "sucess",
+        payload: newMessage,
+      };
     } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-      throw new Error(String(error));
+      throw error;
     }
   }
 
@@ -52,25 +45,16 @@ export class ChatService {
     try {
       const chatRoom = await this.chatRepository.findChatRoom(id);
       if (!chatRoom) {
-        return {
-          status: "error",
-          payload: "No existe la sala de chat ingresada",
-        };
-      } else {
-        const messages = await this.chatRepository.findMessages(id);
-        return {
-          status: "sucess",
-          payload: messages,
-        };
+        throw new BadRequestError("The chat room does not exist.");
       }
+
+      const messages = await this.chatRepository.findMessages(id);
+      return {
+        status: "sucess",
+        payload: messages,
+      };
     } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      } else if (error instanceof MongooseError) {
-        throw new Error(error.message);
-      } else {
-        throw new Error(String(error));
-      }
+      throw error;
     }
   }
 }

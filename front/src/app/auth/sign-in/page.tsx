@@ -12,9 +12,11 @@ const LoginPage = (props: Props) => {
 
   if (user) redirect('/connect');
   return (
+    <div className="container my-10 py-2 min-h-screen  w-full mx-auto">
     <>
       <LoginForm />
     </>
+    </div>
   );
 };
 

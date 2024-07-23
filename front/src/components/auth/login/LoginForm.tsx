@@ -6,6 +6,8 @@ import { useAuth } from '@/context/session/sessionContext';
 import { Toaster, toast } from 'sonner'
 import { Respuesta } from '@/types/user.type';
 import '../AuthCustom.css';
+import { FcGoogle } from 'react-icons/fc';
+import LogoGreenSVG from '@/assets/logos/LogoGreenSVG';
 
 interface FormValues {
   email: string;
@@ -39,22 +41,24 @@ const LoginForm: React.FC = () => {
 
   return (
 
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-grey-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center m-8 bg-gradient-to-tr from-grey-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
       <Toaster position='top-right' richColors/>
-      <div className="max-w-lg w-full space-y-8 bg-white rounded-lg shadow-md">
-        <div>
-          <h2 className="mt-6 text-[1.3rem] m-6 text-gray-900 font-arial">
+      <div className="max-w-lg w-full space-y-8 pb-10 bg-white rounded-xl shadow-md">
+        <div className='flex'>
+        <LogoGreenSVG width={'3rem'} height={'3rem'} className='ml-24 mt-4'/>
+          <h2 className="mt-6 text-[1.3rem] ml-6  text-gray-900 font-arial">
             Welcome Back! <br />
-            Exchange knowledge with more people.
+            Exchange knowledge 
+            <br />with more people.
           </h2>
         </div>
 
         {/* Mejorar mensaje */}
         {isLoading && 'Cargando...'}
-        <form className="mt-8 space-y-12" onSubmit={handleSubmit(onSubmit)}>
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
           <div className="auth-form-fields">
             <div className="d-flex justify-center">
-              <div className="d-flex justify-center rounded-md border border-grey-200">
+              <div className="d-flex justify-center rounded-xl border border-grey-200">
                 <label htmlFor="email-address" className="sr-only">
                   Email address
                 </label>
@@ -64,7 +68,7 @@ const LoginForm: React.FC = () => {
                   autoComplete="email"
                   required
                   {...register('email', { required: true })}
-                  className="d-flex block w-full px-4 py-4 rounded-md sm:text-sm"
+                  className="d-flex block w-full px-4 py-4 rounded-xl sm:text-sm"
                   placeholder="Email"
                   style={{ width: '100%' }}
                 />
@@ -72,7 +76,7 @@ const LoginForm: React.FC = () => {
             </div>
             <br />
             <div className="d-flex justify-center">
-              <div className="d-flex justify-center rounded-md border border-grey-200">
+              <div className="d-flex justify-center rounded-xl border border-grey-200">
                 <label htmlFor="password" className="sr-only">
                   Password
                 </label>
@@ -82,7 +86,7 @@ const LoginForm: React.FC = () => {
                   autoComplete="current-password"
                   required
                   {...register('password', { required: true })}
-                  className="block w-full px-4 py-4 rounded-md sm:text-sm"
+                  className="block w-full px-4 py-4 rounded-xl sm:text-sm"
                   placeholder="Password"
                   style={{ width: '100%' }}
                 />
@@ -99,7 +103,7 @@ const LoginForm: React.FC = () => {
                 </a>
               </Link>
             </p>
-
+     
             <p className="flex justify-center">
               <span className="mr-2 text-[0.9rem]">
                 Can't remember your password?
@@ -112,14 +116,28 @@ const LoginForm: React.FC = () => {
             </p>
           </div>
 
-          <div className="static">
+          <div className="flex justify-center">
             <button
               type="submit"
-              className="w-full flex justify-center py-5 px-4 border border-transparent text-sm font-medium rounded-md rounded-tr-none rounded-tl-none text-white bg-green-400 hover:bg-green-500"
+              className="w-96 flex justify-center py-4 px-3 border border-transparent text-sm font-medium rounded-xl text-white bg-green-400 hover:bg-green-500"
             >
               LOG IN
             </button>
           </div>
+          <div className="flex items-center justify-center space-x-4">
+        <hr className="border-gray-900 w-48" />
+        <span className="text-gray-900 font-medium">or</span>
+        <hr className="border-gray-900 w-48" />
+      </div>
+      <div className='flex justify-center'>
+      <button
+        type="button"
+        className="relative w-96 flex justify-start items-center py-4 px-3 border border-gray-300 text-sm font-medium rounded-xl text-gray-900 bg-white hover:bg-gray-100"
+      >
+        <FcGoogle size={30} />
+        <span className="flex-1 font-sans">Continue with Google</span>
+      </button>
+      </div>
         </form>
       </div>
     </div>

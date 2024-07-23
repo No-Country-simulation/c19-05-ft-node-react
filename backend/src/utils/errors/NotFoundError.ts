@@ -6,7 +6,7 @@ export class NotFoundError extends CustomError {
     super("Resource not found.");
     Object.setPrototypeOf(this, NotFoundError.prototype);
   }
-  serialize(): { status: string; message: string } {
-    return { status: "error", message: "Resource not found." };
+  serialize(): { status: string; payload: string } {
+    return { status: "error", payload: "Resource not found." };
   }
 }

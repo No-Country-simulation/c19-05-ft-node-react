@@ -18,6 +18,10 @@ import { UploadApiResponse } from "cloudinary";
 import { cloudinary } from "../config/cloudinary/cloudinary.config";
 import { populate } from "dotenv";
 
+import { AuthenticationError } from "../utils/errors/AuthenticationError";
+import { BadRequestError } from "../utils/errors/BadRequestError";
+import { AuthorizationError } from "../utils/errors/AuthorizationError";
+
 export interface CloudinaryResponse {
   asset_id: string;
   public_id: string;
@@ -76,12 +80,9 @@ export class UserService {
     try {
       const userFound = await this.userRepository.findByEmail(user.email);
       if (userFound) {
-        return {
-          status: "failed",
-          payload: "El correo ya esta registrado",
-        };
+        throw new AuthorizationError("The email is already registered.");
       }
-      const token = await generateJWTRegister(user);
+      const token = generateJWTRegister(user);
       const data = {
         name: user.name,
         email: user.email,
@@ -94,12 +95,7 @@ export class UserService {
         payload: "Para terminar tu registro verifica tu email.",
       };
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
-
-      throw new Error(String(error));
+      throw error;
     }
   }
   async create(token: string) {
@@ -109,10 +105,7 @@ export class UserService {
       const userFound = await this.userRepository.findByEmail(user.email);
 
       if (userFound) {
-        return {
-          status: "failed",
-          payload: "El correo ya esta registrado",
-        };
+        throw new AuthorizationError("The email is already registered.");
       }
       user.password = await hashPassword(user.password);
       const newUser = await this.userRepository.create(user);
@@ -165,12 +158,7 @@ export class UserService {
         token: jwt,
       };
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
-
-      throw new Error(String(error));
+      throw error;
     }
   }
 
@@ -179,10 +167,7 @@ export class UserService {
       const userFound = await this.userRepository.findByEmail(email);
 
       if (!userFound) {
-        return {
-          status: "failed",
-          payload: "El correo no esta registrado",
-        };
+        throw new AuthorizationError("The email is not registered.");
       }
 
       const token = generateJWTEmail({ email });
@@ -199,12 +184,7 @@ export class UserService {
         payload: "Para continuar el reset verifica tu email.",
       };
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-
-      throw new Error(String(error));
+      throw error;
     }
   }
 
@@ -229,12 +209,7 @@ export class UserService {
         payload: updatedUser,
       };
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-
-      throw new Error(String(error));
+      throw error;
     }
   }
 
@@ -299,11 +274,7 @@ export class UserService {
         payload: users,
       };
     } catch (error: any) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
-      throw new Error(String(error));
+      throw error;
     }
   }
   // ta ok.👍
@@ -314,10 +285,7 @@ export class UserService {
       );
 
       if (!userFind) {
-        return {
-          status: "error",
-          payload: "Usuario no encontrado",
-        };
+        throw new AuthenticationError("The user does not exist.");
       }
 
       let userFilterData: userFilterDataType = {
@@ -350,12 +318,7 @@ export class UserService {
         payload: userFilterData,
       };
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-
-      throw new Error(String(error));
+      throw error;
     }
   }
 
@@ -364,10 +327,7 @@ export class UserService {
       const userFind = await this.userRepository.findByEmail(searchedUserEmail);
 
       if (!userFind) {
-        return {
-          status: "failed",
-          payload: "El correo no esta registrado",
-        };
+        throw new AuthenticationError("The email is not registered.");
       }
 
       let userFilterData: userFilterDataType = {
@@ -394,12 +354,7 @@ export class UserService {
         payload: userFilterData,
       };
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-
-      throw new Error(String(error));
+      throw error;
     }
   }
 
@@ -413,17 +368,10 @@ export class UserService {
           payload: user,
         };
       } else {
-        return {
-          status: "error",
-          payload: "Usuario no encontrado",
-        };
+        throw new AuthenticationError("The user does not exist.");
       }
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
-      throw new Error(String(error));
+      throw error;
     }
   }
 
@@ -431,54 +379,47 @@ export class UserService {
   async delete(id: string) {
     try {
       const user = await this.userRepository.delete(id);
-      if (user) {
-        return {
-          status: "success",
-          payload: user,
-        };
-      } else {
-        return {
-          status: "error",
-          payload: "Usuario no encontrado",
-        };
+      if (!user) {
+        throw new AuthenticationError("The user does not exist.");
       }
+      return {
+        status: "success",
+        payload: user,
+      };
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
-      throw new Error(String(error));
+      throw error;
     }
   }
 
   async updateRating(data: userRating, user: IUser) {
     try {
       const userFound = await this.userRepository.findOnePopulated(user._id);
-      if (!userFound)
-        return { status: "error", payload: "Usuario no encontrado" };
+      if (!userFound) {
+        throw new AuthenticationError("The user does not exist.");
+      }
 
       const trade = await this.tradeRepository.findOnePending(
         user._id,
         data.tradeId,
         {}
       );
-      if (!trade) return { status: "error", payload: "Trade no encontrado" };
-      if (trade.status !== "FINISHED")
-        return {
-          status: "error",
-          payload: "El trade todavia no finalizo dijo juan.",
-        };
+
+      if (!trade) {
+        throw new BadRequestError("The trade does not exist.");
+      }
+
+      if (trade.status !== "FINISHED") {
+        throw new AuthorizationError("The trade has not yet finished.");
+      }
 
       if (userFound.userRatings.length > 0) {
         const findIndex = userFound.userRatings.findIndex(
           (rating) => rating.tradeId === data.tradeId
         );
 
-        if (findIndex !== -1)
-          return {
-            status: "error",
-            payload: "Ya diste tu valoracion en este trade",
-          };
+        if (findIndex !== -1) {
+          throw new AuthorizationError("You have already rated this trade.");
+        }
 
         userFound.userRatings.push(data);
 
@@ -495,11 +436,7 @@ export class UserService {
         };
       }
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
-      throw new Error(String(error));
+      throw error;
     }
   }
   async updatePick(user: IUser, photo: Express.Multer.File) {
@@ -529,10 +466,7 @@ export class UserService {
       await user.save();
       return { status: "success", payload: user };
     } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-      throw new Error(String(error));
+      throw error;
     }
   }
 
@@ -560,10 +494,7 @@ export class UserService {
         };
       }
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw Error(error.message);
-      }
+      throw error;
     }
   }
 }

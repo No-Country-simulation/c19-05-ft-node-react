@@ -1,5 +1,6 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { TradeService } from "../services/Trade.service";
+import { InternalServerError } from "../utils/errors/InternalServerError";
 
 export class TradeController {
   tradeService: TradeService;
@@ -7,7 +8,7 @@ export class TradeController {
     this.tradeService = tradeService;
   }
 
-  create = async (req: Request, res: Response) => {
+  create = async (req: Request, res: Response, next: NextFunction) => {
     // desestructurar de una
     let { members, duration } = req.body;
     duration = duration * 24 * 60 * 60 * 1000;
@@ -21,16 +22,15 @@ export class TradeController {
         ? res.send(result)
         : res.status(400).send(result);
     } catch (error) {
-      console.log(error);
       if (error instanceof Error) {
-        res.status(500).send(error.message);
-      } else {
-        res.status(500).send("Error interno");
+        return next(error);
       }
+
+      return next(new InternalServerError());
     }
   };
 
-  updateAccepted = async (req: Request, res: Response) => {
+  updateAccepted = async (req: Request, res: Response, next: NextFunction) => {
     const { tradeId } = req.params;
     const user = req.user!;
 
@@ -40,16 +40,15 @@ export class TradeController {
         ? res.send(result)
         : res.status(400).send(result);
     } catch (error) {
-      console.log(error);
       if (error instanceof Error) {
-        res.status(500).send(error.message);
-      } else {
-        res.status(500).send("Error interno");
+        return next(error);
       }
+
+      return next(new InternalServerError());
     }
   };
 
-  delete = async (req: Request, res: Response) => {
+  delete = async (req: Request, res: Response, next: NextFunction) => {
     const { tradeId } = req.params;
     const user = req.user!;
 
@@ -60,16 +59,15 @@ export class TradeController {
         ? res.send(result)
         : res.status(400).send(result);
     } catch (error) {
-      console.log(error);
       if (error instanceof Error) {
-        res.status(500).send(error.message);
-      } else {
-        res.status(500).send("Error interno");
+        return next(error);
       }
+
+      return next(new InternalServerError());
     }
   };
 
-  findOne = async (req: Request, res: Response) => {
+  findOne = async (req: Request, res: Response, next: NextFunction) => {
     const { tradeId } = req.params;
     const user = req.user!;
     try {
@@ -78,16 +76,15 @@ export class TradeController {
         ? res.send(result)
         : res.status(400).send(result);
     } catch (error) {
-      console.log(error);
       if (error instanceof Error) {
-        res.status(500).send(error.message);
-      } else {
-        res.status(500).send("Error interno");
+        return next(error);
       }
+
+      return next(new InternalServerError());
     }
   };
 
-  findTrades = async (req: Request, res: Response) => {
+  findTrades = async (req: Request, res: Response, next: NextFunction) => {
     const user = req.user!;
 
     try {
@@ -96,12 +93,11 @@ export class TradeController {
         ? res.send(result)
         : res.status(400).send(result);
     } catch (error) {
-      console.log(error);
       if (error instanceof Error) {
-        res.status(500).send(error.message);
-      } else {
-        res.status(500).send("Error interno");
+        return next(error);
       }
+
+      return next(new InternalServerError());
     }
   };
 }

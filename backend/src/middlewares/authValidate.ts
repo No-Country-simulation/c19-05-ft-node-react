@@ -2,6 +2,9 @@ import { NextFunction, Request, Response } from "express";
 import { IUser } from "../models/User.model";
 import { UserRepository } from "../repositories/User.repository";
 import passport from "passport";
+import { AuthenticationError } from "../utils/errors/AuthenticationError";
+import { AuthorizationError } from "../utils/errors/AuthorizationError";
+import { InternalServerError } from "../utils/errors/InternalServerError";
 
 declare global {
   namespace Express {
@@ -19,23 +22,26 @@ export const authValidatePassport = async (
   next: NextFunction
 ) => {
   passport.authenticate("jwt", (error: any, user: IUser, info: any) => {
-    if (error) {
-      return res.status(401).send({
-        status: "error",
-        message: "Hubo un error al autenticar.",
-        error: error.message,
-      });
-    }
+    try {
+      if (error) {
+        return next(new AuthenticationError("There was an error in passport."));
+      }
 
-    if (!user) {
-      return res.status(401).send({
-        status: "error",
-        message: "No se ha podido autenticar al usuario.",
-      });
-    }
+      if (!user) {
+        return next(
+          new AuthenticationError("Failed to authenticate the user.")
+        );
+      }
 
-    req.user = user as IUser;
-    next();
+      req.user = user as IUser;
+      return next();
+    } catch (error) {
+      if (error instanceof Error) {
+        return next(error);
+      }
+
+      return next(new InternalServerError());
+    }
   })(req, res, next);
 };
 
@@ -45,12 +51,20 @@ export const authValidatePassportOptional = async (
   next: NextFunction
 ) => {
   passport.authenticate("jwt", (error: any, user: IUser, info: any) => {
-    if (error || !user) {
-      return next();
-    }
+    try {
+      if (error || !user) {
+        return next();
+      }
 
-    req.user = user as IUser;
-    return next();
+      req.user = user as IUser;
+      return next();
+    } catch (error) {
+      if (error instanceof Error) {
+        return next(error);
+      }
+
+      return next(new InternalServerError());
+    }
   })(req, res, next);
 };
 
@@ -60,12 +74,20 @@ export const authValidatePassportGoogle = async (
   next: NextFunction
 ) => {
   passport.authenticate("gmail", (error: any, user: IUser, info: any) => {
-    if (error || !user) {
-      return next();
-    }
+    try {
+      if (error || !user) {
+        return next();
+      }
 
-    req.user = user as IUser;
-    return next();
+      req.user = user as IUser;
+      return next();
+    } catch (error) {
+      if (error instanceof Error) {
+        return next(error);
+      }
+
+      return next(new InternalServerError());
+    }
   })(req, res, next);
 };
 
@@ -74,19 +96,23 @@ export const authValidateAdmin = async (
   res: Response,
   next: NextFunction
 ) => {
-  if (!req.user) {
-    return res.status(401).send({
-      status: "error",
-      message: "No se ha podido identificar al usuario.",
-    });
-  }
+  try {
+    if (!req.user) {
+      return next(new AuthenticationError("Failed to authenticate the user."));
+    }
 
-  if (req.user.role !== "admin") {
-    return res.status(401).send({
-      status: "error",
-      message: "No posee los permisos necesarios",
-    });
-  }
+    if (req.user.role !== "admin") {
+      return next(
+        new AuthorizationError("You do not have sufficient permissions.")
+      );
+    }
 
-  next();
+    return next();
+  } catch (error) {
+    if (error instanceof Error) {
+      return next(error);
+    }
+
+    return next(new InternalServerError());
+  }
 };

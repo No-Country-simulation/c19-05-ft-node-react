@@ -1,6 +1,8 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { AuthService } from "../services/Auth.service";
 import { LoginType } from "../utils/schema/auth.schema";
+
+import { InternalServerError } from "../utils/errors/InternalServerError";
 
 export class AuthController {
   private authService: AuthService;
@@ -8,7 +10,7 @@ export class AuthController {
     this.authService = authService;
   }
 
-  login = async (req: Request, res: Response) => {
+  login = async (req: Request, res: Response, next: NextFunction) => {
     const data: LoginType = req.body;
 
     try {
@@ -26,16 +28,15 @@ export class AuthController {
         });
       }
     } catch (error) {
-      console.log(error);
       if (error instanceof Error) {
-        res.status(500).send(error.message);
-      } else {
-        res.status(500).send("Error interno");
+        return next(error);
       }
+
+      return next(new InternalServerError());
     }
   };
 
-  logout = async (req: Request, res: Response) => {
+  logout = async (req: Request, res: Response, next: NextFunction) => {
     console.log("first");
 
     try {
@@ -45,16 +46,15 @@ export class AuthController {
         payload: "Login correcto.",
       });
     } catch (error) {
-      console.log(error);
       if (error instanceof Error) {
-        res.status(500).send(error.message);
-      } else {
-        res.status(500).send("Error interno");
+        return next(error);
       }
+
+      return next(new InternalServerError());
     }
   };
 
-  user = async (req: Request, res: Response) => {
+  user = async (req: Request, res: Response, next: NextFunction) => {
     const user = req.user;
     try {
       const populatedUser = await user!.populate([
@@ -103,14 +103,14 @@ export class AuthController {
       });
     } catch (error) {
       if (error instanceof Error) {
-        res.status(500).send(error.message);
-      } else {
-        res.status(500).send("Error interno");
+        return next(error);
       }
+
+      return next(new InternalServerError());
     }
   };
 
-  google = async (req: Request, res: Response) => {
+  google = async (req: Request, res: Response, next: NextFunction) => {
     const user = req.user;
 
     try {
@@ -129,14 +129,14 @@ export class AuthController {
       });
       res.send({
         status: "success",
-        payload: "Login exitoso",
+        payload: result.payload,
       });
     } catch (error) {
       if (error instanceof Error) {
-        res.status(500).send(error.message);
-      } else {
-        res.status(500).send("Error interno");
+        return next(error);
       }
+
+      return next(new InternalServerError());
     }
   };
 }

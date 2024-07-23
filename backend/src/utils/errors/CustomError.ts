@@ -3,5 +3,5 @@ export abstract class CustomError extends Error {
     super(message);
   }
   abstract StatusCode: number;
-  abstract serialize(): { status: string; message: string };
+  abstract serialize(): { status: string; payload: string };
 }

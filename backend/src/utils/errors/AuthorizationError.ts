@@ -1,12 +1,12 @@
 import { CustomError } from "./CustomError";
 
-export class AuthenticationError extends CustomError {
+export class AuthorizationError extends CustomError {
   StatusCode = 403;
   constructor(public message: string) {
     super(message);
-    Object.setPrototypeOf(this, AuthenticationError.prototype);
+    Object.setPrototypeOf(this, AuthorizationError.prototype);
   }
-  serialize(): { status: string; message: string } {
-    return { status: "error", message: this.message };
+  serialize(): { status: string; payload: string } {
+    return { status: "error", payload: this.message };
   }
 }

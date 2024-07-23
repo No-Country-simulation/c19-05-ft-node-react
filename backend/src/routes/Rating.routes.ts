@@ -42,8 +42,8 @@ routerRating.get(
 
 routerRating.post(
   "/rating",
-  middlewareBody(CreateRatingSchema),
   authValidatePassport,
+  middlewareBody(CreateRatingSchema),
   ratingController.create
 );
 
@@ -54,6 +54,8 @@ routerRating.put(
 );
 routerRating.put(
   "/rating/featured",
+  authValidatePassport,
+  authValidateAdmin,
   middlewareBody(RatingIdsSchema),
   ratingController.updateFeaturedRatings
 );

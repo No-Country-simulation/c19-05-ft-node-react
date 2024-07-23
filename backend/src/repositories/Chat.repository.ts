@@ -19,13 +19,7 @@ export class ChatRepository {
         .populate({ path: "receiverId", select: "name avatar" });
       return response;
     } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      } else if (error instanceof MongooseError) {
-        throw new Error(error.message);
-      } else {
-        throw new Error("Ocurrio un error al buscar mensajes");
-      }
+      throw error;
     }
   }
 
@@ -37,13 +31,7 @@ export class ChatRepository {
         .populate({ path: "receiverId", select: "name avatar" });
       return response;
     } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      } else if (error instanceof MongooseError) {
-        throw new Error(error.message);
-      } else {
-        throw new Error("Ocurrio un error al buscar mensajes");
-      }
+      throw error;
     }
   }
 
@@ -54,26 +42,14 @@ export class ChatRepository {
       const populatedMessage = await this.findMessage(newMessage.id);
       return populatedMessage;
     } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      } else if (error instanceof MongooseError) {
-        throw new Error(error.message);
-      } else {
-        throw new Error("Ocurrio un error al crear un mensaje");
-      }
+      throw error;
     }
   }
   async findChatRoom(id: string | Types.ObjectId): Promise<IChat | null> {
     try {
       return await this.chatModel.findById(id);
     } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      } else if (error instanceof MongooseError) {
-        throw new Error(error.message);
-      } else {
-        throw new Error("Ocurrio un error al buscar un chat room");
-      }
+      throw error;
     }
   }
 }

@@ -9,11 +9,7 @@ export class RatingRepository {
       const newRating = await this.RatingModel.create(rating);
       return newRating;
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-      throw Error("Error al crear el rating.");
+      throw error;
     }
   }
 
@@ -22,11 +18,7 @@ export class RatingRepository {
       const ratings = await this.RatingModel.find();
       return ratings;
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-      throw Error("No se encontro los ratings.");
+      throw error;
     }
   }
 
@@ -35,11 +27,7 @@ export class RatingRepository {
       const ratings = await this.RatingModel.findOne({ status: true });
       return ratings;
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-      throw Error("No se encontro los ratings.");
+      throw error;
     }
   }
 
@@ -48,11 +36,7 @@ export class RatingRepository {
       const rating = await this.RatingModel.findById(id);
       return rating;
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-      throw Error("No se encontro el rating.");
+      throw error;
     }
   }
 
@@ -61,11 +45,7 @@ export class RatingRepository {
       const rating = await this.RatingModel.findOne({ userId: id });
       return rating;
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-      throw Error("No se encontro el rating");
+      throw error;
     }
   }
 
@@ -78,11 +58,7 @@ export class RatingRepository {
       );
       return rating;
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-      throw Error("No se encontro los ratings.");
+      throw error;
     }
   }
 
@@ -106,11 +82,7 @@ export class RatingRepository {
       });
       return updatedRatings;
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-      throw Error("No se encontro los ratings.");
+      throw error;
     }
   }
 
@@ -119,11 +91,7 @@ export class RatingRepository {
       const rating = await this.RatingModel.findByIdAndDelete(id);
       return rating;
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-      throw Error("No se encontro el rating.");
+      throw error;
     }
   }
 
@@ -132,11 +100,7 @@ export class RatingRepository {
       const rating = await this.RatingModel.deleteOne({ userId: id });
       return rating;
     } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-      throw Error("No se encontro el rating");
+      throw error;
     }
   }
 }

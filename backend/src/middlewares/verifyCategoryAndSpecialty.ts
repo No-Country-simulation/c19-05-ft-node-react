@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import Category from "../models/Category.model";
 import Specialty from "../models/Specialty.model";
 import { specialty } from "../models/User.model";
+import { BadRequestError } from "../utils/errors/BadRequestError";
+import { InternalServerError } from "../utils/errors/InternalServerError";
 
 declare global {
   namespace Express {
@@ -16,11 +18,6 @@ type ParameterType = "specialties" | "interests";
 export const verifyCategoryAndSpecialty =
   (specialtiesOrInterests: ParameterType) =>
   async (req: Request, res: Response, next: NextFunction) => {
-    // TODO: realizar la comparación entre el array de especialidades de la base de datos y el array de especialidades
-    // que manda el frontend. Los que no coincidan, verificar que existan en la base de datos.
-    // Si alguno de ellos es inválido o no existe, zampe un 400
-    // Si todos pasan, pushee todo el array, reemplazando el que ya existe en la base de datos
-    // tomamos el body
     const user = req.user!;
     let checkSpecialtiesOrInterests: specialty[] = [];
     if (specialtiesOrInterests === "specialties") {
@@ -42,7 +39,7 @@ export const verifyCategoryAndSpecialty =
         return accumulator;
       },
       []
-    ); // chequeo que no vengan objetos repetidos. en caso de venir repetidos limpio el array
+    );
 
     if (specialtiesOrInterests === "specialties") {
       if (uniqueArray.length === 0) {
@@ -60,19 +57,24 @@ export const verifyCategoryAndSpecialty =
         _id: array.specialtyId,
         categoryId: array.categoryId,
       });
-    }); // verificar si ingresaron nuevas specialties. para luego separarlas y verificar si existen en db
+    });
     try {
-      const response = await Promise.all(arrayPromise); //verificacion en la db
+      const response = await Promise.all(arrayPromise);
 
-      const hasError = response.some((resp) => resp.length === 0); // verificar que no hayan null's
+      const hasError = response.some((resp) => resp.length === 0);
       if (hasError) {
-        return res.send({
-          status: "error",
-          payload: "Hubo un error en las categorías/especialidades recibidas",
-        });
+        return next(
+          new BadRequestError(
+            "There was an error with the received categories/specialties."
+          )
+        );
       }
       return next();
     } catch (error) {
-      return res.status(500).send("internal server error");
+      if (error instanceof Error) {
+        return next(error);
+      }
+
+      return next(new InternalServerError());
     }
   };

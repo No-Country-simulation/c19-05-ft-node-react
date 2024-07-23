@@ -1,7 +1,9 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { ChatService } from "../services/Chat.service";
 import { MessageCreateType } from "../utils/schema/chat.schema";
 import { MongooseError } from "mongoose";
+
+import { InternalServerError } from "../utils/errors/InternalServerError";
 
 export class ChatController {
   private readonly chatService: ChatService;
@@ -9,7 +11,7 @@ export class ChatController {
     this.chatService = chatService;
   }
 
-  createMessage = async (req: Request, res: Response) => {
+  createMessage = async (req: Request, res: Response, next: NextFunction) => {
     const message: MessageCreateType = req.body;
     try {
       const { status, payload } = await this.chatService.createMessage(message);
@@ -19,15 +21,14 @@ export class ChatController {
         : res.status(403).send({ status, payload });
     } catch (error) {
       if (error instanceof Error) {
-        res.status(400).send({ status: false, payload: error.message });
-      } else if (error instanceof MongooseError) {
-        res.status(400).send({ status: false, payload: error.message });
+        return next(error);
       }
-      res.status(500).send({ status: false, payload: "Error interno" });
+
+      return next(new InternalServerError());
     }
   };
 
-  findMessages = async (req: Request, res: Response) => {
+  findMessages = async (req: Request, res: Response, next: NextFunction) => {
     const { chatRoomId } = req.params;
     try {
       const { status, payload } = await this.chatService.findMessages(
@@ -38,11 +39,10 @@ export class ChatController {
         : res.status(404).send({ status, payload });
     } catch (error) {
       if (error instanceof Error) {
-        res.status(400).send({ status: false, payload: error.message });
-      } else if (error instanceof MongooseError) {
-        res.status(400).send({ status: false, payload: error.message });
+        return next(error);
       }
-      res.status(500).send({ status: false, payload: "Error interno" });
+
+      return next(new InternalServerError());
     }
   };
 }

@@ -1,5 +1,6 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { RatingService } from "../services/Rating.service";
+import { InternalServerError } from "../utils/errors/InternalServerError";
 
 export class RatingController {
   ratingService: RatingService;
@@ -7,7 +8,7 @@ export class RatingController {
     this.ratingService = ratingService;
   }
 
-  create = async (req: Request, res: Response) => {
+  create = async (req: Request, res: Response, next: NextFunction) => {
     const { comment } = req.body;
     const user = req.user;
     try {
@@ -20,16 +21,15 @@ export class RatingController {
         ? res.send(result)
         : res.status(409).send(result);
     } catch (error) {
-      console.log(error);
       if (error instanceof Error) {
-        res.status(500).send(error.message);
-      } else {
-        res.status(500).send("Error interno");
+        return next(error);
       }
+
+      return next(new InternalServerError());
     }
   };
 
-  find = async (req: Request, res: Response) => {
+  find = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const result = await this.ratingService.find();
 
@@ -37,16 +37,19 @@ export class RatingController {
         ? res.send(result)
         : res.status(400).send(result);
     } catch (error) {
-      console.log(error);
       if (error instanceof Error) {
-        res.status(500).send(error.message);
-      } else {
-        res.status(500).send("Error interno");
+        return next(error);
       }
+
+      return next(new InternalServerError());
     }
   };
 
-  findFeaturedRatings = async (req: Request, res: Response) => {
+  findFeaturedRatings = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
       const result = await this.ratingService.findFeaturedRatings();
 
@@ -54,16 +57,15 @@ export class RatingController {
         ? res.send(result)
         : res.status(400).send(result);
     } catch (error) {
-      console.log(error);
       if (error instanceof Error) {
-        res.status(500).send(error.message);
-      } else {
-        res.status(500).send("Error interno");
+        return next(error);
       }
+
+      return next(new InternalServerError());
     }
   };
 
-  findById = async (req: Request, res: Response) => {
+  findById = async (req: Request, res: Response, next: NextFunction) => {
     const { ratingId } = req.params;
     try {
       const result = await this.ratingService.findById(ratingId);
@@ -72,16 +74,15 @@ export class RatingController {
         ? res.send(result)
         : res.status(400).send(result);
     } catch (error) {
-      console.log(error);
       if (error instanceof Error) {
-        res.status(500).send(error.message);
-      } else {
-        res.status(500).send("Error interno");
+        return next(error);
       }
+
+      return next(new InternalServerError());
     }
   };
 
-  findByUserId = async (req: Request, res: Response) => {
+  findByUserId = async (req: Request, res: Response, next: NextFunction) => {
     const { userId } = req.params;
     try {
       const result = await this.ratingService.findByUserId(userId);
@@ -90,16 +91,15 @@ export class RatingController {
         ? res.send(result)
         : res.status(400).send(result);
     } catch (error) {
-      console.log(error);
       if (error instanceof Error) {
-        res.status(500).send(error.message);
-      } else {
-        res.status(500).send("Error interno");
+        return next(error);
       }
+
+      return next(new InternalServerError());
     }
   };
 
-  updateComment = async (req: Request, res: Response) => {
+  updateComment = async (req: Request, res: Response, next: NextFunction) => {
     const user = req.user;
     const { comment } = req.body;
     try {
@@ -109,16 +109,19 @@ export class RatingController {
         ? res.send(result)
         : res.status(400).send(result);
     } catch (error) {
-      console.log(error);
       if (error instanceof Error) {
-        res.status(500).send(error.message);
-      } else {
-        res.status(500).send("Error interno");
+        return next(error);
       }
+
+      return next(new InternalServerError());
     }
   };
 
-  updateFeaturedRatings = async (req: Request, res: Response) => {
+  updateFeaturedRatings = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     const { ratingIds } = req.body;
 
     try {
@@ -128,16 +131,15 @@ export class RatingController {
         ? res.send(result)
         : res.status(400).send(result);
     } catch (error) {
-      console.log(error);
       if (error instanceof Error) {
-        res.status(500).send(error.message);
-      } else {
-        res.status(500).send("Error interno");
+        return next(error);
       }
+
+      return next(new InternalServerError());
     }
   };
 
-  deleteById = async (req: Request, res: Response) => {
+  deleteById = async (req: Request, res: Response, next: NextFunction) => {
     const { ratingId } = req.params;
     try {
       const result = await this.ratingService.deleteById(ratingId);
@@ -146,11 +148,15 @@ export class RatingController {
         ? res.send(result)
         : res.status(400).send(result);
     } catch (error) {
-      console.log(error);
+      if (error instanceof Error) {
+        return next(error);
+      }
+
+      return next(new InternalServerError());
     }
   };
 
-  deleteByUserId = async (req: Request, res: Response) => {
+  deleteByUserId = async (req: Request, res: Response, next: NextFunction) => {
     const { userId } = req.params;
     try {
       const result = await this.ratingService.deleteByUserId(userId);
@@ -159,7 +165,11 @@ export class RatingController {
         ? res.send(result)
         : res.status(400).send(result);
     } catch (error) {
-      console.log(error);
+      if (error instanceof Error) {
+        return next(error);
+      }
+
+      return next(new InternalServerError());
     }
   };
 }

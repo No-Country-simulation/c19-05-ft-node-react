@@ -4,6 +4,7 @@ import { FaExchangeAlt } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import { useTrades } from '@/context/trades/trades';
 import { useEffect } from 'react';
+import { toast,Toaster } from 'sonner';
 type TradeCardProps = {
   trade: TradeDetails;
 };
@@ -18,11 +19,11 @@ const TradeCard = ({ trade }: TradeCardProps) => {
       const result = await deleteTrade(trade._id);
 
       if (result) {
-        alert('Trade rejected');
+        toast.success('Trade rejected');
       }
     } catch (error) {
       if (error instanceof Error) {
-        alert(error.message);
+        toast.error(error.message);
       }
     }
   };
@@ -32,11 +33,11 @@ const TradeCard = ({ trade }: TradeCardProps) => {
       const result = await acceptTrade(trade._id);
 
       if (result) {
-        alert('Trade Accepted');
+        toast.success('Trade Accepted');
       }
     } catch (error) {
       if (error instanceof Error) {
-        alert(error.message);
+        toast.error(error.message);
       }
     }
   };

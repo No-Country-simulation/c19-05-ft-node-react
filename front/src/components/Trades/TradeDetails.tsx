@@ -53,7 +53,7 @@ export default function TradeDetails({
 }: TradeDetailsProps) {
   return (
     <div
-      className={`w-full flex z-20 flex-col justify-evenly  items-center h-[calc(100vh-4rem)]  bg-gray-500 sm:bg-transparent sm:relative sm:left-0 absolute ${show ? 'left-0' : 'left-[-100%]'} sm:h-[600px]  transition-all`}
+      className={`w-full flex z-20 flex-col justify-evenly ml-1  items-center h-[calc(100vh-4rem)]  bg-[#FFF] border border-[#1FD68E] rounded-3xl sm:relative sm:left-0 absolute ${show ? 'left-0' : 'left-[-100%]'} sm:h-[600px]  transition-all`}
     >
       <button
         className=" p-2 text-6xl  rounded-full absolute top-2 right-3 sm:hidden "
@@ -61,7 +61,7 @@ export default function TradeDetails({
       >
         <MdClose />
       </button>
-      <div className="flex gap-4 justify-center items-center">
+      <div className="flex gap-4 justify-center text-[#1FD68E] items-center">
         <div>
           <div className="  flex gap-2  items-center mb-10">
             <img
@@ -93,17 +93,17 @@ export default function TradeDetails({
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-5">
-        <div className="flex flex-col gap-4">
-          <h2 className="text-3xl font-bold text-center ">Duration</h2>
-          <p className="text-center text-2xl">
+      <div className="flex flex-col gap-5  text-[#1FD68E]">
+        <div className="flex flex-col gap-2">
+          <h2 className="text-2xl font-bold text-center ">Duration</h2>
+          <p className="text-center text-xl ">
             {trade.duration / (1000 * 60 * 60 * 24)} Days
           </p>
         </div>
 
-        <div className="text-center flex flex-col gap-4">
-          <h2 className="text-3xl font-bold">Ends</h2>
-          <p className="text-center text-2xl">{formatDate(trade.expiresAt)}</p>
+        <div className="text-center flex flex-col gap-2">
+          <h2 className="text-2xl font-bold ">Ends</h2>
+          <p className="text-center text-xl ">{formatDate(trade.expiresAt)}</p>
         </div>
       </div>
     </div>

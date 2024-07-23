@@ -6,6 +6,10 @@ import { Message } from '@/types/chat.type';
 import { useAuth } from '@/context/session/sessionContext';
 import { useRouter } from 'next/navigation';
 import { useChat } from '@/context/chat/ChatContext';
+import { FaCircleArrowRight } from "react-icons/fa6";
+import { IoDocumentAttach } from "react-icons/io5";
+import { px } from 'framer-motion';
+import { string } from 'zod';
 
 export default function Chat({
   messages,
@@ -61,12 +65,12 @@ export default function Chat({
   };
 
   useEffect(() => {
-    if (!user) router.push('/laconchatumadre');
+    if (!user) router.push('/404');
   }, [user]);
 
   return (
     <div className="div-container-chat">
-      <div className="chat-container p-2 sm:p-4">
+      <div className="chat-container p-2 sm:p-4 bg-[#FFF]">
         {messages.map((message, index) => (
           <ChatWin key={index} message={message} />
         ))}
@@ -74,16 +78,18 @@ export default function Chat({
         {/* Referencia para hacer scroll al final del contenedor de mensajes */}
       </div>
       <div className="chat-input-container">
+        
+      <IoDocumentAttach size={40} />
         <input
           type="text"
           className="chat-input"
-          placeholder="Escribe un mensaje..."
+          placeholder="Enter your message"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           onKeyDown={(e) => handleKeyDown(e)}
         />
         <button className="chat-send-button" onClick={handleSubmit}>
-          Enviar
+        <FaCircleArrowRight size={22} />
         </button>
       </div>
     </div>

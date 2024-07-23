@@ -13,14 +13,14 @@
 }
 
 .chat-message {
-  background: grey;
+  background: #83D5BA ;
   display: inline-block;
   /* Ajusta el comportamiento para que ocupe solo el espacio necesario */
-  max-width: 90%;
+  max-width: 60%;
   word-wrap: break-word; /* Esto previene que palabras largas generen scroll horizontal */
   margin-bottom: 10px;
   padding: 10px;
-  border-radius: 5px;
+  border-radius: 12px;
 }
 
 .chat-message img {

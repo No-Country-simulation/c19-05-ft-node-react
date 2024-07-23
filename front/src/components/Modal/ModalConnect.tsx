@@ -12,6 +12,7 @@ import { GetUser, InterestPopulated } from '@/types/user.type';
 import SelectComponent from '../Select/SelectComponent';
 import { useAuth } from '@/context/session/sessionContext';
 import { useTrades } from '@/context/trades/trades';
+import { toast, Toaster } from 'sonner';
 
 type ModalConnectProps = {
   setShowModal: React.Dispatch<
@@ -72,7 +73,7 @@ export default function ModalConnect({
 
   const handleSubmit = async () => {
     if (!specialtyOne || !specialtyTwo || !duration) {
-      return alert('Faltan datos');
+      return toast.error('All fields are required');
     }
     const specialtyOneData = user?.specialties.find(
       (specialty) => specialty._id === specialtyOne
@@ -97,11 +98,11 @@ export default function ModalConnect({
     try {
       const result = await createTrade(tradeData);
       if (result && result.status === 'success') {
-        alert('trade creado');
+        toast.success('The trade request has been sent')
       }
     } catch (error) {
       if (error instanceof Error) {
-        alert(error.message);
+        toast.error('Error')
       }
     }
   };
@@ -110,24 +111,25 @@ export default function ModalConnect({
 
   return (
     <>
+    <Toaster position='top-right' richColors />
       <Modal
         isOpen={showModal.open}
         onOpenChange={handleChangeOpen}
         backdrop="blur"
         classNames={{
-          body: 'py-10',
+          body: 'py-10 bg-[#FFF]',
           backdrop: 'bg-[#292f46]/50',
-          base: 'border-[#292f46] bg-[#19172c] dark:bg-[#19172c] text-[#a8b0d3]',
-          header: 'border-b-[1px] border-[#292f46]',
-          footer: 'border-t-[1px] border-[#292f46]',
-          closeButton: 'hover:bg-white/5 active:bg-white/10',
+          base: 'border-[#292f46] bg-[#FFF] dark:bg-[#19172c] text-[#000]',
+          header: ' border-[#292f46] text-[#1FD68E]',
+          footer: ' border-[#292f46]',
+          closeButton: 'hidden',
         }}
       >
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Modal Title
+                Trade Request
               </ModalHeader>
               <ModalBody className="flex flex-col justify-center items-center">
                 {isValid ? (
@@ -149,12 +151,12 @@ export default function ModalConnect({
                 )}
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
+                <Button color ='success' variant='ghost'  onPress={onClose}>
                   Close
                 </Button>
                 <Button
                   color={'primary'}
-                  className={isValid ? 'bg-blue-600 text-white' : 'hidden'}
+                  className={isValid ? 'bg-[#1FD68E] text-white' : 'hidden'}
                   disabled={isValid}
                   onPress={handleSubmit}
                 >

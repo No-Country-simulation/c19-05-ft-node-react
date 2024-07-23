@@ -64,7 +64,7 @@ Before you begin, make sure you have the following installed:
 git clone https://github.com/No-Country-simulation/c19-05-ft-node-react.git
 ```
 
-<p>2. Go to backend directory and install dependencies. If you have a package manager different from NPM, you can run <code>yarn install</code> for Yarn or <code>pnpm install</code> for pnpm instead of <code>npm install</code></p>
+<p>2. Go to backend directory and install dependencies. If you have a package manager different from NPM, you can run <code>yarn install</code> for Yarn or <code>pnpm install</code> for pnpm instead of <code>npm install</code>.</p>
 
 ```
 cd backend
@@ -127,3 +127,35 @@ npm run dev
 ```
 
 <p>If you run it locally, you'll get your backend running on <code>http://localhost:PORT/</code>, where <code>PORT</code> is the port you defined on your <code>.env</code> file. To get a quick overview of the available endpoints, you can refer to the <a href="https://documenter.getpostman.com/view/36313081/2sA3e2eoff">API documentation</a>.</p>
+<br>
+<p>6. Open another terminal on the root of the project. If you opened the project with Visual Studio Code, you can open another terminal on the button at the top right and you'll get located on the root of it, just as indicated on the image below:</p>
+<div align="center">
+  <img alt="new terminal" src="/assets/new_terminal.png" height="250"/>
+</div>
+
+<br>
+
+<p>7. Go to the frontend folder and install dependencies. If you have a package manager different from NPM, you can run <code>yarn install</code> for Yarn or <code>pnpm install</code> for pnpm instead of <code>npm install</code>.</p>
+
+```
+cd front
+npm install
+```
+
+<p>8. Run the frontend</p>
+
+```
+npm run dev
+```
+
+<p>9. Open the <code>http://localhost:3000</code> URL on your web browser.</p>
+<div align="center">
+  <img height="130" alt="App URL" src="/assets/front_url.png"/>
+</div>
+
+<br>
+
+<p>And voilà! You have your application running. :)</p>
+<div align="center">
+  <img height="250" alt="App working" src="/assets/main_page.png"/>
+</div>

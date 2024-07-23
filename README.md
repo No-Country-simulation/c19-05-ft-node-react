@@ -64,11 +64,58 @@ Before you begin, make sure you have the following installed:
 git clone https://github.com/No-Country-simulation/c19-05-ft-node-react.git
 ```
 
-<p>2. Go to backend directory and install dependencies (you can also use Yarn or Pnpm if you wish)</p>
+<p>2. Go to backend directory and install dependencies. If you have a package manager different from NPM, you can run <code>yarn install</code> for Yarn or <code>pnpm install</code> for pnpm instead of <code>npm install</code></p>
 
 ```
 cd backend
 npm install
 ```
 
-<p></p>
+<p>3. Make a <code>.env</code> file by taking the template provided in <code>.env.template</code> </p>
+
+```
+cp .env.temmplate .env
+```
+
+
+<p>4. Fill the necessary data in your <code>.env</code> file </p>
+
+```
+
+# base datos
+DATABASE_URL = 
+
+FRONTEND_URL =
+
+SERVER_URL =
+
+# nodemialer
+SMTP_HOST = 
+SMTP_PORT = 
+SMTP_USER = 
+SMTP_PASS = 
+
+
+PORT = 4000
+
+
+COOKIE_SECRETKEY = cookiesecret
+JWT_SECRET = jwtsecret
+
+BCRYPT_SALT = 10
+
+#Gmail
+GOOGLE_CLIENT_ID = 
+GOOGLE_CLIENT_SECRET = 
+GOOGLE_CALLBACK_URL = 
+
+
+#Upload Avatar
+CLOUDINARY_URL=
+CLOUDINARY_NAME = 
+CLOUDINARY_KEY = 
+CLOUDINARY_SECRET =
+```
+<p>You can get the database URL either by your local server (might look something like <code>mongodb://localhost:27017</code>) or a database created in your MongoDB Atlas cluster (which might look something like <code>mongodb+srv://username:password@cluster0.6ywut5r.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0</code>)</p>
+<p>Make sure you add the correct URI for the frontend so that there are no CORS issues.</p>
+<p>Regarding to the <code>SMTP_</code> variables, you can create an account on <a href="https://mailtrap.io/">Mailtrap</a> and you get the credentials from there.</p>

@@ -4,7 +4,7 @@
 
 ### Connecting talents for mutual growth and learning.
 
-<img style="margin: 8px auto;" src="/front/src/assets/logos/svg/logo.svg" alt="Talent Trade Logo" width="130">
+<img style="margin: 8px auto;" src="/assets/logo.svg" alt="Talent Trade Logo" width="130">
 
 </div>
 

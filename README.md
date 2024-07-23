@@ -31,8 +31,19 @@ Catriel knows HTML, CSS, and JavaScript, but he wants to improve his English. Ow
 <h2>Tech stack</h2>
 The technologies used to build this project are the following:
 <h3>Frontend</h3>
+<p>For our frontend, we opted for Next.js, which made routing pretty straightforward, and Tailwind CSS, which has predefined classes and lifts off styling overhead</p>
 <div>
-  <img height="100" alt="Next.js" src="https://www.drupal.org/files/project-images/nextjs-icon-dark-background.png"/>
+<img height="100" alt="Next.js" src="https://www.drupal.org/files/project-images/nextjs-icon-dark-background.png"/>
 <img height="100" alt="Tailwind CSS" src="https://sudoaugustin.gallerycdn.vsassets.io/extensions/sudoaugustin/tailwindcss-transpiler/0.0.8/1637868312894/Microsoft.VisualStudio.Services.Icons.Default"/>
 </div>
 
+<h3>Backend</h3>
+<p>For the backend side, we opted for Express.js (a lightweight framework good enough to get the work done) and TypeScript for enforcing correct type matching and custom interfaces for our database models. Mongoose came in handy for querying data to the database with built-in functions.</p>
+<div>
+  <img height="100" alt="TypeScript" src="https://cdn.iconscout.com/icon/free/png-256/free-typescript-1174965.png?f=webp&w=256"/>
+<img height="100" width="150" alt="Mongoose" src="https://thecodebarbarian.com/images/mongoose5.png"/>
+</div>
+
+<h3>Database</h3>
+<p>For persistent data storage, we opted for MongoDB with MongoDB Atlas, which allows us to store data in the form of documents; pretty flexible for data schemas.</p>
+<img height="100" alt="Mongoose" src="https://cdn.iconscout.com/icon/free/png-256/free-mongodb-3521676-2945120.png?f=webp"/>

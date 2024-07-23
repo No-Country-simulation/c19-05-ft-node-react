@@ -27,3 +27,12 @@ Catriel knows HTML, CSS, and JavaScript, but he wants to improve his English. Ow
 <p>You can let others know about your personality! You can tell what your interests are, your own avatar, and a section that tells about you</p>
 <h3>Chat rooms!</h3>
 <p>When you're paired up with your exchange match, you can send messages to each other and let the communication flow. This chat is open up to 7 days.</p>
+
+<h2>Tech stack</h2>
+The technologies used to build this project are the following:
+<h3>Frontend</h3>
+<div>
+  <img height="100" alt="Next.js" src="https://www.drupal.org/files/project-images/nextjs-icon-dark-background.png"/>
+<img height="100" alt="Tailwind CSS" src="https://sudoaugustin.gallerycdn.vsassets.io/extensions/sudoaugustin/tailwindcss-transpiler/0.0.8/1637868312894/Microsoft.VisualStudio.Services.Icons.Default"/>
+</div>
+

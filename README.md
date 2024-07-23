@@ -4,7 +4,7 @@
 
 ### Connecting talents for mutual growth and learning.
 
-<img style="margin: 8px auto;" src="/front/src/assets/logos/svg/logo.svg" alt="Talent Trade Logo" width="130">
+<img style="margin: 8px auto;" src="/assets/logo.svg" alt="Talent Trade Logo" width="130">
 
 </div>
 
@@ -27,3 +27,48 @@ Catriel knows HTML, CSS, and JavaScript, but he wants to improve his English. Ow
 <p>You can let others know about your personality! You can tell what your interests are, your own avatar, and a section that tells about you</p>
 <h3>Chat rooms!</h3>
 <p>When you're paired up with your exchange match, you can send messages to each other and let the communication flow. This chat is open up to 7 days.</p>
+
+<h2>Tech stack</h2>
+The technologies used to build this project are the following:
+<h3>Frontend</h3>
+<p>For our frontend, we opted for Next.js, which made routing pretty straightforward, and Tailwind CSS, which has predefined classes and lifts off styling overhead</p>
+<div>
+<img height="100" alt="Next.js" src="https://www.drupal.org/files/project-images/nextjs-icon-dark-background.png"/>
+<img height="100" alt="Tailwind CSS" src="https://sudoaugustin.gallerycdn.vsassets.io/extensions/sudoaugustin/tailwindcss-transpiler/0.0.8/1637868312894/Microsoft.VisualStudio.Services.Icons.Default"/>
+</div>
+
+<h3>Backend</h3>
+<p>For the backend side, we opted for Express.js (a lightweight framework good enough to get the work done) and TypeScript for enforcing correct type matching and custom interfaces for our database models. Mongoose came in handy for querying data to the database with built-in functions.</p>
+<div>
+  <img height="100" alt="Express.js" src="/assets/express.png"/>
+  <img height="100" alt="TypeScript" src="https://cdn.iconscout.com/icon/free/png-256/free-typescript-1174965.png?f=webp&w=256"/>
+  <img height="100" width="150" alt="Mongoose" src="https://thecodebarbarian.com/images/mongoose5.png"/>
+</div>
+
+<h3>Database</h3>
+<p>For persistent data storage, we opted for MongoDB with MongoDB Atlas, which allows us to store data in the form of documents; pretty flexible for data schemas.</p>
+<img height="100" alt="Mongoose" src="https://cdn.iconscout.com/icon/free/png-256/free-mongodb-3521676-2945120.png?f=webp"/>
+
+<h2>Getting started</h2>
+Before you begin, make sure you have the following installed:
+<h3>Prerrequisites</h3>
+<ul>
+  <li><b>Node.js</b> (version 20 or higher)</li>
+  <li><b>Git</b></li>
+  <li><b>MongoDB installed locally or a MongoDB Atlas cluster</b></li>
+</ul>
+<h3>Installation</h3>
+<p>1. Clone the repository:</p>
+
+```
+git clone https://github.com/No-Country-simulation/c19-05-ft-node-react.git
+```
+
+<p>2. Go to backend directory and install dependencies (you can also use Yarn or Pnpm if you wish)</p>
+
+```
+cd backend
+npm install
+```
+
+<p></p>

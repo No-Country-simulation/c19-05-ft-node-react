@@ -2,6 +2,7 @@ import TradeCard from './TradeCard';
 import { Trade } from '@/lib/data';
 import styles from './TradeList.module.css';
 import { TradeDetails } from '@/types/trade.type';
+import { toast, Toaster } from 'sonner';
 
 type TradeListProps = {
   trades: TradeDetails[];
@@ -26,6 +27,7 @@ const TradeList = ({ trades, status }: TradeListProps) => {
 
   return (
     <div className="px-6">
+      <Toaster position='top-right' richColors/>
       <h2 className={`${styles.title} text-gray-400`}>
         {translateStatus(status)}
       </h2>

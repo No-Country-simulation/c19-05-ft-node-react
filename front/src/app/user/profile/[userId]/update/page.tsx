@@ -1,5 +1,8 @@
 'use client';
-import { useState, ChangeEvent, FormEvent } from 'react';
+import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import { Select, SelectItem, Selection } from '@nextui-org/react';
+import api from '@/lib/axios';
+import Image from 'next/image';
 
 const EditProfile = () => {
   const [profileImage, setProfileImage] = useState<string | null>(null);
@@ -8,31 +11,103 @@ const EditProfile = () => {
   const [email, setEmail] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
   const [aboutMe, setAboutMe] = useState<string>('');
-  const [specialty, setSpecialty] = useState<string>('');
-  const [interest, setInterest] = useState<string>('');
 
-  const specialties = [
-    'Web Development',
-    'Data Science',
-    'Cybersecurity',
-    'Project Management',
+  const [specialtiesCategory, setSpecialtiesCategory] = useState<Selection>(
+    new Set([])
+  );
+  const [selectedSpecialties, setSelectedSpecialties] = useState<Selection>(
+    new Set([])
+  );
+
+  const [interestsCategory, setInterestsCategory] = useState<Selection>(
+    new Set([])
+  );
+  const [selectedInterests, setSelectedInterests] = useState<Selection>(
+    new Set([])
+  );
+
+  const categories = [
+    { id: '1', name: 'Development' },
+    { id: '2', name: 'Science' },
+    { id: '3', name: 'Security' },
+    { id: '4', name: 'Management' },
+    { id: '5', name: 'Technology' },
+    { id: '6', name: 'Finance' },
   ];
 
-  const interests = [
-    'Artificial Intelligence',
-    'Blockchain',
-    'Internet of Things',
-    'Cloud Computing',
+  const specialtiesOptions = [
+    { id: '1', name: 'Web Development', category: '1' },
+    { id: '2', name: 'Data Science', category: '2' },
+    { id: '3', name: 'Cybersecurity', category: '3' },
+    { id: '4', name: 'Project Management', category: '4' },
+    { id: '5', name: 'Artificial Intelligence', category: '5' },
+    { id: '6', name: 'Blockchain', category: '6' },
+    { id: '7', name: 'Internet of Things', category: '5' },
+    { id: '8', name: 'Cloud Computing', category: '5' },
   ];
 
-  const handleImageChange = (
+  const banners = ['banner1.jpg', 'banner2.jpg', 'banner3.jpg'];
+
+  const fetchUserData = async () => {
+    try {
+      const response = await api('/api/user');
+      const data = response.data;
+      setName(data.name);
+      setEmail(data.email);
+      setPhone(data.phone);
+      setAboutMe(data.aboutMe);
+      setProfileImage(data.profileImage);
+      setBannerImage(data.bannerImage);
+      setSelectedSpecialties(new Set(data.specialties));
+      setSelectedInterests(new Set(data.interests));
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
+  const handleImageUpload = async (
     e: ChangeEvent<HTMLInputElement>,
     setImage: (image: string | null) => void
   ) => {
     const file = e.target.files?.[0];
     if (file) {
-      setImage(URL.createObjectURL(file));
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', 'your_cloudinary_preset');
+      try {
+        const response = await api.post(
+          'https://api.cloudinary.com/v1_1/your_cloud_name/image/upload',
+          formData
+        );
+        setImage(response.data.secure_url);
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      }
     }
+  };
+
+  const handleSelectSpecialtiesCategory = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setSpecialtiesCategory(new Set(e.target.value));
+  };
+
+  const handleSelectSpecialties = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSpecialties(new Set(e.target.value.split(',')));
+  };
+
+  const handleSelectInterestsCategory = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setInterestsCategory(new Set(e.target.value));
+  };
+
+  const handleSelectInterests = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedInterests(new Set(e.target.value.split(',')));
   };
 
   const handleSubmit = (e: FormEvent) => {
@@ -45,8 +120,8 @@ const EditProfile = () => {
       email,
       phone,
       aboutMe,
-      specialty,
-      interest,
+      specialties: Array.from(selectedSpecialties),
+      interests: Array.from(selectedInterests),
     });
   };
 
@@ -64,7 +139,7 @@ const EditProfile = () => {
           <input
             type="file"
             accept="image/*"
-            onChange={(e) => handleImageChange(e, setProfileImage)}
+            onChange={(e) => handleImageUpload(e, setProfileImage)}
             className="mt-2"
           />
           {profileImage && (
@@ -78,17 +153,25 @@ const EditProfile = () => {
 
         <div className="mb-4">
           <label className="block text-gray-700">Banner Photo</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => handleImageChange(e, setBannerImage)}
-            className="mt-2"
-          />
+          <select
+            value={bannerImage || ''}
+            onChange={(e) => setBannerImage(e.target.value)}
+            className="mt-2 p-2 border rounded w-full"
+          >
+            <option value="">Select a banner</option>
+            {banners.map((banner, index) => (
+              <option key={index} value={banner}>
+                {banner}
+              </option>
+            ))}
+          </select>
           {bannerImage && (
-            <img
-              src={bannerImage}
+            <Image
+              src={`/banners/${bannerImage}`}
+              width={500}
+              height={500}
               alt="Banner Preview"
-              className="mt-2 w-full h-32 object-cover"
+              className="mt-2 w-full object-cover"
             />
           )}
         </div>
@@ -133,44 +216,137 @@ const EditProfile = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700">Specialties</label>
-          <select
-            value={specialty}
-            onChange={(e) => setSpecialty(e.target.value)}
-            className="mt-2 p-2 border rounded w-full"
-          >
-            <option value="" disabled>
-              Select your specialty
-            </option>
-            {specialties.map((specialty, index) => (
-              <option key={index} value={specialty}>
-                {specialty}
-              </option>
-            ))}
-          </select>
+          <label className="block text-gray-700 mb-2">Specialties</label>
+          <div className="flex w-full max-w-xs flex-col gap-2 mb-4">
+            <Select
+              label="Category"
+              placeholder="Select a category"
+              className="max-w-xs"
+              selectedKeys={specialtiesCategory}
+              onChange={handleSelectSpecialtiesCategory}
+            >
+              {categories.map((category) => (
+                <SelectItem key={category.id}>{category.name}</SelectItem>
+              ))}
+            </Select>
+          </div>
+
+          <div className="flex w-full flex-col gap-2">
+            <Select
+              label="Specialties"
+              selectionMode="multiple"
+              placeholder="Select your specialties"
+              selectedKeys={selectedSpecialties}
+              className="max-w-xs"
+              onChange={handleSelectSpecialties}
+            >
+              {Array.from(specialtiesCategory).length > 0
+                ? specialtiesOptions
+                    .filter(
+                      (specialty) =>
+                        specialty.category ===
+                        Array.from(specialtiesCategory)[0]
+                    )
+                    .map((specialty) => (
+                      <SelectItem key={specialty.id}>
+                        {specialty.name}
+                      </SelectItem>
+                    ))
+                : specialtiesOptions.map((specialty) => (
+                    <SelectItem key={specialty.id}>{specialty.name}</SelectItem>
+                  ))}
+            </Select>
+
+            {/* Selected specialties */}
+            <div className="flex gap-2 flex-wrap w-full mt-2">
+              {Array.from(selectedSpecialties).length > 0 ? (
+                Array.from(selectedSpecialties).map((selectedSpecialty) => (
+                  <div
+                    key={selectedSpecialty}
+                    className="border border-gray-500 text-gray-700 rounded-2xl py-1 px-2 text-center text-xs font-medium shadow"
+                  >
+                    {specialtiesOptions.map(
+                      (specialty) =>
+                        specialty.id === selectedSpecialty && specialty.name
+                    )}
+                  </div>
+                ))
+              ) : (
+                <p className="text-gray-600 text-sm">
+                  You have not selected specialties.
+                </p>
+              )}
+            </div>
+          </div>
         </div>
 
-        <div className="mb-6">
-          <label className="block text-gray-700">Interests</label>
-          <select
-            value={interest}
-            onChange={(e) => setInterest(e.target.value)}
-            className="mt-2 p-2 border rounded w-full"
-          >
-            <option value="" disabled>
-              Select your interest
-            </option>
-            {interests.map((interest, index) => (
-              <option key={index} value={interest}>
-                {interest}
-              </option>
-            ))}
-          </select>
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">Interests</label>
+          <div className="flex w-full max-w-xs flex-col gap-2 mb-4">
+            <Select
+              label="Category"
+              placeholder="Select a category"
+              className="max-w-xs"
+              selectedKeys={interestsCategory}
+              onChange={handleSelectInterestsCategory}
+            >
+              {categories.map((category) => (
+                <SelectItem key={category.id}>{category.name}</SelectItem>
+              ))}
+            </Select>
+          </div>
+
+          <div className="flex w-full flex-col gap-2">
+            <Select
+              label="Interests"
+              selectionMode="multiple"
+              placeholder="Select your interests"
+              selectedKeys={selectedInterests}
+              className="max-w-xs"
+              onChange={handleSelectInterests}
+            >
+              {Array.from(interestsCategory).length > 0
+                ? specialtiesOptions
+                    .filter(
+                      (specialty) =>
+                        specialty.category === Array.from(interestsCategory)[0]
+                    )
+                    .map((specialty) => (
+                      <SelectItem key={specialty.id}>
+                        {specialty.name}
+                      </SelectItem>
+                    ))
+                : specialtiesOptions.map((specialty) => (
+                    <SelectItem key={specialty.id}>{specialty.name}</SelectItem>
+                  ))}
+            </Select>
+
+            {/* Selected interests */}
+            <div className="flex gap-2 flex-wrap w-full mt-2">
+              {Array.from(selectedInterests).length > 0 ? (
+                Array.from(selectedInterests).map((selectedInterest) => (
+                  <div
+                    key={selectedInterest}
+                    className="border border-gray-500 text-gray-700 rounded-2xl py-1 px-2 text-center text-xs font-medium shadow"
+                  >
+                    {specialtiesOptions.map(
+                      (specialty) =>
+                        specialty.id === selectedInterest && specialty.name
+                    )}
+                  </div>
+                ))
+              ) : (
+                <p className="text-gray-600 text-sm">
+                  You have not selected interests.
+                </p>
+              )}
+            </div>
+          </div>
         </div>
 
         <button
           type="submit"
-          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mt-4"
         >
           Save Changes
         </button>

@@ -78,7 +78,7 @@ cp .env.temmplate .env
 ```
 
 
-<p>4. Fill the necessary data in your <code>.env</code> file </p>
+<p>4. Fill the necessary data in your <code>.env</code> file. You can use a code editor such as Visual Studio Code, Sublime Text, or Vim. </p>
 
 ```
 
@@ -117,5 +117,13 @@ CLOUDINARY_KEY =
 CLOUDINARY_SECRET =
 ```
 <p>You can get the database URL either by your local server (might look something like <code>mongodb://localhost:27017</code>) or a database created in your MongoDB Atlas cluster (which might look something like <code>mongodb+srv://username:password@cluster0.6ywut5r.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0</code>)</p>
-<p>Make sure you add the correct URI for the frontend so that there are no CORS issues.</p>
+<p>Make sure you add the correct URI for the frontend so that there are no CORS issues. Trying it locally, we can add <code>http://localhost:3000</code> as our URI for the frontend.</p>
 <p>Regarding to the <code>SMTP_</code> variables, you can create an account on <a href="https://mailtrap.io/">Mailtrap</a> and you get the credentials from there.</p>
+<br>
+<p>5. Run the backend</p>
+
+```
+npm run dev
+```
+
+<p>If you run it locally, you'll get your backend running on <code>http://localhost:PORT/</code>, where <code>PORT</code> is the port you defined on your <code>.env</code> file. To get a quick overview of the available endpoints, you can refer to the <a href="https://documenter.getpostman.com/view/36313081/2sA3e2eoff">API documentation</a>.</p>

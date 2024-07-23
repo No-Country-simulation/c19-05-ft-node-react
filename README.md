@@ -4,7 +4,7 @@
 
 ### Connecting talents for mutual growth and learning.
 
-<img style="margin: 8px auto;" src="https://raw.githubusercontent.com/No-Country-simulation/c19-05-ft-node-react/0afee9e59e50fdf69c89fdf354ebf6a373318db3/front/src/assets/logos/svg/logo.svg?token=AQHV3IXRMUDIHIGCH3S3QCTGT7J7E" alt="Talent Trade Logo" width="130">
+<img style="margin: 8px auto;" src="https://raw.githubusercontent.com/No-Country-simulation/c19-05-ft-node-react/0afee9e59e50fdf69c89fdf354ebf6a373318db3/front/src/assets/logos/svg/logo.svg?token=AQHV3IVMIHDXKSMD2UIDLGLGT7LCG" alt="Talent Trade Logo" width="130">
 
 </div>
 

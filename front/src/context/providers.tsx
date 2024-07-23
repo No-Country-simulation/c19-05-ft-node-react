@@ -5,6 +5,7 @@ import { TradesProvider } from './trades/trades';
 import { UserProvider } from './user/userContext';
 import { NextUIProvider } from '@nextui-org/react';
 import { ChatProvider } from './chat/ChatContext';
+import SpecialtiesProvider from './specialties/specialties';
 
 interface ProvidersProps {
   children: ReactNode;
@@ -12,7 +13,9 @@ interface ProvidersProps {
 
 export function Providers({ children }: ProvidersProps) {
   return (
+    
     <NextUIProvider>
+      <SpecialtiesProvider>
       <AuthProvider>
         <ChatProvider>
           <UserProvider>
@@ -20,6 +23,7 @@ export function Providers({ children }: ProvidersProps) {
           </UserProvider>
         </ChatProvider>
       </AuthProvider>
+      </SpecialtiesProvider>
     </NextUIProvider>
   );
 }

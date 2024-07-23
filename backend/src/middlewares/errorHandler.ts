@@ -53,3 +53,17 @@ export const errorHandler: ErrorRequestHandler = (
     .status(500)
     .json({ status: "error", payload: genericErrorMessage });
 };
+
+/**
+ * catch (error) {
+		if (error instanceof ZodError) {
+			const errorDetails = error.errors.map((err) => ({
+				path: err.path.join("."),
+				error: err.message,
+			}));
+			return res.status(400).json(errorDetails);
+		} else if (error instanceof Error) {
+			return res.status(400).json({ error: error.message });
+		}
+	}
+ */

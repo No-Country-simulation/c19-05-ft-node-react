@@ -7,6 +7,7 @@ import {
   UserUpdateSchema,
   UserEmailSchema,
   ResetPasswordSchema,
+  UpdateUserRating,
 } from "../utils/schema/user.schema";
 import { UserRepository } from "../repositories/User.repository";
 import { UserService } from "../services/User.service";
@@ -89,6 +90,7 @@ routerUser.put(
 routerUser.put(
   "/user/:userId/update-rating/:tradeId",
   authValidatePassport,
+  middlewareBody(UpdateUserRating),
   userController.updateUserRating
 );
 

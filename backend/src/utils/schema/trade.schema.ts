@@ -27,3 +27,27 @@ export const TradeSchema = z.object({
   }),
   duration: durationEnum,
 });
+
+export interface ResponseGetSpecialties {
+  status: string;
+  payload: Payload;
+}
+
+export interface Payload {
+  specialties: Category[];
+  categories: Specialty[];
+}
+
+export interface Category {
+  _id: string;
+  name: string;
+  status: boolean;
+  customId: number;
+}
+
+export interface Specialty {
+  _id: string;
+  name: string;
+  status: boolean;
+  categoryId: string;
+}

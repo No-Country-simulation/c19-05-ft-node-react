@@ -403,7 +403,6 @@ export class UserService {
         user._id,
         data.tradeId
       );
-      console.log(tradeFound);
 
       // if trade not found
       if (!tradeFound) {

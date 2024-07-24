@@ -58,7 +58,7 @@ export default function NavBar() {
             About us
           </Link>
           <Link
-            href={`/about-us/`}
+            href={`/recommended/`}
             className={`cursor-pointer transition-all ${path === '/about-us' ? ' text-green-500 hover:text-green-600 font-bold border-b-2 border-gray-300 hover:border-gray-400' : 'hover:text-gray-900'} `}
           >
             Recommended

@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CardUser from '@/components/CardUsers/CardUser';
 import { useUser } from '@/context/user/userContext';
 import FilterSidebar from '@/components/FilterSideBar/FilterSideBar';
@@ -8,20 +8,17 @@ import { Button } from '@nextui-org/button';
 import ModalConnect from '@/components/Modal/ModalConnect';
 import { GetUser } from '@/types/user.type';
 
-interface User {
-  avatar: string;
-  name: string;
-  specialties: string[];
-  location: string;
-}
-
 const Recommended = () => {
-  const { users } = useUser();
+  const { users, getRecommendedUsers } = useUser();
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState<{
     open: boolean;
     user?: GetUser;
   }>({ open: false });
+
+  useEffect(() => {
+    getRecommendedUsers();
+  }, []);
 
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);

@@ -57,6 +57,12 @@ export default function NavBar() {
           >
             About us
           </Link>
+          <Link
+            href={`/about-us/`}
+            className={`cursor-pointer transition-all ${path === '/about-us' ? ' text-green-500 hover:text-green-600 font-bold border-b-2 border-gray-300 hover:border-gray-400' : 'hover:text-gray-900'} `}
+          >
+            Recommended
+          </Link>
         </nav>
 
         {!user ? (
@@ -94,7 +100,9 @@ export default function NavBar() {
                       <Link href={`/user/profile/${user._id}`}>My profile</Link>
                     </li>
                     <li>
-                      <Link href={`/user/profile/${user._id}/update`}>Update profile</Link>
+                      <Link href={`/user/profile/${user._id}/update`}>
+                        Update profile
+                      </Link>
                     </li>
                     <li>
                       <button onClick={() => logout()}>Sign out</button>

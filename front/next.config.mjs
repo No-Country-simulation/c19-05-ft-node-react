@@ -1,8 +1,20 @@
 /** @type {import('next').NextConfig} */
+
 const nextConfig = {
   reactStrictMode: false,
   images: {
-    domains: ['res.cloudinary.com', 'www.google.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        pathname: '**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.google.com',
+        pathname: '**',
+      },
+    ],
   },
 };
 

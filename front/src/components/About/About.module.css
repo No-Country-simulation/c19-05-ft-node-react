@@ -1,0 +1,117 @@
+.aboutContainer {
+  text-align: center;
+}
+
+.aboutPortada {
+  position: relative;
+  overflow: hidden;
+}
+
+.aboutPortada::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/aboutBanner.png');
+  background-size: cover;
+  opacity: 0.7; /* Ajusta la opacidad a tu gusto */
+  z-index: 1;
+}
+
+.aboutText {
+  position: relative;
+  z-index: 2;
+  font-size: 1rem;
+  font-weight: 900;
+  text-shadow:
+    3px 3px 0px #000000,
+    5px 5px 0 #ffffff05;
+}
+
+.aboutTitle {
+  font-size: 1rem;
+  color: #000000;
+  font-weight: 400;
+}
+
+.aboutPortadaFirst {
+  width: 100%;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  color: white;
+}
+
+.aboutGallery {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.aboutFirst,
+.aboutSecond {
+  font-size: 1rem;
+}
+
+/* --------------------------------------- */
+
+@media (min-width: 450px) {
+  .aboutPortadaFirst {
+    width: 80%;
+  }
+
+  .aboutText {
+    font-size: 1.5rem;
+  }
+
+  .aboutTitle {
+    font-size: 1.5rem;
+  }
+}
+
+@media (min-width: 600px) {
+  .aboutFirst,
+  .aboutSecond {
+    font-size: 1.2rem;
+  }
+}
+
+@media (min-width: 800px) {
+  .aboutPortadaFirst {
+    width: 60%;
+    font-size: large;
+  }
+  .aboutFirst,
+  .aboutSecond {
+    font-size: 1.4rem;
+  }
+
+  .aboutText {
+    font-size: 2rem;
+  }
+
+  .aboutTitle {
+    font-size: 2rem;
+  }
+}
+
+@media (min-width: 1600px) {
+  .aboutPortadaFirst {
+    width: 50%;
+  }
+
+  .aboutFirst,
+  .aboutSecond {
+    font-size: 1.6rem;
+  }
+
+  .aboutText {
+    font-size: 3rem;
+  }
+
+  .aboutTitle {
+    font-size: 3rem;
+  }
+}

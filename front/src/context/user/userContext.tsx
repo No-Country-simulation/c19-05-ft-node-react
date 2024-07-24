@@ -5,6 +5,7 @@ import {
   GetUser,
   GetUserById,
   Paginate,
+  ResponseGetRecommendedUsers,
   ResponseGetUserById,
   ResponseGetUsers,
   ResponseUpdate,
@@ -99,8 +100,19 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }
   };
 
-  const getRecommendedUsers = () => {
-    console.log('esto sirve');
+  const getRecommendedUsers = async (): Promise<
+    string[] | errorResponseType
+  > => {
+    try {
+      const { data } = await api<ResponseGetRecommendedUsers>(
+        `api/user/potential-trades`
+      );
+      const matchingIds = data.payload.map((one) => one._id);
+      console.log(matchingIds);
+      return matchingIds;
+    } catch (error) {
+      return errorHandler(error);
+    }
   };
 
   const contextValue: UserContextType = {

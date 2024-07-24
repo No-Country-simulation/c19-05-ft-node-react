@@ -147,3 +147,17 @@ export interface PayloadUpdate {
   userRatings: userRating[];
   __v: number;
 }
+
+// RECOMMENDED USERS TYPES
+export interface ResponseGetRecommendedUsers {
+  status: string;
+  numberOfRecommendations: number;
+  payload: Matchings[];
+}
+
+export interface Matchings {
+  _id: string;
+  name: string;
+  matchingSpecialties: Interest[];
+  matchingInterests: Interest[];
+}

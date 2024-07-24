@@ -19,13 +19,17 @@ const userRepository = new UserRepository(UserModel);
 const chatService = new ChatService(chatRepository, userRepository);
 const chatController = new ChatController(chatService);
 
-routerChat.use(authValidatePassport);
 routerChat.param(":chatRoomId", middlewareParamsObjectId("chatRoomId"));
 routerChat.post(
   "/chat/create-message",
+  authValidatePassport,
   middlewareBody(CreateMessageSchema),
   chatController.createMessage
 );
-routerChat.get("/chat/:chatRoomId", chatController.findMessages);
+routerChat.get(
+  "/chat/:chatRoomId",
+  authValidatePassport,
+  chatController.findMessages
+);
 
 export default routerChat;

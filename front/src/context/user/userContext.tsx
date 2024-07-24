@@ -91,8 +91,8 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
   const updateUser = async (formData: UpdateData) => {
     try {
-      const { data } = await api.post<ResponseUpdate>(
-        `/api/user/details/`,
+      const { data } = await api.put<ResponseUpdate>(
+        `/api/user/`,
         formData
       );
       return data;

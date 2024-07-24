@@ -33,7 +33,7 @@ export default function Page() {
   const isAContact = true;
 
   return (
-    <div className="px-6 container mx-auto mt-32 sm:mt-24 mb-20">
+    <div className="px-6 container mx-auto pt-32 sm:pt-24 mb-20">
       {/* user photo, banner, name, rating, phone number, button to connect */}
       <div className="shadow rounded-xl bg-white pb-6 mb-6">
         <div className="relative">

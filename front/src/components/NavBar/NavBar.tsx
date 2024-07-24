@@ -91,10 +91,10 @@ export default function NavBar() {
                 <nav>
                   <ul className="flex flex-col gap-3 text-xs font-semibold">
                     <li>
-                      <Link href={'/user/profile/userid'}>My profile</Link>
+                      <Link href={`/user/profile/${user._id}`}>My profile</Link>
                     </li>
                     <li>
-                      <Link href={'/user/trades'}>My trades</Link>
+                      <Link href={`/user/profile/${user._id}/update`}>Update profile</Link>
                     </li>
                     <li>
                       <button onClick={() => logout()}>Sign out</button>

@@ -28,6 +28,7 @@ type UserContextType = {
   updateUser: (
     formData: UpdateData
   ) => Promise<ResponseUpdate | errorResponseType>;
+  getRecommendedUsers: () => void;
 };
 
 const UserContext = createContext<UserContextType | undefined>(
@@ -91,14 +92,15 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
   const updateUser = async (formData: UpdateData) => {
     try {
-      const { data } = await api.put<ResponseUpdate>(
-        `/api/user/`,
-        formData
-      );
+      const { data } = await api.put<ResponseUpdate>(`/api/user/`, formData);
       return data;
     } catch (error) {
       return errorHandler(error);
     }
+  };
+
+  const getRecommendedUsers = () => {
+    console.log('esto sirve');
   };
 
   const contextValue: UserContextType = {
@@ -107,6 +109,7 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     paginate,
     getUserById,
     updateUser,
+    getRecommendedUsers,
   };
 
   return (

@@ -25,8 +25,8 @@ export interface InterestData {
   name: string;
 }
 export interface InterestPopulated {
-  categoryId: InterestData['_id'];
-  specialtyId: InterestData['_id'];
+  categoryId: InterestData;
+  specialtyId: InterestData;
   _id: string;
 }
 

@@ -5,7 +5,7 @@ import { TradesProvider } from './trades/trades';
 import { UserProvider } from './user/userContext';
 import { NextUIProvider } from '@nextui-org/react';
 import { ChatProvider } from './chat/ChatContext';
-import SpecialtiesProvider from './specialties/specialties';
+import {SpecialtiesProvider} from './specialties/specialties';
 
 interface ProvidersProps {
   children: ReactNode;

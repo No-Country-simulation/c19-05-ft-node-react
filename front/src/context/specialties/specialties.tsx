@@ -1,5 +1,5 @@
 import api, { errorHandler } from '@/lib/axios';
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 
 
 type Specialty = {
@@ -49,7 +49,10 @@ const SpecialtiesProvider: React.FC<SpecialtiesProviderProps> = ({ children }) =
   const [specialties, setSpecialties] = useState<Specialty[]>([]);
   const [categories , setCategories] = useState<Category[]>([]);
 
- 
+  useEffect(() => {
+    getSpecialties
+  }, []);
+
   const getSpecialties = async () => {
     try {
       const { data } = await api<{payload:payload}>('/api/specialties');
@@ -75,4 +78,4 @@ const SpecialtiesProvider: React.FC<SpecialtiesProviderProps> = ({ children }) =
   );
 };
 
-export default SpecialtiesProvider;
+export {SpecialtiesContext, SpecialtiesProvider};

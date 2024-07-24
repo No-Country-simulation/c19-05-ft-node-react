@@ -25,8 +25,8 @@ export interface InterestData {
   name: string;
 }
 export interface InterestPopulated {
-  categoryId: InterestData;
-  specialtyId: InterestData;
+  categoryId: InterestData['_id'];
+  specialtyId: InterestData['_id'];
   _id: string;
 }
 
@@ -124,7 +124,6 @@ export interface Aboutme {
 export interface Interest {
   categoryId: string;
   specialtyId: string;
-  _id: string;
 }
 
 // UPDATE RESPONSE

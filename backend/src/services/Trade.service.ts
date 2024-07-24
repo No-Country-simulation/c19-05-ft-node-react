@@ -42,7 +42,7 @@ export class TradeService {
       );
       if (trades?.length > 0) {
         throw new BadRequestError(
-          "The interests do not match the specialties."
+          "You already have a pending trade with this user"
         );
       }
       // chequear que los intereses sean correspondientes
@@ -51,21 +51,24 @@ export class TradeService {
           specialty.specialtyId._id.toString() ===
           trade.members.memberOne.specialty.toString()
       );
-      const findIndexOneInterest = userOne.interests.findIndex(
-        (interest) =>
-          interest.specialtyId._id.toString() ===
-          trade.members.memberTwo.specialty.toString()
-      );
-      if (findIndexOneSpecialty === -1 || findIndexOneInterest === -1) {
+      // const findIndexOneInterest = userOne.interests.findIndex(
+      //   (interest) =>
+      //     interest.specialtyId._id.toString() ===
+      //     trade.members.memberTwo.specialty.toString()
+      // );
+      if (findIndexOneSpecialty === -1) {
         throw new BadRequestError(
           "The interests do not match the specialties."
         );
       }
+      //user two's specialty has to be compatible with member two's specialty
       const findIndexTwoSpecialty = userTwo.specialties.findIndex(
         (specialty) =>
           specialty.specialtyId.toString() ===
           trade.members.memberTwo.specialty.toString()
       );
+
+      // user two's interest has to be compatible with user two's expertise
       const findIndexTwoInterest = userTwo.interests.findIndex(
         (interest) =>
           interest.specialtyId.toString() ===

@@ -51,12 +51,12 @@ export default function ModalConnect({
     );
   }
 
-  let specialtiesTwo: InterestPopulated[] = [];
+  // let specialtiesTwo: InterestPopulated[] = [];
   let specialtiesOne: InterestPopulated[] = [];
 
   //cargar los arrays con los matcheos
   if (showModal.open && showModal.user && user) {
-    specialtiesTwo = findMatchingSpecialties(showModal.user, user);
+    // specialtiesTwo = findMatchingSpecialties(showModal.user, user);
     specialtiesOne = findMatchingSpecialties(user, showModal.user);
   }
 
@@ -98,20 +98,21 @@ export default function ModalConnect({
     try {
       const result = await createTrade(tradeData);
       if (result && result.status === 'success') {
-        toast.success('The trade request has been sent')
+        toast.success('The trade request has been sent');
       }
     } catch (error) {
       if (error instanceof Error) {
-        toast.error('Error')
+        toast.error('Error');
       }
     }
   };
 
-  const isValid = specialtiesOne.length > 0 && specialtiesTwo.length > 0;
+  const isValid = specialtiesOne.length > 0;
+  // const isValid = specialtiesOne.length > 0 && specialtiesTwo.length > 0;
 
   return (
     <>
-    <Toaster position='top-right' richColors />
+      <Toaster position="top-right" richColors />
       <Modal
         isOpen={showModal.open}
         onOpenChange={handleChangeOpen}
@@ -140,7 +141,7 @@ export default function ModalConnect({
                       setSpecialty={setSpecialtyOne}
                     />
                     <SelectComponent
-                      specialties={specialtiesTwo}
+                      specialties={showModal.user!.specialties}
                       creatorOrguest="guest"
                       setSpecialty={setSpecialtyTwo}
                     />
@@ -151,7 +152,7 @@ export default function ModalConnect({
                 )}
               </ModalBody>
               <ModalFooter>
-                <Button color ='success' variant='ghost'  onPress={onClose}>
+                <Button color="success" variant="ghost" onPress={onClose}>
                   Close
                 </Button>
                 <Button

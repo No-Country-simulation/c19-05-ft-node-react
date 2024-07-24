@@ -4,6 +4,7 @@ import './globals.css';
 import CommonLayout from '@/components/CommonLayout';
 import { Providers } from '@/context/providers';
 import { lily, abel, ubuntu } from '@/utils/fonts';
+import { Toaster } from 'sonner';
 
 interface RootLayoutProps {
   children: React.ReactNode; // Define el tipo de children como React.ReactNode
@@ -27,6 +28,8 @@ const RootLayout = ({ children }: RootLayoutProps) => {
       <body className={`${inter.className} bg-gray-100`}>
         <Providers>
           <CommonLayout>{children}</CommonLayout>
+
+          <Toaster position="top-right" />
         </Providers>
       </body>
     </html>

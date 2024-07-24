@@ -33,7 +33,7 @@ export default function NavBar() {
           </Link>
           <Link
             href={`/connect/`}
-            className={`cursor-pointer transition-all ${path === '/connect' ? ' text-green-500 hover:text-green-600 font-bold border-b-2 border-gray-300 hover:border-gray-400' : 'hover:text-gray-900'} `}
+            className={`cursor-pointer transition-all ${path.includes('/connect') ? ' text-green-500 hover:text-green-600 font-bold border-b-2 border-gray-300 hover:border-gray-400' : 'hover:text-gray-900'} `}
           >
             Connect
           </Link>
@@ -46,14 +46,14 @@ export default function NavBar() {
           {auth && (
             <Link
               href={`/user/trades`}
-              className={`cursor-pointer transition-all ${path === '/user/trades' ? ' text-green-500 hover:text-green-600 font-bold border-b-2 border-gray-300 hover:border-gray-400' : 'hover:text-gray-900'} `}
+              className={`cursor-pointer transition-all ${path.includes('/user/trades') ? ' text-green-500 hover:text-green-600 font-bold border-b-2 border-gray-300 hover:border-gray-400' : 'hover:text-gray-900'} `}
             >
               Trades
             </Link>
           )}
           <Link
             href={`/about-us/`}
-            className={`cursor-pointer hover:text-gray-900`}
+            className={`cursor-pointer transition-all ${path === '/about-us' ? ' text-green-500 hover:text-green-600 font-bold border-b-2 border-gray-300 hover:border-gray-400' : 'hover:text-gray-900'} `}
           >
             About us
           </Link>
@@ -91,10 +91,10 @@ export default function NavBar() {
                 <nav>
                   <ul className="flex flex-col gap-3 text-xs font-semibold">
                     <li>
-                      <Link href={'/user/profile/userid'}>My profile</Link>
+                      <Link href={`/user/profile/${user._id}`}>My profile</Link>
                     </li>
                     <li>
-                      <Link href={'/user/trades'}>My trades</Link>
+                      <Link href={`/user/profile/${user._id}/update`}>Update profile</Link>
                     </li>
                     <li>
                       <button onClick={() => logout()}>Sign out</button>

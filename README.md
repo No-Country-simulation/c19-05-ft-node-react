@@ -53,9 +53,9 @@ The technologies used to build this project are the following:
 Before you begin, make sure you have the following installed:
 <h3>Prerrequisites</h3>
 <ul>
-  <li><b>Node.js</b> (version 20 or higher)</li>
-  <li><b>Git</b></li>
-  <li><b>MongoDB installed locally or a MongoDB Atlas cluster</b></li>
+  <li><b><a href="https://nodejs.org/en/download/package-manager">Node.js</a></b> (version 20 or higher)</li>
+  <li><b><a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git">Git</a></b></li>
+  <li><b><a href="https://www.youtube.com/watch?v=gB6WLkSrtJk">MongoDB installed locally</a> or a <a href="https://www.mongodb.com/docs/atlas/getting-started/">MongoDB Atlas cluster</a> (Atlas UI) </b></li>
 </ul>
 <h3>Installation</h3>
 <p>1. Clone the repository:</p>
@@ -64,7 +64,7 @@ Before you begin, make sure you have the following installed:
 git clone https://github.com/No-Country-simulation/c19-05-ft-node-react.git
 ```
 
-<p>2. Go to backend directory and install dependencies. If you have a package manager different from NPM, you can run <code>yarn install</code> for Yarn or <code>pnpm install</code> for pnpm instead of <code>npm install</code></p>
+<p>2. Go to backend directory and install dependencies. If you have a package manager different from NPM, you can run <code>yarn install</code> for Yarn or <code>pnpm install</code> for pnpm instead of <code>npm install</code>.</p>
 
 ```
 cd backend
@@ -78,7 +78,7 @@ cp .env.temmplate .env
 ```
 
 
-<p>4. Fill the necessary data in your <code>.env</code> file </p>
+<p>4. Fill the necessary data in your <code>.env</code> file. You can use a code editor such as Visual Studio Code, Sublime Text, or Vim. </p>
 
 ```
 
@@ -117,5 +117,45 @@ CLOUDINARY_KEY =
 CLOUDINARY_SECRET =
 ```
 <p>You can get the database URL either by your local server (might look something like <code>mongodb://localhost:27017</code>) or a database created in your MongoDB Atlas cluster (which might look something like <code>mongodb+srv://username:password@cluster0.6ywut5r.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0</code>)</p>
-<p>Make sure you add the correct URI for the frontend so that there are no CORS issues.</p>
+<p>Make sure you add the correct URI for the frontend so that there are no CORS issues. Trying it locally, we can add <code>http://localhost:3000</code> as our URI for the frontend.</p>
 <p>Regarding to the <code>SMTP_</code> variables, you can create an account on <a href="https://mailtrap.io/">Mailtrap</a> and you get the credentials from there.</p>
+<br>
+<p>5. Run the backend</p>
+
+```
+npm run dev
+```
+
+<p>If you run it locally, you'll get your backend running on <code>http://localhost:PORT/</code>, where <code>PORT</code> is the port you defined on your <code>.env</code> file. To get a quick overview of the available endpoints, you can refer to the <a href="https://documenter.getpostman.com/view/36313081/2sA3e2eoff">API documentation</a>.</p>
+<br>
+<p>6. Open another terminal on the root of the project. If you opened the project with Visual Studio Code, you can open another terminal on the button at the top right and you'll get located on the root of it, just as indicated on the image below:</p>
+<div align="center">
+  <img alt="new terminal" src="/assets/new_terminal.png" height="250"/>
+</div>
+
+<br>
+
+<p>7. Go to the frontend folder and install dependencies. If you have a package manager different from NPM, you can run <code>yarn install</code> for Yarn or <code>pnpm install</code> for pnpm instead of <code>npm install</code>.</p>
+
+```
+cd front
+npm install
+```
+
+<p>8. Run the frontend</p>
+
+```
+npm run dev
+```
+
+<p>9. Open the <code>http://localhost:3000</code> URL on your web browser.</p>
+<div align="center">
+  <img height="130" alt="App URL" src="/assets/front_url.png"/>
+</div>
+
+<br>
+
+<p>And voilà! You have your application running. :)</p>
+<div align="center">
+  <img height="250" alt="App working" src="/assets/main_page.png"/>
+</div>

@@ -11,7 +11,6 @@ export default function NavBar() {
   const [auth, setAuth] = useState(true);
   const { user, logout } = useAuth();
   const [navbarVisible, setNavbarVisible] = useState(false);
-  console.log(path);
 
   const toggleNavbar = () => {
     setNavbarVisible(!navbarVisible);

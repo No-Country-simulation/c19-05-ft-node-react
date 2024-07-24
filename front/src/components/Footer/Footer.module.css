@@ -1,0 +1,32 @@
+.footerLogo {
+  padding-right: 10px;
+}
+
+.footerLogoText {
+  font-size: xx-large;
+  padding-left: 10px;
+}
+
+.footerCopyright,
+.footerCopyrightLogo {
+  align-self: center;
+}
+
+.footerCopyrightText {
+  text-align: center;
+}
+
+@media (max-width: 400px) {
+  .footerLogoText {
+    font-size: x-large;
+  }
+  .footerLogo {
+    padding-right: 0px;
+  }
+}
+
+@media (max-width: 315px) {
+  .footerLogoText {
+    font-size: large;
+  }
+}

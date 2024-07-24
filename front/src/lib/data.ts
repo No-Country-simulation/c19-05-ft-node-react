@@ -1,53 +1,53 @@
-import Technology from "@/assets/CategoriesImages/Technology.svg";
-import Art from "@/assets/CategoriesImages/Art.svg";
-import Science from "@/assets/CategoriesImages/Science.svg";
-import Language from "@/assets/CategoriesImages/Language.svg";
-import Social from "@/assets/CategoriesImages/Social.svg";
-import Exercise from "@/assets/CategoriesImages/Exercise.svg";
-import Finance from "@/assets/CategoriesImages/Finance.svg";
-import Music from "@/assets/CategoriesImages/Music.svg";
+import TechnologySVG from '@/assets/categories/TechnologySVG';
+import ArtSVG from '@/assets/categories/ArtSVG';
+import ScienceSVG from '@/assets/categories/ScienceSVG';
+import LanguageSVG from '@/assets/categories/LanguageSVG';
+import SocialSVG from '@/assets/categories/SocialSVG';
+import ExerciseSVG from '@/assets/categories/ExerciseSVG';
+import FinanceSVG from '@/assets/categories/FinanceSVG';
+import MusicSVG from '@/assets/categories/MusicSVG';
 
 export interface Categories {
   name: string;
-  image: string;
+  image: React.FC<React.SVGProps<SVGSVGElement>>;
 }
 
 export const categories: Categories[] = [
   {
-    name: "Technology",
-    image: Technology,
+    name: 'Technology',
+    image: TechnologySVG,
   },
   {
-    name: "Art",
-    image: Art,
+    name: 'Art',
+    image: ArtSVG,
   },
   {
-    name: "Science",
-    image: Science,
+    name: 'Science',
+    image: ScienceSVG,
   },
   {
-    name: "Language",
-    image: Language,
+    name: 'Language',
+    image: LanguageSVG,
   },
   {
-    name: "Social",
-    image: Social,
+    name: 'Social',
+    image: SocialSVG,
   },
   {
-    name: "Music",
-    image: Music,
+    name: 'Music',
+    image: MusicSVG,
   },
   {
-    name: "Finance",
-    image: Finance,
+    name: 'Finance',
+    image: FinanceSVG,
   },
   {
-    name: "Exercise",
-    image: Exercise,
+    name: 'Exercise',
+    image: ExerciseSVG,
   },
 ];
 
-export type TradeStatus = "Pending" | "In Progress" | "Completed";
+export type TradeStatus = 'Pending' | 'In Progress' | 'Completed';
 
 export interface Trade {
   id: number;
@@ -66,133 +66,133 @@ export const trades: Trade[] = [
   {
     id: 1,
     personOne: {
-      name: "Alice Johnson",
-      specialty: "Web Development",
+      name: 'Alice Johnson',
+      specialty: 'Web Development',
     },
     personTwo: {
-      name: "Bob Smith",
-      specialty: "Graphic Design",
+      name: 'Bob Smith',
+      specialty: 'Graphic Design',
     },
-    status: "Pending",
+    status: 'Pending',
   },
   {
     id: 2,
     personOne: {
-      name: "Charlie Brown",
-      specialty: "Graphic Design",
+      name: 'Charlie Brown',
+      specialty: 'Graphic Design',
     },
     personTwo: {
-      name: "David Wilson",
-      specialty: "Digital Marketing",
+      name: 'David Wilson',
+      specialty: 'Digital Marketing',
     },
-    status: "In Progress",
+    status: 'In Progress',
   },
   {
     id: 3,
     personOne: {
-      name: "Eve Davis",
-      specialty: "Digital Marketing",
+      name: 'Eve Davis',
+      specialty: 'Digital Marketing',
     },
     personTwo: {
-      name: "Frank White",
-      specialty: "Data Analysis",
+      name: 'Frank White',
+      specialty: 'Data Analysis',
     },
-    status: "Completed",
+    status: 'Completed',
   },
   {
     id: 4,
     personOne: {
-      name: "Grace Lee",
-      specialty: "Data Analysis",
+      name: 'Grace Lee',
+      specialty: 'Data Analysis',
     },
     personTwo: {
-      name: "Henry Martin",
-      specialty: "Web Development",
+      name: 'Henry Martin',
+      specialty: 'Web Development',
     },
-    status: "Pending",
+    status: 'Pending',
   },
   {
     id: 5,
     personOne: {
-      name: "Ivy Taylor",
-      specialty: "Mobile App Development",
+      name: 'Ivy Taylor',
+      specialty: 'Mobile App Development',
     },
     personTwo: {
-      name: "Jack Clark",
-      specialty: "Cybersecurity",
+      name: 'Jack Clark',
+      specialty: 'Cybersecurity',
     },
-    status: "In Progress",
+    status: 'In Progress',
   },
   {
     id: 6,
     personOne: {
-      name: "Kathy Harris",
-      specialty: "Cybersecurity",
+      name: 'Kathy Harris',
+      specialty: 'Cybersecurity',
     },
     personTwo: {
-      name: "Liam Lewis",
-      specialty: "Graphic Design",
+      name: 'Liam Lewis',
+      specialty: 'Graphic Design',
     },
-    status: "Completed",
+    status: 'Completed',
   },
   {
     id: 7,
     personOne: {
-      name: "Mike Anderson",
-      specialty: "Cloud Computing",
+      name: 'Mike Anderson',
+      specialty: 'Cloud Computing',
     },
     personTwo: {
-      name: "Nancy Turner",
-      specialty: "AI Development",
+      name: 'Nancy Turner',
+      specialty: 'AI Development',
     },
-    status: "Pending",
+    status: 'Pending',
   },
   {
     id: 8,
     personOne: {
-      name: "Olivia Parker",
-      specialty: "Machine Learning",
+      name: 'Olivia Parker',
+      specialty: 'Machine Learning',
     },
     personTwo: {
-      name: "Paul Thompson",
-      specialty: "Blockchain Development",
+      name: 'Paul Thompson',
+      specialty: 'Blockchain Development',
     },
-    status: "In Progress",
+    status: 'In Progress',
   },
   {
     id: 9,
     personOne: {
-      name: "Quinn Baker",
-      specialty: "UI/UX Design",
+      name: 'Quinn Baker',
+      specialty: 'UI/UX Design',
     },
     personTwo: {
-      name: "Rachel Adams",
-      specialty: "Game Development",
+      name: 'Rachel Adams',
+      specialty: 'Game Development',
     },
-    status: "Completed",
+    status: 'Completed',
   },
   {
     id: 10,
     personOne: {
-      name: "Steven Hill",
-      specialty: "DevOps",
+      name: 'Steven Hill',
+      specialty: 'DevOps',
     },
     personTwo: {
-      name: "Tina Young",
-      specialty: "Network Security",
+      name: 'Tina Young',
+      specialty: 'Network Security',
     },
-    status: "Pending",
+    status: 'Pending',
   },
   {
     id: 11,
     personOne: {
-      name: "Ursula Knight",
-      specialty: "Robotics",
+      name: 'Ursula Knight',
+      specialty: 'Robotics',
     },
     personTwo: {
-      name: "Victor Scott",
-      specialty: "IoT Development",
+      name: 'Victor Scott',
+      specialty: 'IoT Development',
     },
-    status: "In Progress",
+    status: 'In Progress',
   },
 ];

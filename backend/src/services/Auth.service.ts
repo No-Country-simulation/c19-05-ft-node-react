@@ -16,6 +16,8 @@ export class AuthService {
 
   async login(data: LoginType) {
     try {
+      console.log(data);
+
       const user = await this.userRepository.findByEmail(data.email);
 
       if (!user || user.provider !== "local") {

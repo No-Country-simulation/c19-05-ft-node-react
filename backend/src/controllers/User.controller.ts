@@ -185,18 +185,51 @@ export class UserController {
       return next(new InternalServerError());
     }
   };
+
+  // getPotentialPairings = async (
+  //   req: Request,
+  //   res: Response,
+  //   next: NextFunction
+  // ) => {
+  //   try {
+  //     const user = req.user as IUser;
+  //     const result = await this.userService.getSuggestions(user);
+  //     result!.status === "success"
+  //       ? res.status(200).send(result)
+  //       : res.status(500).send(result);
+  //   } catch (error) {
+  //     if (error instanceof Error) {
+  //       return next(error);
+  //     }
+
+  //     return next(new InternalServerError());
+  //   }
+  // };
+
   getPotentialPairings = async (
     req: Request,
     res: Response,
     next: NextFunction
   ) => {
+    const { categoryId = null } = req.params;
+    let page: string | null =
+      typeof req.query.page === "string" ? req.query.page : null;
+
+    // Our service needs information about the user
+    const user = req.user as IUser;
+    if (page && isNaN(+page)) {
+      page = null;
+    }
     try {
-      const user = req.user as IUser;
-      const result = await this.userService.getSuggestions(user);
-      result!.status === "success"
-        ? res.status(200).send(result)
+      const result = await this.userService.getSuggestions(
+        categoryId,
+        page,
+        user
+      );
+      result.status == "success"
+        ? res.send(result)
         : res.status(500).send(result);
-    } catch (error) {
+    } catch (error: any) {
       if (error instanceof Error) {
         return next(error);
       }

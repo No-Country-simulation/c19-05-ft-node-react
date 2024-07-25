@@ -16,13 +16,14 @@ interface User {
 }
 
 const UsersPage = () => {
-  const { users, paginate, getUsers } = useUser();
+  const { users, paginate, getUsers, getRecommendedUsers } = useUser();
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState<{
     open: boolean;
     user?: GetUser;
   }>({ open: false });
+  const [showRecommended, setShowRecommended] = useState(false);
 
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
@@ -35,7 +36,15 @@ const UsersPage = () => {
   };
 
   const handlePageChange = (page: number) => {
-    getUsers(selectedCategory, page);
+    if (showRecommended) {
+      getRecommendedUsers(selectedCategory, page);
+    } else {
+      getUsers(selectedCategory, page);
+    }
+  };
+
+  const onChangeCheckbox = () => {
+    setShowRecommended(!showRecommended);
   };
 
   return (
@@ -60,6 +69,8 @@ const UsersPage = () => {
               toggleSidebar={toggleSidebar}
               handleCategoryChange={handleCategoryChange}
               selectedCategory={selectedCategory}
+              showRecommended={showRecommended}
+              onChangeCheckbox={onChangeCheckbox}
             />
           </div>
         </div>

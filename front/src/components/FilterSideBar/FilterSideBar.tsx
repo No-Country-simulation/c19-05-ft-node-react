@@ -7,6 +7,8 @@ interface FilterSidebarProps {
   toggleSidebar: () => void;
   handleCategoryChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   selectedCategory: string;
+  showRecommended: boolean;
+  onChangeCheckbox: () => void;
 }
 
 const FilterSidebar: React.FC<FilterSidebarProps> = ({
@@ -14,13 +16,19 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   toggleSidebar,
   handleCategoryChange,
   selectedCategory,
+  showRecommended,
+  onChangeCheckbox,
 }) => {
   const { categories } = useSpecialties();
-  const { getUsers } = useUser();
+  const { getUsers, getRecommendedUsers } = useUser();
 
   useEffect(() => {
-    getUsers(selectedCategory);
-  }, [selectedCategory]);
+    if (showRecommended) {
+      getRecommendedUsers(selectedCategory);
+    } else {
+      getUsers(selectedCategory);
+    }
+  }, [selectedCategory, showRecommended]);
 
   return (
     <div
@@ -36,7 +44,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
         </button>
       </div>
       <label className="flex items-center mb-5 mt-5">
-        <input type="checkbox" className="mr-2" />
+        <input type="checkbox" onChange={onChangeCheckbox} className="mr-2" />
         <span>Show only recommended users</span>
       </label>
       <form>

@@ -8,9 +8,9 @@ type SelectRatingProps = {
 
 export default function SelectRating({ setRating }: SelectRatingProps) {
   const handleSelection = (key: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(parseInt(key.target.value));
+    console.log(parseInt(key.target.value) + 1);
 
-    setRating(parseInt(key.target.value));
+    setRating(parseInt(key.target.value) + 1);
   };
   return (
     <div className="flex w-full flex-wrap md:flex-nowrap gap-4">

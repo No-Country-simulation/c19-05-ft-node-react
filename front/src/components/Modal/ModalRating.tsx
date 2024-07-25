@@ -12,6 +12,7 @@ import SelectRating from '../Select/SelectRating';
 import { TradeDetails } from '@/types/trade.type';
 import { useAuth } from '@/context/session/sessionContext';
 import { useUser } from '@/context/user/userContext';
+import { toast } from 'sonner';
 
 type ModalRatingProps = {
   setShowModal: Dispatch<
@@ -40,7 +41,7 @@ export default function ModalRating({
   };
 
   const handleSubmit = async () => {
-    if (rating == 0) alert('Selecciona un rating');
+    if (rating == 0) return toast.info('Selecciona un rating');
 
     const userReceiver =
       showModal.trade!.members.memberOne.id._id === user!._id
@@ -55,10 +56,16 @@ export default function ModalRating({
 
     try {
       const result = await updateRating(data, userReceiver, tradeId);
-      alert(result.payload);
+      setShowModal({ ...showModal, open: false });
+      setComment('');
+      setRating(0);
+      toast.success(result.payload);
     } catch (error) {
       if (error instanceof Error) {
-        return alert(error.message);
+        setShowModal({ ...showModal, open: false });
+        setComment('');
+        setRating(0);
+        return toast.error(error.message);
       }
       alert('Error innesperado');
     }

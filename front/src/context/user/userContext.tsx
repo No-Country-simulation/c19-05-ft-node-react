@@ -20,8 +20,11 @@ import React, {
 
 type UserContextType = {
   users: GetUser[];
-  paginate: Paginate | null;
-  getUsers: (categoryId?: string) => Promise<void | errorResponseType>;
+  paginate: Paginate;
+  getUsers: (
+    categoryId?: string,
+    page?: number
+  ) => Promise<void | errorResponseType>;
   getUserById: (
     userId: string
   ) => Promise<ResponseGetUserById | errorResponseType>;
@@ -48,15 +51,32 @@ type UserProviderProps = {
 
 const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [users, setUsers] = useState<GetUser[]>([]);
-  const [paginate, setPaginate] = useState<Paginate | null>(null);
+  const [paginate, setPaginate] = useState<Paginate>({
+    hasNextPage: false,
+    limit: 10,
+    hasPrevPage: false,
+    nextPage: null,
+    page: 1,
+    pagingCounter: 0,
+    prevPage: null,
+    totalDocs: 0,
+    totalPages: 0,
+  });
 
   useEffect(() => {
     getUsers();
   }, []);
 
-  const getUsers = async (categoryId?: string) => {
-    const url =
-      categoryId === undefined ? '/api/user/' : `/api/user/${categoryId}`;
+  const getUsers = async (categoryId?: string, page?: number) => {
+    let url = '/api/user';
+
+    if (categoryId) {
+      url += `/${categoryId}`;
+    }
+
+    if (page) {
+      url += `?page=${page}`;
+    }
 
     try {
       const { data } = await api<ResponseGetUsers>(url);
@@ -91,10 +111,7 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
   const updateUser = async (formData: UpdateData) => {
     try {
-      const { data } = await api.put<ResponseUpdate>(
-        `/api/user/`,
-        formData
-      );
+      const { data } = await api.put<ResponseUpdate>(`/api/user/`, formData);
       return data;
     } catch (error) {
       return errorHandler(error);

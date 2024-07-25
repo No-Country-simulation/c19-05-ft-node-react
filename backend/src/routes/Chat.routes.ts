@@ -19,7 +19,7 @@ const userRepository = new UserRepository(UserModel);
 const chatService = new ChatService(chatRepository, userRepository);
 const chatController = new ChatController(chatService);
 
-routerChat.param(":chatRoomId", middlewareParamsObjectId("chatRoomId"));
+routerChat.param("chatRoomId", middlewareParamsObjectId("chatRoomId"));
 routerChat.post(
   "/chat/create-message",
   authValidatePassport,

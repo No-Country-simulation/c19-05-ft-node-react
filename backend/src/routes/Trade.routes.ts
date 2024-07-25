@@ -16,7 +16,7 @@ const tradeController = new TradeController(tradeService);
 
 const routerTrade = Router();
 
-routerTrade.param(":tradeId", middlewareParamsObjectId("tradeId"));
+routerTrade.param("tradeId", middlewareParamsObjectId("tradeId"));
 
 routerTrade.post(
   "/trade",

@@ -2,26 +2,22 @@ import { useSpecialties } from '@/context/specialties/specialties';
 import React, { useState, useEffect } from 'react';
 import { useUser } from '@/context/user/userContext';
 
-
-
 interface FilterSidebarProps {
   isOpen: boolean;
   toggleSidebar: () => void;
+  handleCategoryChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  selectedCategory: string;
 }
 
 const FilterSidebar: React.FC<FilterSidebarProps> = ({
   isOpen,
   toggleSidebar,
+  handleCategoryChange,
+  selectedCategory,
 }) => {
-  const { categories, getSpecialties } = useSpecialties();
-  const {getUsers} = useUser();
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const { categories } = useSpecialties();
+  const { getUsers } = useUser();
 
-  const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedCategory(event.target.value);
-  };
-
-  
   useEffect(() => {
     getUsers(selectedCategory);
   }, [selectedCategory]);

@@ -16,6 +16,8 @@ export class AuthController {
 
     try {
       const result = await this.authService.login(data);
+      console.log(result);
+
       if (result.status !== "success") {
         res.status(400).send(result);
       } else {

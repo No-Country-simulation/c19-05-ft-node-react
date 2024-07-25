@@ -161,3 +161,7 @@ export interface Matchings {
   matchingSpecialties: Interest[];
   matchingInterests: Interest[];
 }
+export interface ResponseUserRating {
+  status: string;
+  payload: string;
+}

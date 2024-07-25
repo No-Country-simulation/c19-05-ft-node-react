@@ -3,16 +3,23 @@ import { TradeDetails } from '@/types/trade.type';
 import { FaExchangeAlt } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import { useTrades } from '@/context/trades/trades';
-import { useEffect } from 'react';
-import { toast,Toaster } from 'sonner';
+import { Dispatch, SetStateAction, useEffect } from 'react';
+import { toast, Toaster } from 'sonner';
+import { useAuth } from '@/context/session/sessionContext';
 type TradeCardProps = {
   trade: TradeDetails;
+  setShowModal: Dispatch<
+    SetStateAction<{
+      open: boolean;
+      trade?: TradeDetails;
+    }>
+  >;
 };
 
-const TradeCard = ({ trade }: TradeCardProps) => {
+const TradeCard = ({ trade, setShowModal }: TradeCardProps) => {
   const router = useRouter();
   const { deleteTrade, acceptTrade } = useTrades();
-  console.log(trade);
+  const { user } = useAuth();
 
   const handleReject = async () => {
     try {
@@ -109,7 +116,10 @@ const TradeCard = ({ trade }: TradeCardProps) => {
 
       {trade.status === 'FINISHED' && (
         <div className="flex justify-center">
-          <button className="bg-gray-800 hover:bg-gray-900 text-white py-2 px-4 rounded-lg transition-all border border-white">
+          <button
+            className="bg-gray-800 hover:bg-gray-900 text-white py-2 px-4 rounded-lg transition-all border border-white"
+            onClick={() => setShowModal({ open: true, trade: trade })}
+          >
             Rate
           </button>
         </div>

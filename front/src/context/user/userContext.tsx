@@ -32,7 +32,10 @@ type UserContextType = {
   updateUser: (
     formData: UpdateData
   ) => Promise<ResponseUpdate | errorResponseType>;
-  getRecommendedUsers: () => Promise<string[] | errorResponseType>;
+  getRecommendedUsers: (
+    categoryId?: string,
+    page?: number
+  ) => Promise<void | errorResponseType>;
 };
 
 const UserContext = createContext<UserContextType | undefined>(
@@ -120,16 +123,32 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }
   };
 
-  const getRecommendedUsers = async (): Promise<
-    string[] | errorResponseType
-  > => {
+  const getRecommendedUsers = async (categoryId?: string, page?: number) => {
+    let url = '/api/user/potential-trades';
+
+    if (categoryId) {
+      url += `/${categoryId}`;
+    }
+
+    if (page) {
+      url += `?page=${page}`;
+    }
+
     try {
-      const { data } = await api<ResponseGetRecommendedUsers>(
-        `api/user/potential-trades`
-      );
-      const matchingIds = data.payload.map((one) => one._id);
-      console.log(matchingIds);
-      return matchingIds;
+      const { data } = await api<ResponseGetUsers>(url);
+      setUsers(data.payload.docs);
+      const paginate: Paginate = {
+        hasNextPage: data.payload.hasNextPage,
+        limit: data.payload.limit,
+        hasPrevPage: data.payload.hasPrevPage,
+        nextPage: data.payload.nextPage,
+        page: data.payload.page,
+        pagingCounter: data.payload.pagingCounter,
+        prevPage: data.payload.prevPage,
+        totalDocs: data.payload.totalDocs,
+        totalPages: data.payload.totalPages,
+      };
+      setPaginate(paginate);
     } catch (error) {
       return errorHandler(error);
     }

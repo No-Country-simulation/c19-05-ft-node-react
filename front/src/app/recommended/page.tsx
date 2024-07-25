@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CardUser from '@/components/CardUsers/CardUser';
 import { useUser } from '@/context/user/userContext';
 import FilterSidebar from '@/components/FilterSideBar/FilterSideBar';
@@ -8,30 +8,35 @@ import { Button } from '@nextui-org/button';
 import ModalConnect from '@/components/Modal/ModalConnect';
 import { GetUser } from '@/types/user.type';
 
-const Recommended = () => {
-  const { users, getRecommendedUsers } = useUser();
+interface User {
+  avatar: string;
+  name: string;
+  specialties: string[];
+  location: string;
+}
+
+const Recommendations = () => {
+  const { users, paginate, getUsers } = useUser();
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState<{
     open: boolean;
     user?: GetUser;
   }>({ open: false });
-  const [loading, setLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    getRecommendedUsers();
-  }, []);
 
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
   };
 
-  if (loading) {
-    return (
-      <div className="my-20 min-h-screen min-w-full">
-        Getting recommended users for you...
-      </div>
-    );
-  }
+  const handleCategoryChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setSelectedCategory(event.target.value);
+  };
+
+  const handlePageChange = (page: number) => {
+    getUsers(selectedCategory, page);
+  };
 
   return (
     <div className="container mx-auto py-5 px-5">
@@ -45,20 +50,17 @@ const Recommended = () => {
             Open
           </Button>
         )}
-        {/* {
-          <Button
-            className="bg-[#1FD68E] text-white py-2 mt-10 px-4 rounded-md shadow-md"
-            onClick={toggleSidebar}
-          >
-            {showSidebar ? 'Close' : 'Open'}
-          </Button>
-        } */}
       </div>
 
       <div className="flex flex-wrap">
         <div className={`w-full md:w-1/4 ${showSidebar ? '' : 'hidden'}`}>
           <div className="sticky top-36">
-            <FilterSidebar isOpen={showSidebar} toggleSidebar={toggleSidebar} />
+            <FilterSidebar
+              isOpen={showSidebar}
+              toggleSidebar={toggleSidebar}
+              handleCategoryChange={handleCategoryChange}
+              selectedCategory={selectedCategory}
+            />
           </div>
         </div>
         <div className={`w-full md:w-3/4 ${showSidebar ? 'ml-0' : 'mx-auto'}`}>
@@ -76,8 +78,9 @@ const Recommended = () => {
       </div>
       <div className="w-full flex justify-center mt-5">
         <Pagination
-          total={10}
-          initialPage={1}
+          total={paginate.totalPages}
+          initialPage={paginate.page}
+          onChange={handlePageChange}
           classNames={{
             cursor:
               'bg-gradient-to-b shadow-lg from-[#1FD68E] to-[#18A16A]  dark:from-default-300 dark:to-default-100 text-white font-bold',
@@ -89,4 +92,4 @@ const Recommended = () => {
   );
 };
 
-export default Recommended;
+export default Recommendations;

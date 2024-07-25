@@ -36,12 +36,6 @@ export default function NavBar() {
           >
             Connect
           </Link>
-          <Link
-            href={`/support/`}
-            className={`cursor-pointer transition-all ${path === '/support' ? ' text-green-500 hover:text-green-600 font-bold border-b-2 border-gray-300 hover:border-gray-400' : 'hover:text-gray-900'} `}
-          >
-            Support
-          </Link>
           {auth && (
             <Link
               href={`/user/trades`}
@@ -120,12 +114,6 @@ export default function NavBar() {
           className={`cursor-pointer hover:text-gray-900 text-sm`}
         >
           Connect
-        </Link>
-        <Link
-          href={`/support/`}
-          className={`cursor-pointer hover:text-gray-900 text-sm`}
-        >
-          Support
         </Link>
         {auth && (
           <Link

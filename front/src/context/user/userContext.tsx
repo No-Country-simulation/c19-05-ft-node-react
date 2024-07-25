@@ -95,19 +95,9 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
     try {
       const { data } = await api<ResponseGetUsers>(url);
-      setUsers(data.payload.docs);
-      const paginate: Paginate = {
-        hasNextPage: data.payload.hasNextPage,
-        limit: data.payload.limit,
-        hasPrevPage: data.payload.hasPrevPage,
-        nextPage: data.payload.nextPage,
-        page: data.payload.page,
-        pagingCounter: data.payload.pagingCounter,
-        prevPage: data.payload.prevPage,
-        totalDocs: data.payload.totalDocs,
-        totalPages: data.payload.totalPages,
-      };
-      setPaginate(paginate);
+      const { docs, ...paginateInfo } = data.payload;
+      setUsers(docs);
+      setPaginate(paginateInfo);
     } catch (error) {
       return errorHandler(error);
     }
@@ -146,19 +136,9 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
     try {
       const { data } = await api<ResponseGetUsers>(url);
-      setUsers(data.payload.docs);
-      const paginate: Paginate = {
-        hasNextPage: data.payload.hasNextPage,
-        limit: data.payload.limit,
-        hasPrevPage: data.payload.hasPrevPage,
-        nextPage: data.payload.nextPage,
-        page: data.payload.page,
-        pagingCounter: data.payload.pagingCounter,
-        prevPage: data.payload.prevPage,
-        totalDocs: data.payload.totalDocs,
-        totalPages: data.payload.totalPages,
-      };
-      setPaginate(paginate);
+      const { docs, ...paginateInfo } = data.payload;
+      setUsers(docs);
+      setPaginate(paginateInfo);
     } catch (error) {
       return errorHandler(error);
     }

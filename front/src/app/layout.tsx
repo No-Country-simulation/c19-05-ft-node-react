@@ -28,8 +28,6 @@ const RootLayout = ({ children }: RootLayoutProps) => {
       <body className={`${inter.className} bg-gray-100`}>
         <Providers>
           <CommonLayout>{children}</CommonLayout>
-
-          <Toaster position="top-right" />
         </Providers>
       </body>
     </html>

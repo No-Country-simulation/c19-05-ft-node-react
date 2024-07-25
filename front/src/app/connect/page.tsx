@@ -23,7 +23,7 @@ const UsersPage = () => {
     open: boolean;
     user?: GetUser;
   }>({ open: false });
-  const [showRecommended, setShowRecommended] = useState(false);
+  const [showRecommended, setShowRecommended] = useState<boolean>(false);
 
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
@@ -46,6 +46,18 @@ const UsersPage = () => {
   const onChangeCheckbox = () => {
     setShowRecommended(!showRecommended);
   };
+
+  useEffect(() => {
+    if (showRecommended) {
+      getRecommendedUsers(selectedCategory);
+    } else {
+      getUsers(selectedCategory);
+    }
+  }, [showRecommended]);
+
+  useEffect(() => {
+    console.log('Pagina actual:', paginate.page);
+  }, [paginate.page]);
 
   return (
     <div className="container mx-auto py-5 px-5">
@@ -91,6 +103,7 @@ const UsersPage = () => {
         <Pagination
           total={paginate.totalPages}
           initialPage={paginate.page}
+          page={paginate.page}
           onChange={handlePageChange}
           classNames={{
             cursor:

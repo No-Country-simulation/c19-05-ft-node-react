@@ -28,7 +28,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
     } else {
       getUsers(selectedCategory);
     }
-  }, [selectedCategory, showRecommended]);
+  }, [selectedCategory]);
 
   return (
     <div

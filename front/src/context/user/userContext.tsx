@@ -29,7 +29,7 @@ type UserContextType = {
   updateUser: (
     formData: UpdateData
   ) => Promise<ResponseUpdate | errorResponseType>;
-  getRecommendedUsers: () => void;
+  getRecommendedUsers: () => Promise<string[] | errorResponseType>;
 };
 
 const UserContext = createContext<UserContextType | undefined>(

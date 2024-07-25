@@ -15,6 +15,7 @@ const Recommended = () => {
     open: boolean;
     user?: GetUser;
   }>({ open: false });
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     getRecommendedUsers();
@@ -23,6 +24,14 @@ const Recommended = () => {
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
   };
+
+  if (loading) {
+    return (
+      <div className="my-20 min-h-screen min-w-full">
+        Getting recommended users for you...
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto py-5 px-5">

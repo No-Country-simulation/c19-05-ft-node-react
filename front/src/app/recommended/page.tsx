@@ -8,13 +8,6 @@ import { Button } from '@nextui-org/button';
 import ModalConnect from '@/components/Modal/ModalConnect';
 import { GetUser } from '@/types/user.type';
 
-interface User {
-  avatar: string;
-  name: string;
-  specialties: string[];
-  location: string;
-}
-
 const Recommendations = () => {
   const { users, paginate, getRecommendedUsers } = useUser();
   const [selectedCategory, setSelectedCategory] = useState<string>('');

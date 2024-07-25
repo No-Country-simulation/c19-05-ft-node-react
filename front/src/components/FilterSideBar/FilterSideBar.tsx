@@ -24,7 +24,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
   return (
     <div
-      className={`filter-sidebar border border-[#1FD68E] bg-gray-200 p-4 rounded  ${isOpen ? '' : 'hidden'} `}
+      className={`filter-sidebar border shadow-lg bg-[#FFF] p-4 rounded  ${isOpen ? '' : 'hidden'} `}
     >
       <div className="flex justify-between items-center mb-3">
         <h3 className="text-lg font-bold">Filters</h3>

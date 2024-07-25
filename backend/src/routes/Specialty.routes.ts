@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { authValidatePassport } from "../middlewares/authValidate";
 import { SpecialtyController } from "../controllers/Specialty.controller";
 import { SpecialtyService } from "../services/Specialty.service";
 import { SpecialtyRepository } from "../repositories/Specialty.repository";
@@ -11,10 +10,6 @@ const specialtyService = new SpecialtyService(specialtyRepository);
 const specialtyController = new SpecialtyController(specialtyService);
 const routerSpecialty = Router();
 
-routerSpecialty.get(
-  "/specialties",
-  authValidatePassport,
-  specialtyController.find
-);
+routerSpecialty.get("/specialties", specialtyController.find);
 
 export { routerSpecialty };

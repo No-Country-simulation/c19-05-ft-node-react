@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CardUser from '@/components/CardUsers/CardUser';
 import { useUser } from '@/context/user/userContext';
 import FilterSidebar from '@/components/FilterSideBar/FilterSideBar';
@@ -16,7 +16,8 @@ interface User {
 }
 
 const UsersPage = () => {
-  const { users } = useUser();
+  const { users, paginate, getUsers } = useUser();
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState<{
     open: boolean;
@@ -25,6 +26,16 @@ const UsersPage = () => {
 
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
+  };
+
+  const handleCategoryChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setSelectedCategory(event.target.value);
+  };
+
+  const handlePageChange = (page: number) => {
+    getUsers(selectedCategory, page);
   };
 
   return (
@@ -39,20 +50,17 @@ const UsersPage = () => {
             Open
           </Button>
         )}
-        {/* {
-          <Button
-            className="bg-[#1FD68E] text-white py-2 mt-10 px-4 rounded-md shadow-md"
-            onClick={toggleSidebar}
-          >
-            {showSidebar ? 'Close' : 'Open'}
-          </Button>
-        } */}
       </div>
 
       <div className="flex flex-wrap">
         <div className={`w-full md:w-1/4 ${showSidebar ? '' : 'hidden'}`}>
           <div className="sticky top-36">
-            <FilterSidebar isOpen={showSidebar} toggleSidebar={toggleSidebar} />
+            <FilterSidebar
+              isOpen={showSidebar}
+              toggleSidebar={toggleSidebar}
+              handleCategoryChange={handleCategoryChange}
+              selectedCategory={selectedCategory}
+            />
           </div>
         </div>
         <div className={`w-full md:w-3/4 ${showSidebar ? 'ml-0' : 'mx-auto'}`}>
@@ -70,8 +78,9 @@ const UsersPage = () => {
       </div>
       <div className="w-full flex justify-center mt-5">
         <Pagination
-          total={10}
-          initialPage={1}
+          total={paginate.totalPages}
+          initialPage={paginate.page}
+          onChange={handlePageChange}
           classNames={{
             cursor:
               'bg-gradient-to-b shadow-lg from-[#1FD68E] to-[#18A16A]  dark:from-default-300 dark:to-default-100 text-white font-bold',

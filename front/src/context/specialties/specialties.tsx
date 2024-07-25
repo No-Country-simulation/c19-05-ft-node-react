@@ -50,8 +50,12 @@ const SpecialtiesProvider: React.FC<SpecialtiesProviderProps> = ({ children }) =
   const [categories , setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
-    getSpecialties
+    getSpecialties();
   }, []);
+
+  useEffect(() => {
+    console.log('aca estan las', categories);
+  }, [categories]);
 
   const getSpecialties = async () => {
     try {

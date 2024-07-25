@@ -86,7 +86,7 @@ const CardUser: React.FC<CardUserProp> = ({
                 setShowModal({ open: !showModal.open, user: user })
               }
             >
-              Conectar
+            Connect
             </Button>
           </Link>
 

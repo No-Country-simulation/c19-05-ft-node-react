@@ -45,7 +45,7 @@ export class UserRepository {
     try {
       const result = await this.UserModel.findById(id)
         .select(
-          "_id name email aboutme role phoneNumber specialties interests userRatings trades contacts"
+          "_id role name email avatar banner specialties interests aboutme phoneNumber userRatings trades contacts"
         )
         .populate({
           path: "trades",
@@ -101,7 +101,7 @@ export class UserRepository {
   async findByEmail(email: string): Promise<IUser | null> {
     try {
       return await this.UserModel.findOne({ email }).select(
-        "_id name email description password phoneNumber specialties interests userRatings trades contacts provider"
+        "_id role name email avatar banner specialties interests aboutme phoneNumber userRatings trades contacts"
       );
     } catch (error) {
       throw error;

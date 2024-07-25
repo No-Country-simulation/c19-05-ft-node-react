@@ -16,13 +16,29 @@ const tradeController = new TradeController(tradeService);
 
 const routerTrade = Router();
 
-routerTrade.use(authValidatePassport);
-routerTrade.param(":tradeId", middlewareParamsObjectId("tradeId"));
+routerTrade.param("tradeId", middlewareParamsObjectId("tradeId"));
 
-routerTrade.post("/trade", middlewareBody(TradeSchema), tradeController.create);
-routerTrade.put("/trade/:tradeId", tradeController.updateAccepted);
-routerTrade.delete("/trade/:tradeId", tradeController.delete);
-routerTrade.get("/trade/find-one/:tradeId", tradeController.findOne);
-routerTrade.get("/trade/", tradeController.findTrades);
+routerTrade.post(
+  "/trade",
+  authValidatePassport,
+  middlewareBody(TradeSchema),
+  tradeController.create
+);
+routerTrade.put(
+  "/trade/:tradeId",
+  authValidatePassport,
+  tradeController.updateAccepted
+);
+routerTrade.delete(
+  "/trade/:tradeId",
+  authValidatePassport,
+  tradeController.delete
+);
+routerTrade.get(
+  "/trade/find-one/:tradeId",
+  authValidatePassport,
+  tradeController.findOne
+);
+routerTrade.get("/trade/", authValidatePassport, tradeController.findTrades);
 
 export default routerTrade;

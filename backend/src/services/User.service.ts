@@ -449,7 +449,7 @@ export class UserService {
       ]);
       return {
         status: "success",
-        payload: resultUser,
+        payload: "Rating updated",
       };
     } catch (error) {
       throw error;

@@ -8,8 +8,10 @@ import {
   ResponseGetUserById,
   ResponseGetUsers,
   ResponseUpdate,
+  ResponseUserRating,
   UpdateData,
 } from '@/types/user.type';
+import { isAxiosError } from 'axios';
 import React, {
   createContext,
   useState,
@@ -31,6 +33,14 @@ type UserContextType = {
   updateUser: (
     formData: UpdateData
   ) => Promise<ResponseUpdate | errorResponseType>;
+  updateRating: (
+    formData: {
+      comment: string;
+      rating: number;
+    },
+    userId: string,
+    tradeId: string
+  ) => Promise<ResponseUserRating>;
 };
 
 const UserContext = createContext<UserContextType | undefined>(
@@ -118,9 +128,35 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }
   };
 
+  const updateRating = async (
+    formData: { comment: string; rating: number },
+    userId: string,
+    tradeId: string
+  ) => {
+    try {
+      const { data } = await api.put<ResponseUserRating>(
+        `/api/user/${userId}/update-rating/${tradeId}`,
+        formData
+      );
+      return data;
+    } catch (error) {
+      if (isAxiosError(error) && error.response) {
+        const errorInfo = error.response.data as {
+          status: string;
+          payload: string;
+        };
+        throw new Error(errorInfo.payload);
+      } else if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+      throw new Error('ERROR INNESPERADO');
+    }
+  };
+
   const contextValue: UserContextType = {
     users,
     getUsers,
+    updateRating,
     paginate,
     getUserById,
     updateUser,

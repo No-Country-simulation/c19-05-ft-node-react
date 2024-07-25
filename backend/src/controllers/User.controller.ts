@@ -137,7 +137,6 @@ export class UserController {
     }: { comment: string | undefined; rating: enumType } = req.body;
     const user = req.user!;
     const userId = user._id;
-    console.log(comment, rating);
 
     try {
       const result = await this.userService.updateRating(
@@ -145,6 +144,7 @@ export class UserController {
         user,
         userTwoId
       );
+
       res.send(result);
     } catch (error) {
       if (error instanceof Error) {

@@ -147,3 +147,8 @@ export interface PayloadUpdate {
   userRatings: userRating[];
   __v: number;
 }
+
+export interface ResponseUserRating {
+  status: string;
+  payload: string;
+}

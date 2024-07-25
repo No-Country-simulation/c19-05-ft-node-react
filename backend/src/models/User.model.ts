@@ -39,6 +39,7 @@ export interface IUser extends Document {
   email: string;
   password: string;
   avatar: string;
+  banner: string;
   specialties: specialty[];
   interests: specialty[];
   aboutme: string;
@@ -76,6 +77,10 @@ const UserSchema: Schema = new Schema({
   avatar: {
     type: String,
     default: "/avatar.jpeg",
+  },
+  banner: {
+    type: String,
+    default: "/banners/banner1.jpg",
   },
   specialties: {
     type: [

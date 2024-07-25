@@ -28,6 +28,10 @@ export const UserUpdateSchema = z.object({
       required_error: "El nombre es requerido",
     })
     .min(2, { message: "Minimo 2 caracteres" }),
+  banner: z
+    .string({ invalid_type_error: "The banner must be a string" })
+    .optional()
+    .default("/banner/banner1.jpg"),
   aboutme: z
     .string({ invalid_type_error: "La descripcion debe ser un string" })
     .max(255, { message: "Maximo 255 caracteres" })
@@ -46,6 +50,7 @@ export const UserUpdateSchema = z.object({
 
 export type UserUpdateType = {
   name: string;
+  banner: string;
   aboutme: string;
   phoneNumber: string;
   specialties: {

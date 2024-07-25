@@ -486,30 +486,98 @@ export class UserService {
     }
   }
 
-  async getSuggestions(user: IUser) {
-    const interests: specialty[] = user.interests;
-    const interestsIds: Types.ObjectId[] = interests.map(
-      (interest) => interest.specialtyId
-    );
+  // async getSuggestions(user: IUser) {
+  //   const interests: specialty[] = user.interests;
+  //   const interestsIds: Types.ObjectId[] = interests.map(
+  //     (interest) => interest.specialtyId
+  //   );
 
-    const specialties: specialty[] = user.specialties;
-    const specialtiesIds: Types.ObjectId[] = specialties.map(
-      (specialty) => specialty.specialtyId
-    );
+  //   const specialties: specialty[] = user.specialties;
+  //   const specialtiesIds: Types.ObjectId[] = specialties.map(
+  //     (specialty) => specialty.specialtyId
+  //   );
 
+  //   try {
+  //     const recommendations = await this.userRepository.findSuggestions(
+  //       interestsIds,
+  //       specialtiesIds
+  //     );
+  //     if (recommendations) {
+  //       return {
+  //         status: "success",
+  //         numberOfRecommendations: recommendations.length,
+  //         payload: recommendations,
+  //       };
+  //     }
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // }
+
+  async getSuggestions(
+    categoryId: string | null,
+    page: string | null,
+    user: IUser
+  ) {
+    const options = {
+      page: page ? +page : 1,
+      limit: 10,
+      select: "name avatar aboutme specialties interests userRatings",
+      populate: [
+        {
+          path: "specialties",
+          populate: [
+            {
+              path: "categoryId",
+              select: "name",
+              model: "Category",
+            },
+            {
+              path: "specialtyId",
+              select: "name",
+              model: "Specialty",
+            },
+          ],
+        },
+        {
+          path: "interests",
+          populate: [
+            {
+              path: "categoryId",
+              select: "name",
+              model: "Category",
+            },
+            {
+              path: "specialtyId",
+              select: "name",
+              model: "Specialty",
+            },
+          ],
+        },
+        {
+          path: "userRatings",
+          populate: {
+            path: "userId",
+            select: "name avatar",
+          },
+        },
+      ],
+    };
+    let query = {};
+    if (categoryId) {
+      query = {
+        specialties: {
+          $elemMatch: { categoryId: new Types.ObjectId(categoryId) },
+        },
+      };
+    }
     try {
-      const recommendations = await this.userRepository.findSuggestions(
-        interestsIds,
-        specialtiesIds
-      );
-      if (recommendations) {
-        return {
-          status: "success",
-          numberOfRecommendations: recommendations.length,
-          payload: recommendations,
-        };
-      }
-    } catch (error) {
+      const users = await this.userRepository.find(query, options);
+      return {
+        status: "success",
+        payload: users,
+      };
+    } catch (error: any) {
       throw error;
     }
   }

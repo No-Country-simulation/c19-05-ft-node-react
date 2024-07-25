@@ -181,6 +181,8 @@ export class UserRepository {
     }
   }
 
+  // necesito pasar el query, no le puedo dar la lógica
+  // al repositorio: SOLO ACCEDE A LA BASE DE DATOS
   async findSuggestions(
     interestsIds: Types.ObjectId[],
     specialtiesIds: Types.ObjectId[]

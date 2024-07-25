@@ -45,7 +45,7 @@ export class UserRepository {
     try {
       const result = await this.UserModel.findById(id)
         .select(
-          "_id role name email avatar banner specialties interests aboutme phoneNumber userRatings trades contacts"
+          "_id name email aboutme role phoneNumber specialties interests userRatings trades contacts"
         )
         .populate({
           path: "trades",
@@ -101,7 +101,7 @@ export class UserRepository {
   async findByEmail(email: string): Promise<IUser | null> {
     try {
       return await this.UserModel.findOne({ email }).select(
-        "_id role name email avatar banner specialties interests aboutme phoneNumber userRatings trades contacts"
+        "_id name email description password phoneNumber specialties interests userRatings trades contacts provider"
       );
     } catch (error) {
       throw error;
@@ -177,55 +177,6 @@ export class UserRepository {
 
       return userUpdated;
     } catch (error) {
-      throw error;
-    }
-  }
-
-  // necesito pasar el query, no le puedo dar la lógica
-  // al repositorio: SOLO ACCEDE A LA BASE DE DATOS
-  async findSuggestions(
-    interestsIds: Types.ObjectId[],
-    specialtiesIds: Types.ObjectId[]
-  ) {
-    try {
-      const getPotentialPairings = await this.UserModel.aggregate([
-        {
-          $match: {
-            specialties: {
-              $elemMatch: {
-                specialtyId: { $in: interestsIds },
-              },
-            },
-            interests: {
-              $elemMatch: {
-                specialtyId: { $in: specialtiesIds },
-              },
-            },
-          },
-        },
-        {
-          $project: {
-            _id: 1,
-            name: 1,
-            matchingSpecialties: {
-              $filter: {
-                input: "$specialties",
-                as: "specialty",
-                cond: { $in: ["$$specialty.specialtyId", interestsIds] },
-              },
-            },
-            matchingInterests: {
-              $filter: {
-                input: "$interests",
-                as: "interest",
-                cond: { $in: ["$$interest.specialtyId", specialtiesIds] },
-              },
-            },
-          },
-        },
-      ]);
-      return getPotentialPairings;
-    } catch (error: any) {
       throw error;
     }
   }

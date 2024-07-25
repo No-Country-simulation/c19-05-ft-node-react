@@ -49,7 +49,7 @@ routerUser.put(
 
 // TODO: endpoint for showing all potential users
 routerUser.get(
-  "/user/potential-trades",
+  "/user/potential-trades/:categoryId?",
   authValidatePassport,
   userController.getPotentialPairings
 );

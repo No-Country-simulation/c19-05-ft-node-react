@@ -563,13 +563,29 @@ export class UserService {
         },
       ],
     };
-    let query = {};
-    if (categoryId) {
-      query = {
-        specialties: {
-          $elemMatch: { categoryId: new Types.ObjectId(categoryId) },
+
+    const interests: specialty[] = user.interests;
+    const interestsIds: Types.ObjectId[] = interests.map(
+      (interest) => interest.specialtyId
+    );
+
+    const specialties: specialty[] = user.specialties;
+    const specialtiesIds: Types.ObjectId[] = specialties.map(
+      (specialty) => specialty.specialtyId
+    );
+
+    let query: any = {
+      specialties: {
+        $elemMatch: {
+          specialtyId: { $in: interestsIds },
         },
-      };
+      },
+      interests: {
+        $elemMatch: { specialtyId: { $in: specialtiesIds } },
+      },
+    };
+    if (categoryId) {
+      query.specialties.$elemMatch.categoryId = new Types.ObjectId(categoryId);
     }
     try {
       const users = await this.userRepository.find(query, options);

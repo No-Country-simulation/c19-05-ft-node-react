@@ -16,13 +16,17 @@ interface User {
 }
 
 const Recommendations = () => {
-  const { users, paginate, getUsers } = useUser();
+  const { users, paginate, getRecommendedUsers } = useUser();
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState<{
     open: boolean;
     user?: GetUser;
   }>({ open: false });
+
+  useEffect(() => {
+    getRecommendedUsers();
+  }, []);
 
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
@@ -35,7 +39,7 @@ const Recommendations = () => {
   };
 
   const handlePageChange = (page: number) => {
-    getUsers(selectedCategory, page);
+    getRecommendedUsers(selectedCategory, page);
   };
 
   return (

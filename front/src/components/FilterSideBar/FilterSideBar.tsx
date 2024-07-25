@@ -35,6 +35,10 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           Close
         </button>
       </div>
+      <label className="flex items-center mb-5 mt-5">
+        <input type="checkbox" className="mr-2" />
+        <span>Show only recommended users</span>
+      </label>
       <form>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 mb-1">

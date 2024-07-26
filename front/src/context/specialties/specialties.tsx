@@ -53,10 +53,6 @@ const SpecialtiesProvider: React.FC<SpecialtiesProviderProps> = ({ children }) =
     getSpecialties();
   }, []);
 
-  useEffect(() => {
-    console.log('aca estan las', categories);
-  }, [categories]);
-
   const getSpecialties = async () => {
     try {
       const { data } = await api<{payload:payload}>('/api/specialties');

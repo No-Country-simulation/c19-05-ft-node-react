@@ -9,6 +9,7 @@ export interface User {
   name: string;
   email: string;
   avatar: string;
+  banner: string;
   password: string;
   aboutme: string;
   phoneNumber: string;

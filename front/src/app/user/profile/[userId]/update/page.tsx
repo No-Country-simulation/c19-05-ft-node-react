@@ -9,6 +9,7 @@ import { CgAsterisk } from 'react-icons/cg';
 import { TiDelete } from 'react-icons/ti';
 import { Interest } from '@/types/user.type';
 import { useUser } from '@/context/user/userContext';
+import { useSpecialties } from '@/context/specialties/specialties';
 
 interface IFormInput {
   name: string;
@@ -20,6 +21,9 @@ interface IFormInput {
 }
 
 const EditProfile = () => {
+
+  const {specialties: specialtiesOptions, categories } = useSpecialties()
+
   const {
     register,
     handleSubmit,
@@ -28,7 +32,7 @@ const EditProfile = () => {
   } = useForm<IFormInput>();
 
   const [profileImage, setProfileImage] = useState<string | null>(null);
-  const [bannerImage, setBannerImage] = useState<string | null>('banner1.jpg');
+  const [bannerImage, setBannerImage] = useState<string | null>('/banners/banner1.jpg');
 
   const [specialtiesCategory, setSpecialtiesCategory] = useState<string | null>(
     ''
@@ -42,26 +46,6 @@ const EditProfile = () => {
     Pick<Interest, 'categoryId' | 'specialtyId'>[]
   >([]);
 
-  const categories = [
-    { id: '1', name: 'Development' },
-    { id: '2', name: 'Science' },
-    { id: '3', name: 'Security' },
-    { id: '4', name: 'Management' },
-    { id: '5', name: 'Technology' },
-    { id: '6', name: 'Finance' },
-  ];
-
-  const specialtiesOptions = [
-    { id: '1', name: 'Web Development', category: '1' },
-    { id: '2', name: 'Data Science', category: '2' },
-    { id: '3', name: 'Cybersecurity', category: '3' },
-    { id: '4', name: 'Project Management', category: '4' },
-    { id: '5', name: 'Artificial Intelligence', category: '5' },
-    { id: '6', name: 'Blockchain', category: '6' },
-    { id: '7', name: 'Internet of Things', category: '5' },
-    { id: '8', name: 'Cloud Computing', category: '5' },
-  ];
-
   const banners = ['banner1.jpg', 'banner2.jpg', 'banner3.jpg'];
 
   const { user } = useAuth()
@@ -70,15 +54,23 @@ const EditProfile = () => {
 
   const fetchUserData = async () => {
     if (user) {
+      const userSpecialties = user.specialties.map(specialty => ({ 
+        categoryId: specialty.categoryId._id,
+        specialtyId: specialty.specialtyId._id
+      }))
+      const userInterests = user.interests.map(specialty => ({ 
+        categoryId: specialty.categoryId._id,
+        specialtyId: specialty.specialtyId._id
+      }))
       try {
         setProfileImage(user.avatar);
+        setBannerImage(user.banner);
         setValue('name', user.name);
         setValue('email', user.email);
         setValue('phone', user.phoneNumber);
         setValue('aboutMe', user.aboutme);
-        setSelectedSpecialties(user.specialties);
-        setSelectedInterests(user.interests);
-        // setBannerImage(user.bannerImage);
+        setSelectedSpecialties(userSpecialties);
+        setSelectedInterests(userInterests);
       } catch (error) {
         toast.error('Error fetching user data');
         console.error('Error fetching user data:', error);
@@ -118,11 +110,11 @@ const EditProfile = () => {
   };
 
   const handleSelectSpecialties = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedSpecialtyId = e.target.value;
+    const selectedSpecialtyId : string = e.target.value;
 
     // Buscar la especialidad seleccionada
     const selectedSpecialty = specialtiesOptions.find(
-      (specialty) => specialty.id === selectedSpecialtyId
+      (specialty) => specialty._id.toString() === selectedSpecialtyId
     );
 
     if (!selectedSpecialty) {
@@ -130,12 +122,12 @@ const EditProfile = () => {
     } else {
       if (
         !selectedSpecialties.some(
-          (specialty) => specialty.specialtyId === selectedSpecialty?.id
+          (specialty) => specialty.specialtyId === selectedSpecialty?._id.toString()
         )
       ) {
         const specialty = {
-          categoryId: selectedSpecialty.category,
-          specialtyId: selectedSpecialty.id,
+          categoryId: selectedSpecialty.categoryId,
+          specialtyId: selectedSpecialty._id.toString(),
         };
 
         setSelectedSpecialties([...selectedSpecialties, specialty]);
@@ -156,7 +148,7 @@ const EditProfile = () => {
 
     // Buscar la especialidad seleccionada
     const selectedSpecialty = specialtiesOptions.find(
-      (specialty) => specialty.id === selectedSpecialtyId
+      (specialty) => specialty._id.toString() === selectedSpecialtyId
     );
 
     if (!selectedSpecialty) {
@@ -164,12 +156,12 @@ const EditProfile = () => {
     } else {
       if (
         !selectedInterests.some(
-          (specialty) => specialty.specialtyId === selectedSpecialty?.id
+          (specialty) => specialty.specialtyId === selectedSpecialty?._id.toString()
         )
       ) {
         const specialty = {
-          categoryId: selectedSpecialty.category,
-          specialtyId: selectedSpecialty.id,
+          categoryId: selectedSpecialty.categoryId,
+          specialtyId: selectedSpecialty._id.toString(),
         };
 
         setSelectedInterests([...selectedInterests, specialty]);
@@ -213,14 +205,16 @@ const EditProfile = () => {
       aboutme: data.aboutMe,
       phoneNumber: data.phone,
       specialties: selectedSpecialties,
-      interests: selectedInterests
+      interests: selectedInterests,
+      banner: bannerImage,
     }
-
-    console.log(updateData)
 
     try {
       const data = await updateUser(updateData)
       console.log(data)
+      if(data.status === 'success'){
+        toast.success('User updated successfully')
+      }
     } catch (error) {
       console.log(error)
       toast.error('error while updating user data')
@@ -262,18 +256,19 @@ const EditProfile = () => {
           >
             <option value="">Select a banner</option>
             {banners.map((banner, index) => (
-              <option key={index} value={banner}>
+              <option key={index} value={`/banners/${banner}`}>
                 {banner}
               </option>
             ))}
           </select>
           {bannerImage && (
             <Image
-              src={`/banners/${bannerImage}`}
+              src={bannerImage}
               width={500}
               height={500}
               alt="Banner Preview"
               className="mt-2 w-full object-cover"
+              priority
             />
           )}
         </div>
@@ -340,7 +335,7 @@ const EditProfile = () => {
             >
               <option value="">- All categories -</option>
               {categories.map((category) => (
-                <option key={category.id} value={category.id}>
+                <option key={category._id} value={category._id}>
                   {category.name}
                 </option>
               ))}
@@ -360,20 +355,19 @@ const EditProfile = () => {
               multiple
               className="max-w-xs border rounded-md border-gray-300 p-2"
               onChange={handleSelectSpecialties}
-              required
             >
               {specialtiesCategory !== ''
                 ? specialtiesOptions
                     .filter(
-                      (specialty) => specialty.category === specialtiesCategory
+                      (specialty) => specialty.categoryId === specialtiesCategory
                     )
                     .map((specialty) => (
-                      <option key={specialty.id} value={specialty.id}>
+                      <option key={specialty._id} value={specialty._id}>
                         {specialty.name}
                       </option>
                     ))
                 : specialtiesOptions.map((specialty) => (
-                    <option key={specialty.id} value={specialty.id}>
+                    <option key={specialty._id} value={specialty._id}>
                       {specialty.name}
                     </option>
                   ))}
@@ -390,7 +384,7 @@ const EditProfile = () => {
                     <div className="border border-gray-500 text-gray-700 rounded-2xl py-1 px-2 text-center text-xs font-medium shadow">
                       {specialtiesOptions.map(
                         (specialty) =>
-                          specialty.id === selectedSpecialty.specialtyId &&
+                          specialty._id.toString() === selectedSpecialty.specialtyId &&
                           specialty.name
                       )}
                     </div>
@@ -435,7 +429,7 @@ const EditProfile = () => {
             >
               <option value="">- All categories -</option>
               {categories.map((category) => (
-                <option key={category.id} value={category.id}>
+                <option key={category._id} value={category._id}>
                   {category.name}
                 </option>
               ))}
@@ -455,20 +449,19 @@ const EditProfile = () => {
               multiple
               className="max-w-xs border rounded-md border-gray-300 p-2"
               onChange={handleSelectInterests}
-              required
             >
               {interestsCategory !== ''
                 ? specialtiesOptions
                     .filter(
-                      (specialty) => specialty.category === interestsCategory
+                      (specialty) => specialty.categoryId === interestsCategory
                     )
                     .map((specialty) => (
-                      <option key={specialty.id} value={specialty.id}>
+                      <option key={specialty._id} value={specialty._id}>
                         {specialty.name}
                       </option>
                     ))
                 : specialtiesOptions.map((specialty) => (
-                    <option key={specialty.id} value={specialty.id}>
+                    <option key={specialty._id} value={specialty._id}>
                       {specialty.name}
                     </option>
                   ))}
@@ -485,7 +478,7 @@ const EditProfile = () => {
                     <div className="border border-gray-500 text-gray-700 rounded-2xl py-1 px-2 text-center text-xs font-medium shadow">
                       {specialtiesOptions.map(
                         (specialty) =>
-                          specialty.id === selectedSpecialty.specialtyId &&
+                          specialty._id.toString() === selectedSpecialty.specialtyId &&
                           specialty.name
                       )}
                     </div>

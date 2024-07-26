@@ -8,8 +8,8 @@ import {
   Button,
   Input,
 } from '@nextui-org/react';
-import SelectRating from '../Select/SelectRating';
 import { TradeDetails } from '@/types/trade.type';
+import SelectRating from '../Select/SelectRating';
 import { useAuth } from '@/context/session/sessionContext';
 import { useUser } from '@/context/user/userContext';
 import { toast } from 'sonner';
@@ -41,7 +41,7 @@ export default function ModalRating({
   };
 
   const handleSubmit = async () => {
-    if (rating == 0) return toast.info('Selecciona un rating');
+    if (rating == 0) return toast.info('Select rating.');
 
     const userReceiver =
       showModal.trade!.members.memberOne.id._id === user!._id
@@ -90,7 +90,7 @@ export default function ModalRating({
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
                 />
-                <SelectRating setRating={setRating} />
+                <SelectRating rating={rating} setRating={setRating} />
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="flat" onPress={onClose}>

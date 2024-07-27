@@ -135,6 +135,8 @@ export interface ResponseUpdate {
 }
 
 export interface PayloadUpdate {
+  avatar: string;
+  banner: string;
   aboutme: string;
   _id: string;
   name: string;

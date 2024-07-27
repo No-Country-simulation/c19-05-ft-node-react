@@ -1,6 +1,8 @@
 'use client';
 import styles from './About.module.css';
 import Slider from 'react-slick';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import Image from 'next/image';
 
 const About = () => {
@@ -10,6 +12,8 @@ const About = () => {
     speed: 500,
     slidesToShow: 6,
     slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000
   };
 
   return (

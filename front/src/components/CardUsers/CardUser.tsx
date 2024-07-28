@@ -86,11 +86,11 @@ const CardUser: React.FC<CardUserProp> = ({
                 setShowModal({ open: !showModal.open, user: user })
               }
             >
-            Connect
+              Connect
             </Button>
           </Link>
 
-          <Link href="#">
+          <Link href={`user/profile/${user._id}`}>
             <Button className=" bg-transparent border border-[#1FD68E] text-[#1FD68E] hover:bg-gray-200 rounded-lg px-3 py-1">
               <span>View Profile</span>
             </Button>

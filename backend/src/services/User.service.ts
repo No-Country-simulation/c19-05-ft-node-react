@@ -48,6 +48,18 @@ export interface CloudinaryResponse {
   api_key: string;
 }
 
+type userFilterDataTypeGetUserById = Pick<
+  IUser,
+  "id" | "name" | "aboutme" | "specialties" | "interests" | "userRatings"
+> & {
+  phoneNumber: string | null;
+  trades: Types.ObjectId[] | null;
+  avatar: string | null;
+  banner: string | null;
+  email: string | null;
+  isOwnProfile: boolean;
+};
+
 type userFilterDataType = Pick<
   IUser,
   "id" | "name" | "aboutme" | "specialties" | "interests" | "userRatings"
@@ -288,8 +300,10 @@ export class UserService {
         throw new AuthenticationError("The user does not exist.");
       }
 
-      let userFilterData: userFilterDataType = {
+      let userFilterData: userFilterDataTypeGetUserById = {
         id: userFind.id,
+        avatar: userFind.avatar,
+        banner: userFind.banner,
         name: userFind.name,
         aboutme: userFind.aboutme,
         specialties: userFind.specialties,
@@ -297,18 +311,23 @@ export class UserService {
         userRatings: userFind.userRatings,
         trades: null,
         phoneNumber: null,
+        email: null,
+        isOwnProfile: false, // Nuevo campo para indicar si es el perfil propio
       };
 
       if (user) {
         if (user._id.toString() === userFind._id.toString()) {
           userFilterData.trades = userFind.trades;
           userFilterData.phoneNumber = userFind.phoneNumber;
+          userFilterData.email = userFind.email;
+          userFilterData.isOwnProfile = true; // Actualizar el campo si es el perfil propio
         } else {
           const result = userFind.contacts.findIndex(
             (contact) => contact?.toString() === user.id.toString()
           );
           if (result !== -1) {
             userFilterData.phoneNumber = userFind.phoneNumber;
+            userFilterData.email = userFind.email;
           }
         }
       }
@@ -329,6 +348,8 @@ export class UserService {
       if (!userFind) {
         throw new AuthenticationError("The email is not registered.");
       }
+
+      
 
       let userFilterData: userFilterDataType = {
         name: userFind.name,

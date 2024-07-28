@@ -100,11 +100,15 @@ export interface ResponseGetUserById {
 export interface GetUserById {
   name: string;
   aboutme: string;
-  specialties: Interest[];
-  interests: Interest[];
+  avatar: string;
+  banner: string;
+  specialties: InterestPopulated[];
+  interests: InterestPopulated[];
   userRatings: userRating[];
   trades: null;
   phoneNumber: null | string;
+  email: null | string;
+  isOwnProfile: boolean;
 }
 
 //! UPDATE TYPES

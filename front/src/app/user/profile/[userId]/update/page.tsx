@@ -7,10 +7,11 @@ import { toast } from 'sonner';
 import { useAuth } from '@/context/session/sessionContext';
 import { CgAsterisk } from 'react-icons/cg';
 import { TiDelete } from 'react-icons/ti';
-import { Interest, InterestPopulated } from '@/types/user.type';
+import { Interest, InterestPopulated, User } from '@/types/user.type';
 import { useUser } from '@/context/user/userContext';
 import { useSpecialties } from '@/context/specialties/specialties';
 import { v4 as uuidv4 } from 'uuid';
+import Spinner from '@/components/Spinner/Spinner';
 
 interface IFormInput {
   name: string;
@@ -84,24 +85,36 @@ const EditProfile = () => {
     fetchUserData();
   }, [user]);
 
+  const [uploadingProfileImage, setUploadingProfileImage] = useState(false);
+
   const handleImageUpload = async (
     e: ChangeEvent<HTMLInputElement>,
-    setImage: (image: string | null) => void
+    setProfileImage: (image: string | null) => void
   ) => {
     const file = e.target.files?.[0];
     if (file) {
       const formData = new FormData();
-      formData.append('file', file);
-      formData.append('upload_preset', 'your_cloudinary_preset');
+      formData.append('profile-pick', file);
+      setUploadingProfileImage(true);
       try {
-        const response = await api.post(
-          'https://api.cloudinary.com/v1_1/your_cloud_name/image/upload',
-          formData
-        );
-        setImage(response.data.secure_url);
+        const response = await api.put('/api/user/profile-photo', formData);
+        if (response.data.status === 'success') {
+          setProfileImage(response.data.payload.avatar);
+          const updatedUser = {
+            ...user,
+            avatar: response.data.payload.avatar,
+          } as User;
+          setUser(updatedUser);
+          toast.success('Image updated successfully');
+        } else {
+          toast.error('There was an error updating image');
+        }
       } catch (error) {
         console.error('Error uploading image:', error);
+        toast.error('There was an error updating image');
+        setUploadingProfileImage(false);
       }
+      setUploadingProfileImage(false);
     }
   };
 
@@ -280,24 +293,32 @@ const EditProfile = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg px-6"
       >
-        <div className="mb-4">
-          <label className="block text-gray-700">Profile Photo</label>
+        <div className="mb-4 border-b-1 border-gray-300 pb-7">
+          <label className="block text-gray-700">
+            Profile Photo <span className='text-gray-800 text-xs font-medium'>(No need to submit the form, just upload the image)</span>
+          </label>
           <input
             type="file"
             accept="image/*"
             onChange={(e) => handleImageUpload(e, setProfileImage)}
-            className="mt-2 px-4 py-2 border rounded-md text-green-700 bg-green-50 border-green-200 focus:outline-none focus:ring-2 focus:ring-green-400"
+            className="mt-2 px-4 py-2 border rounded-md text-green-700 bg-green-50 border-green-200 focus:outline-none focus:ring-2 focus:ring-green-400 w-full"
           />
-          {profileImage && (
-            <img
-              src={profileImage}
+          {uploadingProfileImage ? (
+            <div className="m-5">
+              <Spinner />
+            </div>
+          ) : profileImage ? (
+            <Image
+              src={profileImage!}
               alt="Profile Preview"
-              className="mt-2 w-24 h-24 rounded-full object-cover"
+              width={500}
+              height={500}
+              className="mt-3 w-24 h-24 rounded-full object-cover"
             />
-          )}
+          ) : null}
         </div>
 
-        <div className="mb-4 border-b-1 border-gray-300 pb-7">
+        <div className="mb-4">
           <label className="block text-gray-700">Banner Photo</label>
           <select
             value={bannerImage || ''}

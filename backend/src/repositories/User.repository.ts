@@ -45,7 +45,7 @@ export class UserRepository {
     try {
       const result = await this.UserModel.findById(id)
         .select(
-          "_id name email aboutme role phoneNumber specialties interests userRatings trades contacts"
+          "_id name email aboutme role phoneNumber specialties interests userRatings trades contacts avatar banner"
         )
         .populate({
           path: "trades",

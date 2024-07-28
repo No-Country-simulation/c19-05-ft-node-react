@@ -92,7 +92,9 @@ export default function NavBar() {
                       </Link>
                     </li>
                     <li>
-                      <button onClick={() => logout()}>Sign out</button>
+                      <Link href={`/`}>
+                        <button onClick={() => logout()}>Sign out</button>
+                      </Link>
                     </li>
                   </ul>
                 </nav>

@@ -75,7 +75,7 @@ export const users: IUserSeed[] = [
     password: "Javier.milei777",
     aboutme:
       "I teach advanced reading and cat care. Looking to learn relaxation techniques and mindfulness.",
-    avatar: "/placeholder.jpg",
+    avatar: "/man1.jpg",
     phoneNumber: "1234567891",
   },
   {
@@ -84,7 +84,7 @@ export const users: IUserSeed[] = [
     password: "Javier.milei777",
     aboutme:
       "I teach hiking and route exploration. Interested in learning landscape photography.",
-    avatar: "/placeholder.jpg",
+    avatar: "/man2.jpg",
     phoneNumber: "1234567892",
   },
   {
@@ -93,7 +93,7 @@ export const users: IUserSeed[] = [
     password: "Javier.milei777",
     aboutme:
       "I teach international cuisine and want to learn foreign languages.",
-    avatar: "/placeholder.jpg",
+    avatar: "/woman1.jpg",
     phoneNumber: "1234567893",
   },
   {
@@ -101,7 +101,7 @@ export const users: IUserSeed[] = [
     email: "david.brown@gmail.com",
     password: "Javier.milei777",
     aboutme: "I teach football and game strategies. Learning football history.",
-    avatar: "/placeholder.jpg",
+    avatar: "/man3.jpg",
     phoneNumber: "1234567894",
   },
   {
@@ -109,7 +109,7 @@ export const users: IUserSeed[] = [
     email: "sophia.miller@gmail.com",
     password: "Javier.milei777",
     aboutme: "I teach painting and crafts. Looking to learn graphic design.",
-    avatar: "/placeholder.jpg",
+    avatar: "/woman2.jpg",
     phoneNumber: "1234567895",
   },
   {
@@ -117,7 +117,7 @@ export const users: IUserSeed[] = [
     email: "matthew.wilson@gmail.com",
     password: "Javier.milei777",
     aboutme: "I teach urban photography. Interested in learning art history.",
-    avatar: "/placeholder.jpg",
+    avatar: "/man4.jpg",
     phoneNumber: "1234567896",
   },
   {
@@ -126,7 +126,7 @@ export const users: IUserSeed[] = [
     password: "Javier.milei777",
     aboutme:
       "I teach yoga and meditation. Learning about nutrition and dietetics.",
-    avatar: "/placeholder.jpg",
+    avatar: "/woman3.jpg",
     phoneNumber: "1234567897",
   },
   {
@@ -134,7 +134,7 @@ export const users: IUserSeed[] = [
     email: "william.anderson@gmail.com",
     password: "Javier.milei777",
     aboutme: "I teach classic cinema. Want to learn about jazz history.",
-    avatar: "/placeholder.jpg",
+    avatar: "/man5.jpg",
     phoneNumber: "1234567898",
   },
   {
@@ -142,7 +142,7 @@ export const users: IUserSeed[] = [
     email: "isabella.taylor@gmail.com",
     password: "Javier.milei777",
     aboutme: "I teach extreme sports. Interested in survival techniques.",
-    avatar: "/placeholder.jpg",
+    avatar: "/woman4.jpg",
     phoneNumber: "1234567899",
   },
   {
@@ -150,7 +150,7 @@ export const users: IUserSeed[] = [
     email: "benjamin.thomas@gmail.com",
     password: "Javier.milei777",
     aboutme: "I teach gardening. Learning about exotic plant cultivation.",
-    avatar: "/placeholder.jpg",
+    avatar: "/man6.jpg",
     phoneNumber: "2345678910",
   },
   {
@@ -158,7 +158,7 @@ export const users: IUserSeed[] = [
     email: "ava.jackson@gmail.com",
     password: "Javier.milei777",
     aboutme: "I teach guitar playing and want to learn musical composition.",
-    avatar: "/placeholder.jpg",
+    avatar: "/woman5.jpg",
     phoneNumber: "2345678911",
   },
   {
@@ -166,7 +166,7 @@ export const users: IUserSeed[] = [
     email: "liam.white@gmail.com",
     password: "Javier.milei777",
     aboutme: "I teach chess and want to learn new board games.",
-    avatar: "/placeholder.jpg",
+    avatar: "/man7.jpg",
     phoneNumber: "2345678912",
   },
   {
@@ -174,7 +174,7 @@ export const users: IUserSeed[] = [
     email: "mia.harris@gmail.com",
     password: "Javier.milei777",
     aboutme: "I teach poetry writing and want to learn short story writing.",
-    avatar: "/placeholder.jpg",
+    avatar: "/woman6.jpg",
     phoneNumber: "2345678913",
   },
   {
@@ -182,7 +182,7 @@ export const users: IUserSeed[] = [
     email: "elijah.martin@gmail.com",
     password: "Javier.milei777",
     aboutme: "I teach animal care and want to learn training techniques.",
-    avatar: "/placeholder.jpg",
+    avatar: "/man8.jpg",
     phoneNumber: "2345678914",
   },
   {
@@ -190,7 +190,7 @@ export const users: IUserSeed[] = [
     email: "charlotte.lee@gmail.com",
     password: "Javier.milei777",
     aboutme: "I teach vegan cooking and want to learn healthy nutrition.",
-    avatar: "/placeholder.jpg",
+    avatar: "/woman7.jpg",
     phoneNumber: "2345678915",
   },
   {
@@ -199,7 +199,7 @@ export const users: IUserSeed[] = [
     password: "Javier.milei777",
     aboutme:
       "I teach video games and eSports and want to learn game programming.",
-    avatar: "/placeholder.jpg",
+    avatar: "/man9.jpg",
     phoneNumber: "2345678916",
   },
   {
@@ -208,7 +208,7 @@ export const users: IUserSeed[] = [
     password: "Javier.milei777",
     aboutme:
       "I teach fashion design and want to learn pattern making and sewing.",
-    avatar: "/placeholder.jpg",
+    avatar: "/woman8.jpg",
     phoneNumber: "2345678917",
   },
   {
@@ -217,7 +217,7 @@ export const users: IUserSeed[] = [
     password: "Javier.milei777",
     aboutme:
       "I teach hiking and camping and want to learn orientation and survival.",
-    avatar: "/placeholder.jpg",
+    avatar: "/man10.jpg",
     phoneNumber: "2345678918",
   },
   {
@@ -226,7 +226,7 @@ export const users: IUserSeed[] = [
     password: "Javier.milei777",
     aboutme:
       "I teach travel photography and want to learn cultural documentation.",
-    avatar: "/placeholder.jpg",
+    avatar: "/woman9.jpg",
     phoneNumber: "2345678919",
   },
   {
@@ -234,7 +234,7 @@ export const users: IUserSeed[] = [
     email: "henry.wright@gmail.com",
     password: "Javier.milei777",
     aboutme: "I teach science fiction and want to learn creative writing.",
-    avatar: "/placeholder.jpg",
+    avatar: "/man11.jpg",
     phoneNumber: "3456789120",
   },
   {
@@ -242,7 +242,7 @@ export const users: IUserSeed[] = [
     email: "evelyn.scott@gmail.com",
     password: "Javier.milei777",
     aboutme: "I teach gardening and want to learn organic farming.",
-    avatar: "/placeholder.jpg",
+    avatar: "/woman10.jpg",
     phoneNumber: "3456789121",
   },
   {
@@ -250,7 +250,7 @@ export const users: IUserSeed[] = [
     email: "michael.green@gmail.com",
     password: "Javier.milei777",
     aboutme: "I teach auteur cinema and want to learn documentary filmmaking.",
-    avatar: "/placeholder.jpg",
+    avatar: "/man12.jpg",
     phoneNumber: "3456789122",
   },
   {
@@ -258,7 +258,7 @@ export const users: IUserSeed[] = [
     email: "abigail.adams@gmail.com",
     password: "Javier.milei777",
     aboutme: "I teach pet walking and want to learn dog training.",
-    avatar: "/placeholder.jpg",
+    avatar: "/woman11.jpg",
     phoneNumber: "3456789123",
   },
   {
@@ -266,7 +266,7 @@ export const users: IUserSeed[] = [
     email: "alexander.nelson@gmail.com",
     password: "Javier.milei777",
     aboutme: "I teach sport fishing and want to learn fishing techniques.",
-    avatar: "/placeholder.jpg",
+    avatar: "/man13.jpg",
     phoneNumber: "3456789124",
   },
   {
@@ -274,7 +274,7 @@ export const users: IUserSeed[] = [
     email: "grace.carter@gmail.com",
     password: "Javier.milei777",
     aboutme: "I teach contemporary art and want to learn painting techniques.",
-    avatar: "/placeholder.jpg",
+    avatar: "/woman12.jpg",
     phoneNumber: "3456789125",
   },
   {
@@ -282,7 +282,7 @@ export const users: IUserSeed[] = [
     email: "daniel.baker@gmail.com",
     password: "Javier.milei777",
     aboutme: "I teach astronomy and want to learn star observation.",
-    avatar: "/placeholder.jpg",
+    avatar: "/man14.jpg",
     phoneNumber: "3456789126",
   },
   {
@@ -290,7 +290,7 @@ export const users: IUserSeed[] = [
     email: "sofia.mitchell@gmail.com",
     password: "Javier.milei777",
     aboutme: "I teach nature photography and want to learn fauna exploration.",
-    avatar: "/placeholder.jpg",
+    avatar: "/woman13.jpg",
     phoneNumber: "3456789127",
   },
   {
@@ -298,7 +298,7 @@ export const users: IUserSeed[] = [
     email: "jack.perez@gmail.com",
     password: "Javier.milei777",
     aboutme: "I teach mountain biking and want to learn bicycle maintenance.",
-    avatar: "/placeholder.jpg",
+    avatar: "/man15.jpg",
     phoneNumber: "3456789128",
   },
   {
@@ -307,7 +307,7 @@ export const users: IUserSeed[] = [
     password: "Javier.milei777",
     aboutme:
       "I teach home cooking and desserts and want to learn advanced baking.",
-    avatar: "/placeholder.jpg",
+    avatar: "/woman14.jpg",
     phoneNumber: "3456789129",
   },
   {
@@ -315,7 +315,7 @@ export const users: IUserSeed[] = [
     email: "sebastian.collins@gmail.com",
     password: "Javier.milei777",
     aboutme: "I teach environmental care and want to learn animal protection.",
-    avatar: "/placeholder.jpg",
+    avatar: "/man16.jpg",
     phoneNumber: "4567891230",
   },
   {
@@ -323,7 +323,7 @@ export const users: IUserSeed[] = [
     email: "victoria.bennett@gmail.com",
     password: "Javier.milei777",
     aboutme: "I teach independent cinema and want to learn scriptwriting.",
-    avatar: "/placeholder.jpg",
+    avatar: "/woman15.jpg",
     phoneNumber: "4567891231",
   },
   {
@@ -331,7 +331,7 @@ export const users: IUserSeed[] = [
     email: "mason.ross@gmail.com",
     password: "Javier.milei777",
     aboutme: "I teach water sports and want to learn surfing and windsurfing.",
-    avatar: "/placeholder.jpg",
+    avatar: "/man17.jpg",
     phoneNumber: "4567891232",
   },
   {
@@ -339,7 +339,7 @@ export const users: IUserSeed[] = [
     email: "emily.kelly@gmail.com",
     password: "Javier.milei777",
     aboutme: "I teach Flamenco dancing and want to learn Spanish guitar.",
-    avatar: "/placeholder.jpg",
+    avatar: "/woman16.jpg",
     phoneNumber: "4567891233",
   },
   {
@@ -348,7 +348,7 @@ export const users: IUserSeed[] = [
     password: "Javier.milei777",
     aboutme:
       "I teach Urban photography and want to learn Street art and graffiti.",
-    avatar: "/placeholder.jpg",
+    avatar: "/man18.jpg",
     phoneNumber: "4567891234",
   },
   {
@@ -356,7 +356,7 @@ export const users: IUserSeed[] = [
     email: "chloe.morgan@gmail.com",
     password: "Javier.milei777",
     aboutme: "I teach Knitting and crochet and want to learn Pattern design.",
-    avatar: "/placeholder.jpg",
+    avatar: "/woman17.jpg",
     phoneNumber: "4567891235",
   },
   {
@@ -365,7 +365,7 @@ export const users: IUserSeed[] = [
     password: "Javier.milei777",
     aboutme:
       "I teach Public speaking and debate and want to learn Public speeches.",
-    avatar: "/placeholder.jpg",
+    avatar: "/man19.jpg",
     phoneNumber: "4567891236",
   },
   {
@@ -373,7 +373,7 @@ export const users: IUserSeed[] = [
     email: "lily.cooper@gmail.com",
     password: "Javier.milei777",
     aboutme: "I teach Classical music and want to learn Music composition.",
-    avatar: "/placeholder.jpg",
+    avatar: "/woman18.jpg",
     phoneNumber: "4567891237",
   },
   {
@@ -381,7 +381,7 @@ export const users: IUserSeed[] = [
     email: "aiden.cox@gmail.com",
     password: "Javier.milei777",
     aboutme: "I teach Role-playing games and want to learn Game design.",
-    avatar: "/placeholder.jpg",
+    avatar: "/man20.jpg",
     phoneNumber: "4567891238",
   },
   {
@@ -390,7 +390,7 @@ export const users: IUserSeed[] = [
     password: "Javier.milei777",
     aboutme:
       "I teach Climbing and mountaineering and want to learn Climbing techniques.",
-    avatar: "/placeholder.jpg",
+    avatar: "/woman19.jpg",
     phoneNumber: "4567891239",
   },
   {
@@ -399,7 +399,7 @@ export const users: IUserSeed[] = [
     password: "Javier.milei777",
     aboutme:
       "I teach Alternative medicine and want to learn Holistic therapies.",
-    avatar: "/placeholder.jpg",
+    avatar: "/man21.jpg",
     phoneNumber: "4567891240",
   },
   {
@@ -408,7 +408,7 @@ export const users: IUserSeed[] = [
     password: "Javier.milei777",
     aboutme:
       "I teach Household economics and want to learn Investment and finance.",
-    avatar: "/placeholder.jpg",
+    avatar: "/woman20.jpg",
     phoneNumber: "4567891241",
   },
   {
@@ -417,7 +417,7 @@ export const users: IUserSeed[] = [
     password: "Javier.milei777",
     aboutme:
       "I teach International cuisine and want to learn Local gastronomy.",
-    avatar: "/placeholder.jpg",
+    avatar: "/man22.jpg",
     phoneNumber: "4567891242",
   },
   {
@@ -425,7 +425,7 @@ export const users: IUserSeed[] = [
     email: "aria.barnes@gmail.com",
     password: "Javier.milei777",
     aboutme: "I teach Carpentry and want to learn Furniture restoration.",
-    avatar: "/placeholder.jpg",
+    avatar: "/woman21.jpg",
     phoneNumber: "4567891243",
   },
   {
@@ -434,7 +434,7 @@ export const users: IUserSeed[] = [
     password: "Javier.milei777",
     aboutme:
       "I teach Yoga and meditation and want to learn Relaxation techniques.",
-    avatar: "/placeholder.jpg",
+    avatar: "/man23.jpg",
     phoneNumber: "4567891244",
   },
 ];

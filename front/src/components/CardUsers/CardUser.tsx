@@ -35,7 +35,7 @@ const CardUser: React.FC<CardUserProp> = ({
           src={user.avatar}
           width={96}
           height={96}
-          alt="foto facha"
+          alt="profile photo"
         />
       </div>
 

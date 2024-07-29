@@ -307,7 +307,7 @@ export const users: IUserSeed[] = [
     password: "Javier.milei777",
     aboutme:
       "I teach home cooking and desserts and want to learn advanced baking.",
-    avatar: "/woman14.jpg",
+    avatar: "/woman14.png",
     phoneNumber: "3456789129",
   },
   {

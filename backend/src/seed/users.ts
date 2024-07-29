@@ -290,7 +290,7 @@ export const users: IUserSeed[] = [
     email: "sofia.mitchell@gmail.com",
     password: "Javier.milei777",
     aboutme: "I teach nature photography and want to learn fauna exploration.",
-    avatar: "/woman13.jpg",
+    avatar: "/woman13.png",
     phoneNumber: "3456789127",
   },
   {

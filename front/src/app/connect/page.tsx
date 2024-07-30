@@ -8,6 +8,7 @@ import { Button } from '@nextui-org/button';
 import ModalConnect from '@/components/Modal/ModalConnect';
 import { GetUser } from '@/types/user.type';
 import CardUserSkeleton from '@/components/CardUsersSkeleton/CardUserSkeleton';
+import { useAuth } from '@/context/session/sessionContext';
 
 interface User {
   avatar: string;
@@ -18,6 +19,7 @@ interface User {
 
 const UsersPage = () => {
   const { users, paginate, getUsers, getRecommendedUsers } = useUser();
+  const { user } = useAuth();
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState<{
@@ -64,16 +66,18 @@ const UsersPage = () => {
     <>
       <div className="container mx-auto py-5 px-5">
         <div className="p-8"></div>
-        <div className="mt-10">
-          {!showSidebar && (
-            <Button
-              className="bg-[#1FD68E] text-white py-2 px-4 rounded-md shadow-md"
-              onClick={toggleSidebar}
-            >
-              Open
-            </Button>
-          )}
-        </div>
+        {user && (
+          <div className="mt-10">
+            {!showSidebar && (
+              <Button
+                className="bg-[#1FD68E] text-white py-2 px-4 rounded-md shadow-md"
+                onClick={toggleSidebar}
+              >
+                Open
+              </Button>
+            )}
+          </div>
+        )}
 
         <div className="flex flex-wrap">
           <div className={`w-full md:w-1/4 ${showSidebar ? '' : 'hidden'}`}>
@@ -88,22 +92,22 @@ const UsersPage = () => {
               />
             </div>
           </div>
-          <div className={`w-full md:w-3/4 ${showSidebar ? 'ml-0' : 'mx-auto'}`}>
+          <div
+            className={`w-full md:w-3/4 ${showSidebar ? 'ml-0' : 'mx-auto'}`}
+          >
             <div className="flex flex-wrap justify-center gap-4">
-              {users.length >= 1 ? (
-                users.map((user, index) => (
-                  <CardUser
-                    key={index}
-                    user={user}
-                    setShowModal={setShowModal}
-                    showModal={showModal}
-                  />
-                ))
-              ) : (
-                [...Array(10)].map((_, index) => (
-                  <CardUserSkeleton key={index} />
-                ))
-              )}
+              {users.length >= 1
+                ? users.map((user, index) => (
+                    <CardUser
+                      key={index}
+                      user={user}
+                      setShowModal={setShowModal}
+                      showModal={showModal}
+                    />
+                  ))
+                : [...Array(10)].map((_, index) => (
+                    <CardUserSkeleton key={index} />
+                  ))}
             </div>
           </div>
         </div>

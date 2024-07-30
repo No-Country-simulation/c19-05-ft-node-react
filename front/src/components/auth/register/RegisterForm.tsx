@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useAuth } from '@/context/session/sessionContext';
 import { Toaster, toast } from 'sonner';
 import '../AuthCustom.css';
-import { FcGoogle } from "react-icons/fc";
+import { FcGoogle } from 'react-icons/fc';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'; // Importar íconos de ojo
 import LogoGreenSVG from '@/assets/logos/LogoGreenSVG';
 
@@ -32,7 +32,7 @@ const RegisterForm: React.FC = () => {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const promise = async () => {
       const response = await registerContext(data);
-      if (response.status !== "success") {
+      if (response.status !== 'success') {
         throw new Error('Registration failed');
       }
       return response;
@@ -49,10 +49,10 @@ const RegisterForm: React.FC = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <Toaster position='top-right' richColors />
+      <Toaster position="top-right" richColors />
       <div className="max-w-lg w-full space-y-4 pb-10 bg-white rounded-xl shadow-md">
-        <div className='flex'>
-          <LogoGreenSVG width={'3rem'} height={'3rem'} className='ml-24 mt-4' />
+        <div className="flex">
+          <LogoGreenSVG width={'3rem'} height={'3rem'} className="ml-24 mt-4" />
           <h2 className="mt-4 text-[1.6rem] text-center text-gray-900 font-arial">
             Register. <br />
             it's quick and easy
@@ -113,7 +113,7 @@ const RegisterForm: React.FC = () => {
                     },
                     pattern: {
                       value:
-                        /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/,
+                        /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*._])[A-Za-z\d!@#$%^&*._]{8,}$/,
                       message:
                         'Password must include at least one uppercase letter, one lowercase letter, one number, and one special character',
                     },
@@ -127,13 +127,18 @@ const RegisterForm: React.FC = () => {
                   className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                  {showPassword ? <AiFillEye size={20} /> : <AiFillEyeInvisible size={20} />}
+                  {showPassword ? (
+                    <AiFillEye size={20} />
+                  ) : (
+                    <AiFillEyeInvisible size={20} />
+                  )}
                 </span>
               </div>
             </div>
             {errors.password && (
               <span className="text-red-500">
-                Password must be at least 8 characters and contain a special character
+                Password must be at least 8 characters and contain a special
+                character
               </span>
             )}
             <br />
@@ -147,7 +152,8 @@ const RegisterForm: React.FC = () => {
                   {...register('repassword', {
                     required: '',
                     validate: (value) =>
-                      value === password || 'The passwords don\'t match. Try again',
+                      value === password ||
+                      "The passwords don't match. Try again",
                   })}
                   className="block w-full px-3 py-3 rounded-xl sm:text-sm"
                   placeholder="Re-enter Password"
@@ -158,7 +164,11 @@ const RegisterForm: React.FC = () => {
                   className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
                   onClick={() => setShowRePassword(!showRePassword)}
                 >
-                  {showRePassword ? <AiFillEye size={20} />:<AiFillEyeInvisible size={20} />}
+                  {showRePassword ? (
+                    <AiFillEye size={20} />
+                  ) : (
+                    <AiFillEyeInvisible size={20} />
+                  )}
                 </span>
               </div>
             </div>
@@ -167,7 +177,7 @@ const RegisterForm: React.FC = () => {
             )}
             <br />
           </div>
-          <div className='flex justify-center'>
+          <div className="flex justify-center">
             <button
               type="submit"
               className="w-96 flex justify-center py-4 px-3 border border-transparent text-sm font-medium rounded-xl text-white bg-green-400 hover:bg-green-500"
@@ -180,7 +190,7 @@ const RegisterForm: React.FC = () => {
             <span className="text-gray-900 font-medium">or</span>
             <hr className="border-gray-900 w-48" />
           </div>
-          <div className='flex justify-center'>
+          <div className="flex justify-center">
             <button
               type="button"
               className="relative w-96 flex justify-start items-center py-4 px-3 border border-gray-300 text-sm font-medium rounded-xl text-gray-900 bg-white hover:bg-gray-100"

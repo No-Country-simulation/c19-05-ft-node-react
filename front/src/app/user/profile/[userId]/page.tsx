@@ -98,17 +98,21 @@ export default function Page() {
               </div>
             ) : (
               <p className="mb-2 text-gray-700 text-sm">
-                Connect with <span className="font-medium">Owen</span> to access
+                Connect with{' '}
+                <span className="font-medium">{userData.name}</span> to access
                 contact information and learn more. Everyone is welcome!
               </p>
             )}
 
             {/* edit profile or connect button */}
             {userData.isOwnProfile ? (
-              <Link href={`/user/profile/${userId}/update`}  className="bg-slate-800 hover:bg-slate-900 text-white font-semibold px-3 py-2 rounded-sm flex items-center gap-x-2 w-fit mt-6">
-              Edit Profile
-              <MdModeEditOutline />
-            </Link>
+              <Link
+                href={`/user/profile/${userId}/update`}
+                className="bg-slate-800 hover:bg-slate-900 text-white font-semibold px-3 py-2 rounded-sm flex items-center gap-x-2 w-fit mt-6"
+              >
+                Edit Profile
+                <MdModeEditOutline />
+              </Link>
             ) : (
               <button className="bg-green-500 hover:bg-green-600 text-white font-semibold px-3 py-2 rounded-sm mt-3">
                 Connect
@@ -153,7 +157,7 @@ export default function Page() {
             My Interests
           </h2>
           <div className="flex flex-wrap gap-3 items-center text-center w-full">
-          {userData.interests.map((specialty) => (
+            {userData.interests.map((specialty) => (
               <div
                 key={specialty._id}
                 className="border border-gray-500 text-gray-700 rounded-2xl p-2 text-center text-sm font-medium shadow"

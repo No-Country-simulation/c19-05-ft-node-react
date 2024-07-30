@@ -25,6 +25,9 @@ const RootLayout = ({ children }: RootLayoutProps) => {
       lang="es"
       className={`${lily.variable} ${abel.variable} ${ubuntu.variable} h-screen w-full m-0 p-0`}
     >
+      <head>
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+      </head>
       <body className={`${inter.className} bg-gray-100`}>
         <Providers>
           <CommonLayout>{children}</CommonLayout>

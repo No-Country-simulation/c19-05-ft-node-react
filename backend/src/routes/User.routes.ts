@@ -16,12 +16,18 @@ import {
   authValidatePassportOptional,
 } from "../middlewares/authValidate";
 import { TradeRepository } from "../repositories/Trade.repository";
+import { RegistrationTokenRepository } from "../repositories/RegistrationToken";
 import { verifyCategoryAndSpecialty } from "../middlewares/verifyCategoryAndSpecialty";
 import { upload } from "../middlewares/validate.multer";
 
 const userRepository = new UserRepository();
 const tradeRepository = new TradeRepository();
-const userService = new UserService(userRepository, tradeRepository);
+const registrationTokenRepository = new RegistrationTokenRepository();
+const userService = new UserService(
+  userRepository,
+  tradeRepository,
+  registrationTokenRepository
+);
 const userController = new UserController(userService);
 
 const routerUser = Router();

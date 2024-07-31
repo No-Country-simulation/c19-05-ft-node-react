@@ -66,18 +66,16 @@ const UsersPage = () => {
     <>
       <div className="container mx-auto py-5 px-5">
         <div className="p-8"></div>
-        {user && (
-          <div className="mt-10">
-            {!showSidebar && (
-              <Button
-                className="bg-[#1FD68E] text-white py-2 px-4 rounded-md shadow-md"
-                onClick={toggleSidebar}
-              >
-                Open
-              </Button>
-            )}
-          </div>
-        )}
+        <div className="mt-10">
+          {!showSidebar && (
+            <Button
+              className="bg-[#1FD68E] text-white py-2 px-4 rounded-md shadow-md"
+              onClick={toggleSidebar}
+            >
+              Open
+            </Button>
+          )}
+        </div>
 
         <div className="flex flex-wrap">
           <div className={`w-full md:w-1/4 ${showSidebar ? '' : 'hidden'}`}>

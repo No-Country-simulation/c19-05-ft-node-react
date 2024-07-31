@@ -87,13 +87,8 @@ export default function NavBar() {
                       <Link href={`/user/profile/${user._id}`}>My profile</Link>
                     </li>
                     <li>
-                      <Link href={`/user/profile/${user._id}/update`}>
-                        Update profile
-                      </Link>
-                    </li>
-                    <li>
                       <Link href={`/`}>
-                        <button onClick={() => logout()}>Sign out</button>
+                        <button className='text-red-400' onClick={() => logout()}>Sign out</button>
                       </Link>
                     </li>
                   </ul>

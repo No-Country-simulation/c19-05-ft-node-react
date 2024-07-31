@@ -23,9 +23,9 @@ export class Emails {
                 <a href="${envs.FRONTEND_URL}/auth/confirm-account/${parametros.token}" style="display: inline-block; padding: 10px 20px; color: #fff; background-color: #4CAF50; border-radius: 5px; text-decoration: none;">Confirm account</a>
               </p>
               <p>Or you can copy and paste the following link into your browser:</p>
-              <p><a href="${envs.FRONTEND_URL}/auth/confirm-account/${parametros.token}" style="color: #4CAF50;">Click aca</a></p>
+              <p><a href="${envs.FRONTEND_URL}/auth/confirm-account/${parametros.token}" style="color: #4CAF50;">Click here</a></p>
               <p style="color: #888;">This token will expire in 30 minutes.</p>
-              <p>Si no te has registrado en Talent Trade, por favor ignora este correo.</p>
+              <p>If you did not register with Talent Trade, please ignore this email.</p>
               <p style="text-align: center; color: #888; font-size: 12px;">&copy; 2024 Talent Trade. All rights reserved.</p>
             </div>
           </div>`,
@@ -52,7 +52,7 @@ export class Emails {
                 <a href="${envs.FRONTEND_URL}/auth/reset-password/${parametros.token}" style="display: inline-block; padding: 10px 20px; color: #fff; background-color: #4CAF50; border-radius: 5px; text-decoration: none;">Confirmar Cuenta</a>
               </p>
               <p>O puedes copiar y pegar el siguiente enlace en tu navegador:</p>
-              <p><a href="${envs.FRONTEND_URL}/auth/reset-password/${parametros.token}" style="color: #4CAF50;">Click aca</a></p>
+              <p><a href="${envs.FRONTEND_URL}/auth/reset-password/${parametros.token}" style="color: #4CAF50;">Click here</a></p>
               <p style="color: #888;">Este token expira en 30 minutos.</p>
               <p>Si no has pedido un cambio de contraseña, ignora este mensaje.</p>
               <p style="text-align: center; color: #888; font-size: 12px;">&copy; 2024 Talent Trade. Todos los derechos reservados.</p>

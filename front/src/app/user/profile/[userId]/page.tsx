@@ -2,7 +2,7 @@
 
 import { useSpecialties } from '@/context/specialties/specialties';
 import { useUser } from '@/context/user/userContext';
-import { ResponseGetUserById } from '@/types/user.type';
+import { ResponseGetUserById, userRating } from '@/types/user.type';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
@@ -33,7 +33,17 @@ export default function Page() {
     fetchUserData();
   }, [userId]);
 
-  const rating = 4; // LÓGICA PARA EL RATING
+  const calculateAverageRating = (userRatings: userRating[]): number => {
+    if (!userRatings) return 0;
+    if (userRatings.length === 0) return 0;
+
+    const sum = userRatings.reduce((acc, curr) => acc + curr.rating, 0);
+    return sum / userRatings.length;
+  };
+  const averageRating: number = calculateAverageRating(
+    userData?.userRatings as userRating[]
+  );
+
   const isAContact = userData?.email && userData?.phoneNumber;
 
   if (userData)
@@ -64,27 +74,22 @@ export default function Page() {
             </h2>
             <div className="flex items-center mb-4">
               {userData.userRatings.length > 0 ? (
-                // TODO: Implement logic for ratings
-                <h2 className="text-gray-600">
-                  it's been rated, and there are {userData.userRatings.length}
-                </h2>
+                <>
+                  {[...Array(5)].map((_, index) => {
+                    return (
+                      <FaStar
+                        key={index}
+                        className={`text-2xl ${index + 1 <= averageRating ? 'text-yellow-500' : 'text-gray-300'}`}
+                      />
+                    );
+                  })}
+                  <p className="text-gray-500 ml-2 text-lg font-medium">
+                    {averageRating}
+                  </p>
+                </>
               ) : (
                 <div className="text-gray-600">No ratings yet!</div>
               )}
-              {/* {[...Array(5)].map((star, index) => {
-                console.log('The user ratings length is...');
-                console.log(userData.userRatings.length);
-                const ratingValue = index + 1;
-                return (
-                  <FaStar
-                    key={index}
-                    className={`text-2xl ${ratingValue <= rating ? 'text-yellow-500' : 'text-gray-300'}`}
-                  />
-                );
-              })}
-              <p className="text-gray-500 ml-2 text-lg font-medium">
-                {rating.toFixed(1)}
-              </p>{' '} */}
             </div>
             {isAContact ? (
               <div className="flex flex-col gap-y-1 sm:flex-row sm:items-center gap-x-3 mb-4">

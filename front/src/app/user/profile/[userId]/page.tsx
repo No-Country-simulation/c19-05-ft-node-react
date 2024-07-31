@@ -80,20 +80,21 @@ export default function Page() {
             {isAContact ? (
               <div className="flex flex-col gap-y-1 sm:flex-row sm:items-center gap-x-3 mb-4">
                 <a
-                  href="tel:+54 9 381 676-9722"
+                  href={`tel:${userData.phoneNumber}`}
                   className="flex gap-1 items-center"
                 >
                   <FaPhoneAlt className="text-gray-700 text-sm" />
-                  <p className="text-gray-600 text-sm">+54 9 381 676-9722</p>
+                  {/* <p className="text-gray-600 text-sm">+54 9 381 676-9722</p> */}
+                  <p className="text-gray-600 text-sm">
+                    {userData.phoneNumber}
+                  </p>
                 </a>
                 <a
-                  href="mailto:vassarottowen@gmail.com"
+                  href={`mailto:${userData.email}`}
                   className="flex gap-1 items-center"
                 >
                   <IoMail className="text-gray-700 text-sm" />
-                  <p className="text-gray-600 text-sm">
-                    vassarottowen@gmail.com
-                  </p>
+                  <p className="text-gray-600 text-sm">{userData.email}</p>
                 </a>
               </div>
             ) : (

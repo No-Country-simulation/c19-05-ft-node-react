@@ -63,7 +63,17 @@ export default function Page() {
               {userData.name}
             </h2>
             <div className="flex items-center mb-4">
-              {[...Array(5)].map((star, index) => {
+              {userData.userRatings.length > 0 ? (
+                // TODO: Implement logic for ratings
+                <h2 className="text-gray-600">
+                  it's been rated, and there are {userData.userRatings.length}
+                </h2>
+              ) : (
+                <div className="text-gray-600">No ratings yet!</div>
+              )}
+              {/* {[...Array(5)].map((star, index) => {
+                console.log('The user ratings length is...');
+                console.log(userData.userRatings.length);
                 const ratingValue = index + 1;
                 return (
                   <FaStar
@@ -74,8 +84,7 @@ export default function Page() {
               })}
               <p className="text-gray-500 ml-2 text-lg font-medium">
                 {rating.toFixed(1)}
-              </p>{' '}
-              {/* Muestra el promedio numérico */}
+              </p>{' '} */}
             </div>
             {isAContact ? (
               <div className="flex flex-col gap-y-1 sm:flex-row sm:items-center gap-x-3 mb-4">

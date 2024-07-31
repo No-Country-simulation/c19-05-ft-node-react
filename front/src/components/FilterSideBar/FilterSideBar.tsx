@@ -1,6 +1,7 @@
 import { useSpecialties } from '@/context/specialties/specialties';
 import React, { useState, useEffect } from 'react';
 import { useUser } from '@/context/user/userContext';
+import { useAuth } from '@/context/session/sessionContext';
 
 interface FilterSidebarProps {
   isOpen: boolean;
@@ -21,6 +22,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
 }) => {
   const { categories } = useSpecialties();
   const { getUsers, getRecommendedUsers } = useUser();
+  const { user } = useAuth();
 
   useEffect(() => {
     if (showRecommended) {
@@ -43,10 +45,12 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           Close
         </button>
       </div>
-      <label className="flex items-center mb-5 mt-5">
-        <input type="checkbox" onChange={onChangeCheckbox} className="mr-2" />
-        <span>Show only recommended users</span>
-      </label>
+      {user && (
+        <label className="flex items-center mb-5 mt-5">
+          <input type="checkbox" onChange={onChangeCheckbox} className="mr-2" />
+          <span>Show only recommended users</span>
+        </label>
+      )}
       <form>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 mb-1">

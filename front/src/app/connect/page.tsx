@@ -19,7 +19,6 @@ interface User {
 
 const UsersPage = () => {
   const { users, paginate, getUsers, getRecommendedUsers } = useUser();
-  const { user } = useAuth();
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState<{

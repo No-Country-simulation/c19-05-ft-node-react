@@ -34,7 +34,7 @@ export default function Testimonials() {
         <div>
           <div className="flex flex-col items-center justify-center text-center text-gray-800 my-8 px-6">
             <Image
-              src={'/gallery1.png'}
+              src={'/avatar/man.1.webp'}
               alt="Picture of testimonial"
               width="250"
               height="250"
@@ -42,21 +42,23 @@ export default function Testimonials() {
             />
 
             <h3 className="sm:max-w-sm md:max-w-lg lg:max-w-2xl mb-6 text-lg">
-            ¡Talent Trade ha transformado mi carrera profesional! Gracias a su comunidad de expertos, 
-            he adquirido conocimientos valiosos y he podido aplicar nuevas técnicas en mi trabajo diario. 
-            La calidad de los cursos y la facilidad para conectar con mentores de diferentes disciplinas es realmente impresionante.
+              Talent Trade has transformed my professional career! Thanks to its
+              community of experts, I have acquired valuable knowledge and have
+              been able to apply new techniques in my daily work. The quality of
+              the courses and the ease of connecting with mentors from different
+              disciplines is truly impressive.
             </h3>
 
             <BiSolidQuoteAltLeft className="text-5xl text-green-400 mb-6" />
 
             <p className="font-bold text-lg mb-2">Liam Anderson</p>
-            <p className="text-sm">Ingeniero de Software</p>
+            <p className="text-sm">Software Engineer</p>
           </div>
         </div>
         <div>
           <div className="flex flex-col items-center justify-center text-center text-gray-800 my-8 px-6">
             <Image
-              src={'/gallery2.png'}
+              src={'/avatar/woman.1.webp'}
               alt="Picture of testimonial"
               width="250"
               height="250"
@@ -64,21 +66,23 @@ export default function Testimonials() {
             />
 
             <h3 className="sm:max-w-sm md:max-w-lg lg:max-w-2xl mb-6 text-lg">
-            ¡La experiencia en Talent Trade ha sido fenomenal! He descubierto nuevas áreas de interés y he 
-            podido profundizar en temas que siempre me han fascinado. La plataforma me ha permitido 
-            interactuar con profesionales de alto nivel, lo que ha sido clave para mi desarrollo personal y profesional.
+              The experience at Talent Trade has been phenomenal! I have
+              discovered new areas of interest and have been able to delve into
+              topics that have always fascinated me. The platform has allowed me
+              to interact with high-level professionals, which has been key to
+              my personal and professional development.
             </h3>
 
             <BiSolidQuoteAltLeft className="text-5xl text-green-400 mb-6" />
 
             <p className="font-bold text-lg mb-2">Maya Williams</p>
-            <p className="text-sm">Diseñadora Gráfica</p>
+            <p className="text-sm">Graphic Designer</p>
           </div>
         </div>
         <div>
           <div className="flex flex-col items-center justify-center text-center text-gray-800 my-8 px-6">
             <Image
-              src={'/gallery3.png'}
+              src={'/avatar/woman.3.webp'}
               alt="Picture of testimonial"
               width="250"
               height="250"
@@ -86,14 +90,17 @@ export default function Testimonials() {
             />
 
             <h3 className="sm:max-w-sm md:max-w-lg lg:max-w-2xl mb-6 text-lg">
-            ¡No puedo recomendar Talent Trade lo suficiente! La diversidad de expertos y la calidad del contenido han superado mis expectativas. 
-            He aprendido habilidades prácticas y teóricas que han impulsado mi carrera, todo gracias a la increíble comunidad que Talent Trade ha construido.
+              I cannot recommend Talent Trade enough! The diversity of experts
+              and the quality of the content have exceeded my expectations. I
+              have learned practical and theoretical skills that have boosted my
+              career, all thanks to the incredible community that Talent Trade
+              has built.
             </h3>
 
             <BiSolidQuoteAltLeft className="text-5xl text-green-400 mb-6" />
 
             <p className="font-bold text-lg mb-2">Sophia Hayes</p>
-            <p className="text-sm">Periodista</p>
+            <p className="text-sm">Journalist</p>
           </div>
         </div>
       </Slider>

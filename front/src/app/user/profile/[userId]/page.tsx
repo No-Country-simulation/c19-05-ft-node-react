@@ -55,9 +55,9 @@ export default function Page() {
             <Image
               src={userData.banner}
               alt="Picture"
-              width="160"
-              height="90"
-              className="object-cover rounded-t-xl mb-8 w-full max-h-52"
+              width="1584"
+              height="396"
+              className="object-center rounded-t-xl mb-8 w-full max-h-52"
             />
             <Image
               src={userData.avatar}

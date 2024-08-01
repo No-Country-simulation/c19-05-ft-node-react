@@ -28,7 +28,7 @@ const LoginForm: React.FC = () => {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const promise = async (): Promise<Respuesta> => {
       const response = await login(data);
-      if (response.status !== "success") {
+      if (response.status !== 'success') {
         throw new Error('Login failed');
       }
       return response;
@@ -43,10 +43,10 @@ const LoginForm: React.FC = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center m-8 bg-gradient-to-tr from-grey-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-      <Toaster position='top-right' richColors />
+      <Toaster position="top-right" richColors />
       <div className="max-w-lg w-full space-y-8 pb-10 bg-white rounded-xl shadow-md">
-        <div className='flex'>
-          <LogoGreenSVG width={'3rem'} height={'3rem'} className='ml-24 mt-4' />
+        <div className="flex">
+          <LogoGreenSVG width={'3rem'} height={'3rem'} className="ml-24 mt-4" />
           <h2 className="mt-6 text-[1.3rem] ml-6 text-gray-900 font-arial">
             Welcome Back! <br />
             Exchange knowledge <br /> with more people.
@@ -95,7 +95,11 @@ const LoginForm: React.FC = () => {
                   onClick={() => setShowPassword(!showPassword)}
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
-                  {showPassword ? <AiFillEye size={20} /> : <AiFillEyeInvisible size={20} />}
+                  {showPassword ? (
+                    <AiFillEye size={20} />
+                  ) : (
+                    <AiFillEyeInvisible size={20} />
+                  )}
                 </span>
               </div>
             </div>
@@ -114,7 +118,9 @@ const LoginForm: React.FC = () => {
               </Link>
             </p>
             <p className="flex justify-center">
-              <span className="mr-2 text-[0.9rem]">Can't remember your password?</span>
+              <span className="mr-2 text-[0.9rem]">
+                Can't remember your password?
+              </span>
               <Link href={'/auth/forgot-password'} legacyBehavior>
                 <a className="font-bold text-black-500 text-[0.9rem]">
                   Click Here
@@ -135,7 +141,7 @@ const LoginForm: React.FC = () => {
             <span className="text-gray-900 font-medium">or</span>
             <hr className="border-gray-900 w-48" />
           </div>
-          <div className='flex justify-center'>
+          <div className="flex justify-center">
             <button
               type="button"
               className="relative w-96 flex justify-start items-center py-4 px-3 border border-gray-300 text-sm font-medium rounded-xl text-gray-900 bg-white hover:bg-gray-100"

@@ -76,7 +76,7 @@ const UserSchema: Schema = new Schema({
   },
   avatar: {
     type: String,
-    default: "/avatar.jpeg",
+    default: "/avatar/default.webp",
   },
   banner: {
     type: String,

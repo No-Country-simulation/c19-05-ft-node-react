@@ -79,13 +79,14 @@ export class UserController {
 
   getUsers = async (req: Request, res: Response, next: NextFunction) => {
     const { categoryId = null } = req.params;
+    const userEmail = req.user?.email || null;
     let page: string | null =
       typeof req.query.page === "string" ? req.query.page : null;
     if (page && isNaN(+page)) {
       page = null;
     }
     try {
-      const result = await this.userService.find(categoryId, page);
+      const result = await this.userService.find(categoryId, page, userEmail);
       result.status == "success"
         ? res.send(result)
         : res.status(500).send(result);

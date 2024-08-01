@@ -241,7 +241,11 @@ export class UserService {
   }
 
   // ta ok.👍
-  async find(categoryId: string | null, page: string | null) {
+  async find(
+    categoryId: string | null,
+    page: string | null,
+    userEmail: string | null
+  ) {
     const options = {
       page: page ? +page : 1,
       limit: 10,
@@ -286,13 +290,14 @@ export class UserService {
         },
       ],
     };
-    let query = {};
+    let query: any = {};
     if (categoryId) {
-      query = {
-        specialties: {
-          $elemMatch: { categoryId: new Types.ObjectId(categoryId) },
-        },
+      query.specialties = {
+        $elemMatch: { categoryId: new Types.ObjectId(categoryId) },
       };
+    }
+    if (userEmail) {
+      query.email = { $ne: userEmail };
     }
     try {
       const users = await this.userRepository.find(query, options);
@@ -520,34 +525,6 @@ export class UserService {
     }
   }
 
-  // async getSuggestions(user: IUser) {
-  //   const interests: specialty[] = user.interests;
-  //   const interestsIds: Types.ObjectId[] = interests.map(
-  //     (interest) => interest.specialtyId
-  //   );
-
-  //   const specialties: specialty[] = user.specialties;
-  //   const specialtiesIds: Types.ObjectId[] = specialties.map(
-  //     (specialty) => specialty.specialtyId
-  //   );
-
-  //   try {
-  //     const recommendations = await this.userRepository.findSuggestions(
-  //       interestsIds,
-  //       specialtiesIds
-  //     );
-  //     if (recommendations) {
-  //       return {
-  //         status: "success",
-  //         numberOfRecommendations: recommendations.length,
-  //         payload: recommendations,
-  //       };
-  //     }
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }
-
   async getSuggestions(
     categoryId: string | null,
     page: string | null,
@@ -621,6 +598,11 @@ export class UserService {
     if (categoryId) {
       query.specialties.$elemMatch.categoryId = new Types.ObjectId(categoryId);
     }
+
+    if (user.email) {
+      query.email = { $ne: user.email };
+    }
+
     try {
       const users = await this.userRepository.find(query, options);
       return {

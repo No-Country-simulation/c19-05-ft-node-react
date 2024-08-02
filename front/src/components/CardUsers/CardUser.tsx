@@ -22,7 +22,9 @@ interface CardUserProp {
 }
 
 const CardUser: React.FC<CardUserProp> = ({
-  user
+  user,
+  setShowModal,
+  showModal,
 }: CardUserProp) => {
   const [selectUser, setSelectUser] = useState<GetUser>();
   return (
@@ -80,7 +82,9 @@ const CardUser: React.FC<CardUserProp> = ({
           <Link href="#">
             <Button
               className="bg-[#1FD68E]   hover:bg-[#18A16A] text-white rounded-lg px-3 py-1"
-            
+              onClick={() =>
+                setShowModal({ open: !showModal.open, user: user })
+              }
             >
               Connect
             </Button>
